@@ -1,18 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { SafeAreaView, TouchableOpacity, View } from 'react-native';
-import { useEffect, useState } from 'react/cjs/react.development';
+import { Image, KeyboardAvoidingView, Platform, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState, useRef } from 'react/cjs/react.development';
 import styled from 'styled-components';
 
 const chatBot = {
     steps: [{
-        text: 'Olá 😃!'
+        texts: [
+            'Olá 😃!',
+            'É um prazer ter você apoiando nossa idéia',
+            'Para começar, precisamos te identificar',
+            'Qual é o seu CPF?'
+        ],
+        userResponse: '',
+        keyboardType: 'number-pad'
     }, {
-        text: 'É um prazer ter você apoiando nossa idéia'
+        texts: [
+            'Agora precisamos do seu primeiro nome'
+        ],
+        userResponse: '',
+        keyboardType: 'default'
     }, {
-        text: 'Para começar, precisamos te identificar'
+        texts: [
+            'E seu sobrenome'
+        ],
+        userResponse: '',
+        keyboardType: 'default'
     }, {
-        text: 'Qual é o seu CPF?'
+        texts: [
+            'Para finalizar',
+            'Pedimos o seu número de telefone para contato, caso necessário'
+        ],
+        userResponse: '',
+        keyboardType: 'number-pad'
     }]
 }
 
@@ -20,58 +40,77 @@ export default function CreateAccount() {
     const [list, setList] = useState([]);
     const [currentItemIndex, setCurrentItemIndex] = useState(0);
     const [isBotTyping, setBotTyping] = useState(true);
+    const [currentStep, setCurrentStep] = useState(0);
+    const [bottomViewHeight, setBottomViewHeight] = useState(0);
+    const refChatInput = useRef(null);
 
     useEffect(() => {
-        if (currentItemIndex < chatBot.steps.length) {
+        if (currentItemIndex < chatBot.steps[currentStep].texts.length) {
             const timeout = setTimeout(() => {
-                setList((prevList) => [...prevList, chatBot.steps[currentItemIndex]]);
+                setList((prevList) => [...prevList, chatBot.steps[currentStep].texts[currentItemIndex]]);
                 setCurrentItemIndex((prevIndex) => prevIndex + 1);
             }, 1500);
 
             return () => clearTimeout(timeout);
+        } else {
+            setBotTyping(false);
+            refChatInput.current.focus();
         }
     }, [currentItemIndex]);
 
-    const chatConversation = list.map((step, index) => {
+    const chatConversation = list.map((item, index) => {
         return (
             <BotCell key={index}>
-                <CellText>{step.text}</CellText>
+                <CellText>{item}</CellText>
             </BotCell>
         );
     })
 
+    const showTypingGIF = isBotTyping && (
+        <ViewGIF>
+            <FootprintGIF source={require('./assets/typing.gif')} />
+        </ViewGIF>
+    )
+
     return (
-        <MainView>
-            <SafeArea>
-                <ChatView>{chatConversation}</ChatView>
-                <BottomView>
+        <MainView
+            behavior="position"
+            enabled
+            keyboardVerticalOffset={Platform.OS === 'ios' ? bottomViewHeight : 0}
+        >
+            <SafeAreaView>
+                <ChatView>
+                    {chatConversation}
+                    {showTypingGIF}
+                </ChatView>
+                <BottomView
+                    onLayout={(event) => {
+                        setBottomViewHeight(event.nativeEvent.layout.height)
+                    }}
+                >
                     <ChatInput
-                        placeholder="Aguarde..."
+                        ref={refChatInput}
+                        placeholder={isBotTyping ? "Aguarde..." : "Digite aqui"}
                         placeholderTextColor="lightgray"
-                        editable={true}
+                        editable={!isBotTyping}
+                        keyboardType={chatBot.steps[currentStep].keyboardType}
                     />
                     <TouchableOpacity>
                         <AirPlaneButton source={require('./assets/paperplane.circle.fill.png')} />
                     </TouchableOpacity>
                 </BottomView>
-                <StatusBar style="light" />
-            </SafeArea>
+            </SafeAreaView>
+            <StatusBar style="light" />
         </MainView>
     )
 }
 
-const MainView = styled.View`
+const MainView = styled.KeyboardAvoidingView`
     background-color: purple;
-`
-
-const SafeArea = styled.SafeAreaView`
-    display: flex;
-    justify-content: space-between;
-    height: 100%;
+    flex: 1;
 `
 
 const BottomView = styled.View`
-    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -80,9 +119,9 @@ const BottomView = styled.View`
 `
 
 const ChatView = styled.ScrollView`
-    display: flex;
+    height: 90%;
     flex-direction: column-reverse;
-    padding: 20px 0;
+    padding: 5px 0;
     background-color: white;
 `
 
@@ -116,4 +155,13 @@ const AirPlaneButton = styled.Image`
     height: 40px;
     width: 40px;
     transform: rotate(45deg);
+`
+
+const FootprintGIF = styled.Image`
+    width: 50px;
+    height: 21.3px;
+`
+
+const ViewGIF = styled.View`
+    margin: 0 0 0 15px;
 `

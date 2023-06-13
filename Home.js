@@ -37,74 +37,70 @@ export default function Home({ navigation }) {
     )
 }
 
-
 const BackgroundImage = styled.Image`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: -1;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
 `
 
 const SafeArea = styled.SafeAreaView`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
 `
 
 const TopView = styled.View`
-  margin-top: 15%;
+    margin-top: 15%;
 `
 
 const LogoText = styled.Text`
-  font-size: 30px;
-  font-weight: 700;
+    font-size: 30px;
+    font-weight: 700;
 `
 
 const BottomView = styled.View`
-  width: 90%;
-  height: 23%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
 `
 
 const Button = styled.TouchableOpacity`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  border-radius: 15px;
+    width: 100%;
+    align-items: center;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
 `
 
 const ButtonCreateAccount = styled(Button)`
-  background-color: purple;
-  border: 2px solid purple;
+    background-color: purple;
+    border: 2px solid purple;
 `
 
 const ButtonHaveAccount = styled(Button)`
-  border: 2px solid white;
+    border: 2px solid white;
 `
 
 const ButtonText = styled.Text`
-  text-transform: uppercase;
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
+    text-transform: uppercase;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
 `
 
 const HaveAccountButtonText = styled(ButtonText)`
-  color: white;
+    color: white;
 `
 
 const AboutText = styled.Text`
-  color: white;
-  font-weight: 700;
-  font-size: 16px;
-  margin-top: 3px;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 3px;
 `
 
 const ChevronUp = styled.Image`
-  width: 20px;
-  height: 12.4px;
+    width: 20px;
+    height: 12.4px;
 `
