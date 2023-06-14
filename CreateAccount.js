@@ -3,6 +3,7 @@ import React from 'react';
 import { Image, KeyboardAvoidingView, Platform, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState, useRef } from 'react/cjs/react.development';
 import styled from 'styled-components';
+import TypingAnimation from './components/TypingAnimation/TypingAnimation';
 
 const chatBot = {
     steps: [{
@@ -68,7 +69,7 @@ export default function CreateAccount() {
 
     const showTypingGIF = isBotTyping && (
         <ViewGIF>
-            <FootprintGIF source={require('./assets/typing.gif')} />
+            <TypingAnimation color="pink" time={1000} count={3} />
         </ViewGIF>
     )
 
@@ -163,5 +164,5 @@ const FootprintGIF = styled.Image`
 `
 
 const ViewGIF = styled.View`
-    margin: 0 0 0 15px;
+    margin: 0 0 0 10px;
 `

@@ -16,11 +16,22 @@ export default function Home({ navigation }) {
     const chevronAnimation = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-        Animated.timing(chevronAnimation, {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true
-        }).start()
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(chevronAnimation, {
+                    toValue: -3,
+                    duration: 3000,
+                    useNativeDriver: true
+                }),
+                Animated.timing(chevronAnimation, {
+                    toValue: 0,
+                    duration: 1000,
+                    useNativeDriver: true
+                })
+            ]), {
+            iterations: -1,
+            resetBeforeIteration: true
+        }).start();
     }, [])
 
     return (
@@ -39,7 +50,7 @@ export default function Home({ navigation }) {
                     <Button>
                         <ChevronUp
                             style={{
-                                opacity: chevronAnimation
+                                transform: [{ translateY: chevronAnimation }]
                             }}
                             source={require('../assets/chevron.up.png')}
                         />
