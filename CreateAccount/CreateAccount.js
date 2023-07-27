@@ -3,6 +3,7 @@ import React from 'react';
 import { useEffect, useState, useRef } from 'react/cjs/react.development';
 import TypingAnimation from '../components/TypingAnimation/TypingAnimation';
 import { MainView, BottomView, ChatView, BotCell, UserCell, CellText, ChatInput, AirPlaneButton, ViewGIF, FinishButton, ButtonText } from './Style';
+import { SafeAreaView, TouchableOpacity } from 'react-native';
 
 export default function CreateAccount({ navigation }) {
     const [chat, setChat] = useState({
@@ -76,19 +77,19 @@ export default function CreateAccount({ navigation }) {
     }, [isBotTyping])
 
     const chatConversation = list.map((item, index) => {
-        return (
-            <>
-                {item.origin === 'bot' ? (
-                    <BotCell key={index}>
-                        <CellText>{item.text}</CellText>
-                    </BotCell>
-                ) : (
-                    <UserCell key={index}>
-                        <CellText>{item.text}</CellText>
-                    </UserCell>
-                )}
-            </>
-        );
+        if (item.origin === 'bot') {
+            return (
+                <BotCell key={index}>
+                    <CellText>{item.text}</CellText>
+                </BotCell>
+            )
+        } else {
+            return (
+                <UserCell key={index}>
+                    <CellText>{item.text}</CellText >
+                </UserCell >
+            )
+        }
     })
 
     const showTypingGIF = isBotTyping && (
@@ -163,7 +164,7 @@ export default function CreateAccount({ navigation }) {
                                     setCurrentStep((prevStep) => prevStep + 1);
                                 }}
                             >
-                                <AirPlaneButton source={require('./assets/paperplane.circle.fill.png')} />
+                                <AirPlaneButton source={require('../assets/paperplane.circle.fill.png')} />
                             </TouchableOpacity>
                         </>
                     ) : (
