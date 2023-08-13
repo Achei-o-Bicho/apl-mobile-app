@@ -37,6 +37,12 @@ export default function CreateAccount({ navigation }) {
             keyboardType: 'number-pad'
         }, {
             bot: [
+                'Nos informe o código de 6 dígitos que te enviamos via SMS',
+            ],
+            userResponse: '',
+            keyboardType: 'number-pad'
+        }, {
+            bot: [
                 'Muito obrigado!',
                 'Recebemos as suas informações e estamos processando',
                 'Pode ser que demore um pouco, te avisaremos via WhatsApp'
@@ -154,6 +160,7 @@ export default function CreateAccount({ navigation }) {
                                 }}
                             />
                             <TouchableOpacity
+                                disabled={chat.steps[currentStep].userResponse == ''}
                                 onPress={() => {
                                     clearTextInput();
                                     setList([...list, {
