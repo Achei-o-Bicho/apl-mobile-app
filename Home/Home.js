@@ -47,7 +47,9 @@ export default function Home({ navigation }) {
                     <ButtonHaveAccount>
                         <HaveAccountButtonText>Já tenho conta</HaveAccountButtonText>
                     </ButtonHaveAccount>
-                    <Button>
+                    <Button
+                        onPress={() => navigation.navigate("AboutUs")}
+                    >
                         <ChevronUp
                             style={{
                                 transform: [{ translateY: chevronAnimation }]
