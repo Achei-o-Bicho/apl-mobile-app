@@ -44,12 +44,10 @@ export default function Home({ navigation }) {
                     <ButtonCreateAccount onPress={() => navigation.navigate('CreateAccount')}>
                         <ButtonText>Abrir sua conta</ButtonText>
                     </ButtonCreateAccount>
-                    <ButtonHaveAccount>
+                    <ButtonHaveAccount onPress={() => navigation.navigate("HaveAccount")}>
                         <HaveAccountButtonText>Já tenho conta</HaveAccountButtonText>
                     </ButtonHaveAccount>
-                    <Button
-                        onPress={() => navigation.navigate("AboutUs")}
-                    >
+                    <Button onPress={() => navigation.navigate("AboutUs")}>
                         <ChevronUp
                             style={{
                                 transform: [{ translateY: chevronAnimation }]

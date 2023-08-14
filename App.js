@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CreateAccount from './CreateAccount/CreateAccount';
 import Home from './Home/Home';
 import AboutUs from './AboutUs/AboutUs';
+import HaveAccount from './HaveAccount/HaveAccount';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,18 @@ export default function App() {
               headerTintColor: "white",
               headerStyle: {
                 backgroundColor: "purple"
+              }
+            }}
+          />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen
+            name="HaveAccount"
+            component={HaveAccount}
+            options={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: "transparent"
               }
             }}
           />
