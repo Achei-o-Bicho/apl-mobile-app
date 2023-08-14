@@ -6,6 +6,7 @@ import { MainView, BottomView, ChatView, BotCell, UserCell, CellText, ChatInput,
 import { SafeAreaView, TouchableOpacity } from 'react-native';
 import { cpf } from 'cpf-cnpj-validator';
 const passwordValidator = require('password-validator');
+import validator from 'validator';
 
 export default function CreateAccount({ navigation }) {
     const [chat, setChat] = useState({
@@ -26,7 +27,19 @@ export default function CreateAccount({ navigation }) {
             }
         }, {
             bot: [
-                'Agora precisamos do seu primeiro nome'
+                'Agora precisamos do seu email'
+            ],
+            userResponse: '',
+            keyboardType: 'email-address',
+            validate: async function (response) {
+                return validator.isEmail(response);
+            },
+            feedback: {
+                text: 'O seu email não parece válido, verifique e tente novamente'
+            }
+        }, {
+            bot: [
+                'Qual é seu primeiro nome?'
             ],
             userResponse: '',
             keyboardType: 'default',
@@ -38,7 +51,7 @@ export default function CreateAccount({ navigation }) {
             }
         }, {
             bot: [
-                'E seu sobrenome'
+                'E seu sobrenome?'
             ],
             userResponse: '',
             keyboardType: 'default',
@@ -51,7 +64,7 @@ export default function CreateAccount({ navigation }) {
         }, {
             bot: [
                 'Para finalizar',
-                'Pedimos o seu número de telefone (WhatsApp) para contato, caso necessário'
+                'Precisamos do seu número de telefone (WhatsApp) para contato, caso necessário'
             ],
             userResponse: '',
             keyboardType: 'phone-pad',
