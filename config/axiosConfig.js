@@ -1,10 +1,9 @@
-const axios = require('axios');
+import axios from 'axios';
+import config from './configEnviroment';
 
-const apiUrl = process.env.API_URL;
-
-const axiosInstance = axios.create({
-  baseURL: apiUrl,
-  timeout: process.env.API_TIMEOUT,
+const axiosConfig = axios.create({
+    baseURL: config.API_URL,
+    timeout: config.API_TIMEOUT,
 });
 
-module.exports = axiosInstance;
+export default axiosConfig;
