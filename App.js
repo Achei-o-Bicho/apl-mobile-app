@@ -5,6 +5,8 @@ import CreateAccount from './CreateAccount/CreateAccount';
 import Home from './Home/Home';
 import AboutUs from './AboutUs/AboutUs';
 import HaveAccount from './HaveAccount/HaveAccount';
+import LoginPassword from './LoginPassword/LoginPassword';
+import InsideHome from './InsideHome/InsideHome';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,7 +56,25 @@ export default function App() {
               }
             }}
           />
+          <Stack.Screen
+            name="LoginPassword"
+            component={LoginPassword}
+            options={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: "transparent"
+              }
+            }}
+          />
         </Stack.Group>
+        <Stack.Screen
+          name="InsideHome"
+          component={InsideHome}
+          options={{ 
+            gestureEnabled: false,
+            headerShown: false
+          }}
+        />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
