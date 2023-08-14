@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from 'react/cjs/react.development';
 import TypingAnimation from '../components/TypingAnimation/TypingAnimation';
 import { MainView, BottomView, ChatView, BotCell, UserCell, CellText, ChatInput, AirPlaneButton, ViewGIF, FinishButton, ButtonText } from './Style';
 import { SafeAreaView, TouchableOpacity } from 'react-native';
+import { cpf } from 'cpf-cnpj-validator';
+const passwordValidator = require('password-validator');
 
 export default function CreateAccount({ navigation }) {
     const [chat, setChat] = useState({
@@ -15,32 +17,82 @@ export default function CreateAccount({ navigation }) {
                 'Qual é o seu CPF?'
             ],
             userResponse: '',
-            keyboardType: 'number-pad'
+            keyboardType: 'number-pad',
+            validate: async function (response) {
+                return cpf.isValid(response);
+            },
+            feedback: {
+                text: 'Verifiquei aqui mas parece que o seu CPF não é válido, tente novamente'
+            }
         }, {
             bot: [
                 'Agora precisamos do seu primeiro nome'
             ],
             userResponse: '',
-            keyboardType: 'default'
+            keyboardType: 'default',
+            validate: async function (response) {
+                return response !== ' ';
+            },
+            feedback: {
+                text: 'O seu primeiro nome não pode ser um espaço em branco, tente novamente'
+            }
         }, {
             bot: [
                 'E seu sobrenome'
             ],
             userResponse: '',
-            keyboardType: 'default'
+            keyboardType: 'default',
+            validate: async function (response) {
+                return response !== ' ';
+            },
+            feedback: {
+                text: 'O seu sobrenome não pode ser um espaço em branco, tente novamente'
+            }
         }, {
             bot: [
                 'Para finalizar',
-                'Pedimos o seu número de telefone para contato, caso necessário'
+                'Pedimos o seu número de telefone (WhatsApp) para contato, caso necessário'
             ],
             userResponse: '',
-            keyboardType: 'number-pad'
+            keyboardType: 'phone-pad',
+            validate: async function (response) {
+                const internationalPattern = /^\+\d{1,3}\s?\d{1,14}$/
+                const phoneNumberPattern = /^\d{7,15}$/
+                return phoneNumberPattern.test(response) || internationalPattern.test(response);
+            },
+            feedback: {
+                text: 'O seu número de telefone não parecer ser válido, tente novamente seguindo este padrão: +551234567890'
+            }
         }, {
             bot: [
-                'Nos informe o código de 6 dígitos que te enviamos via SMS',
+                'Nos informe o código de 6 dígitos que te enviamos no WhatsApp',
             ],
             userResponse: '',
-            keyboardType: 'number-pad'
+            keyboardType: 'phone-pad',
+            validate: async function (response) {
+                return response === '123456';
+            },
+            feedback: {
+                text: 'O código está incorreto, verifique e tente novamente'
+            }
+        }, {
+            bot: [
+                'Escolha uma senha para utilizar toda vez que entrar no nosso aplicativo',
+            ],
+            userResponse: '',
+            keyboardType: 'default',
+            validate: async function (response) {
+                var schema = new passwordValidator();
+                schema
+                    .is()
+                    .min(6)
+                    .has().not().spaces()
+                return schema.validate(response);
+            },
+            feedback: {
+                text: 'Ops, sua senha pode ser mais forte! Por favor, selecione uma senha com pelo menos 6 caracteres e sem espaços em branco'
+            },
+            secureTextEntry: true
         }, {
             bot: [
                 'Muito obrigado!',
@@ -48,7 +100,13 @@ export default function CreateAccount({ navigation }) {
                 'Pode ser que demore um pouco, te avisaremos via WhatsApp'
             ],
             userResponse: '',
-            keyboardType: 'default'
+            keyboardType: 'default',
+            validate: async function (_) {
+                return true;
+            },
+            feedback: {
+                text: ''
+            }
         }]
     })
     const [list, setList] = useState([]);
@@ -92,7 +150,17 @@ export default function CreateAccount({ navigation }) {
         } else {
             return (
                 <UserCell key={index}>
-                    <CellText>{item.text}</CellText >
+                    <CellText>
+                        {
+                        item.isSecureText ?
+                            item.text
+                                .split('')
+                                .map(_ => '*')
+                                .join('')
+                                :
+                            item.text
+                        }
+                    </CellText >
                 </UserCell >
             )
         }
@@ -148,6 +216,7 @@ export default function CreateAccount({ navigation }) {
                                 placeholderTextColor="lightgray"
                                 editable={!isBotTyping}
                                 keyboardType={chat.steps[currentStep].keyboardType}
+                                secureTextEntry={chat.steps[currentStep].secureTextEntry}
                                 onChangeText={(text) => {
                                     setChat({
                                         ...chat, steps: chat.steps.map((step, index) => {
@@ -161,15 +230,37 @@ export default function CreateAccount({ navigation }) {
                             />
                             <TouchableOpacity
                                 disabled={chat.steps[currentStep].userResponse == ''}
-                                onPress={() => {
+                                onPress={async () => {
+                                    const chatStep = chat.steps[currentStep];
                                     clearTextInput();
-                                    setList([...list, {
-                                        origin: 'user',
-                                        text: chat.steps[currentStep].userResponse
-                                    }]);
+
+                                    setList((prevList) => [
+                                        ...prevList,
+                                        {
+                                            origin: 'user',
+                                            text: chatStep.userResponse.trim(),
+                                            isSecureText: chatStep.secureTextEntry
+                                        },
+                                    ]);
+
                                     setBotTyping(true);
-                                    setCurrentStep((prevStep) => prevStep + 1);
+
+                                    if (await chatStep.validate(chatStep.userResponse)) {
+                                        setCurrentStep((prevStep) => prevStep + 1);
+                                    } else {
+                                        setTimeout(() => {
+                                            setList((prevList) => [
+                                                ...prevList,
+                                                {
+                                                    origin: 'bot',
+                                                    text: chatStep.feedback.text,
+                                                },
+                                            ]);
+                                            setBotTyping(false);
+                                        }, 1500);
+                                    }
                                 }}
+
                             >
                                 <AirPlaneButton source={require('../assets/paperplane.circle.fill.png')} />
                             </TouchableOpacity>

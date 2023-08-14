@@ -7,7 +7,7 @@ export const MainView = styled.View`
 `
 
 export const TransparentView = styled.TouchableOpacity`
-    flex: 1.2;
+    flex: 1;
 `
 
 export const ContentView = styled.KeyboardAvoidingView`
@@ -28,6 +28,11 @@ export const Input = styled.TextInput`
     color: white;
     font-weight: 600;
     font-size: 25px;
+`
+
+export const FeedbackText = styled.Text`
+    margin-top: 10px;
+    color: yellow;
 `
 
 export const EnterButton = styled.TouchableOpacity`
