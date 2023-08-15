@@ -7,6 +7,7 @@ import AboutUs from './AboutUs/AboutUs';
 import HaveAccount from './HaveAccount/HaveAccount';
 import LoginPassword from './LoginPassword/LoginPassword';
 import InsideHome from './InsideHome/InsideHome';
+import CreatePet from './CreatePet/CreatePet';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +74,18 @@ export default function App() {
             component={InsideHome}
             options={{
               headerShown: false,
+              contentStyle: {
+                backgroundColor: "transparent"
+              }
+            }}
+          />
+        </Stack.Group>
+        <Stack.Group>
+          <Stack.Screen
+            name="CreatePet"
+            component={CreatePet}
+            options={{
+              title: "Criar Pet",
               contentStyle: {
                 backgroundColor: "transparent"
               }
