@@ -1,8 +1,17 @@
 import React from 'react';
-import { MainView } from './Style';
+import { AddNewPet, MainView, NewPetView, SubtitleNewPet, TitleNewPet } from './Style';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function MyPets() {
     return (
-        <MainView></MainView>
+        <MainView>
+            <AddNewPet>
+                <NewPetView>
+                    <TitleNewPet>Novo pet</TitleNewPet>
+                    <SubtitleNewPet>Adicione seu novo pet aqui</SubtitleNewPet>
+                </NewPetView>
+                <AntDesign.Button name="plus" color="purple" backgroundColor="transparent" />
+            </AddNewPet>
+        </MainView>
     );
 }

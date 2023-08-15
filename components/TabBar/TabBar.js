@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyPets from '../../MyPets/MyPets';
 import Profile from '../../Profile/Profile';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, AntDesign } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 const ActiveTintColor = "purple"
@@ -17,6 +17,7 @@ export default function TabBar() {
                 options={() => ({
                     tabBarActiveTintColor: ActiveTintColor,
                     title: "Meus Pets",
+                    headerTintColor: ActiveTintColor,
                     tabBarIcon: ({ color }) => {
                         return <Ionicons name="paw" size={IconSize} color={color} />
                     }
@@ -28,6 +29,7 @@ export default function TabBar() {
                 options={() => ({
                     tabBarActiveTintColor: ActiveTintColor,
                     title: "Perfil",
+                    headerTintColor: ActiveTintColor,
                     tabBarIcon: ({ color }) => {
                         return <FontAwesome name="user" size={IconSize} color={color} />
                     }
