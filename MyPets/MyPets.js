@@ -1,14 +1,17 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { AddNewPet, MainView, AddNewPetButton, NewPetView, TitleNewPet, SubtitleNewPet, PetList } from './Style';
+import { MainView, AddNewPetButton, TitleNewPet } from './Style';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
-import { View } from 'react-native';
+import { View, FlatList, Text } from 'react-native';
+import MyPetCard from '../components/MyPetCard/MyPetCard';
 
 export default function MyPets({ navigation }) {
     const [showAddHeaderIcon, setShowAddHeaderIcon] = useState(false);
     const [addPetButtonHeight, setAddPetButtonHeight] = useState(0);
     const [data, setData] = useState([
-        { key: "AddNewPet" }
+        { key: "AddNewPet" },
+        { key: "0", name: "Teste", breed: "Labrador" },
+        { key: "1", name: "Teste", breed: "Labrador" }
     ]);
 
     useLayoutEffect(() => {
@@ -27,25 +30,27 @@ export default function MyPets({ navigation }) {
 
     return (
         <MainView>
-            <PetList
+            <FlatList
                 data={data}
                 renderItem={({ item }) => {
                     if (item.key === "AddNewPet") {
                         return (
-                            <AddNewPet
+                            <View
                                 onLayout={({ nativeEvent }) => setAddPetButtonHeight(nativeEvent.layout.height)}
                             >
                                 <AddNewPetButton onPress={handleNavigationCreatePet}>
                                     <View>
                                         <TitleNewPet>Novo pet</TitleNewPet>
-                                        <SubtitleNewPet>Adicione seu novo pet aqui</SubtitleNewPet>
+                                        <Text>Adicione seu novo pet aqui</Text>
                                     </View>
                                     <AntDesign.Button name="plus" color="purple" size={25} backgroundColor="transparent" />
                                 </AddNewPetButton>
-                            </AddNewPet>
+                            </View>
                         );
                     } else {
-                        return <></>
+                        return (
+                            <MyPetCard name={item.name} breed={item.breed} />
+                        );
                     }
                 }}
                 onScroll={(event) => {
