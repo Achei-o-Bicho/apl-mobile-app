@@ -18,9 +18,15 @@ export default function MyPets({ navigation }) {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: showAddHeaderIcon && (() => (
-                <TouchableOpacity onPress={handleNavigationCreatePet}>
-                    <AntDesign.Button name="plus" color="purple" size={25} backgroundColor="transparent" />
-                </TouchableOpacity>
+                <AntDesign.Button
+                    name="plus"
+                    color="purple"
+                    size={25}
+                    backgroundColor="transparent"
+                    underlayColor="transparent"
+                    activeOpacity={0.2}
+                    onPress={handleNavigationCreatePet}
+                />
             ))
         });
     }, [showAddHeaderIcon]);

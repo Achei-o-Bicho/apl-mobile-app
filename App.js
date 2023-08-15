@@ -88,7 +88,7 @@ export default function App() {
             options={{
               title: "Criar Pet",
               contentStyle: {
-                backgroundColor: "transparent"
+                backgroundColor: "white"
               }
             }}
           />
