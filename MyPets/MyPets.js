@@ -2,16 +2,17 @@ import React, { useState, useLayoutEffect } from 'react';
 import { MainView, AddNewPetButton, TitleNewPet } from './Style';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, RefreshControl } from 'react-native';
 import MyPetCard from '../components/MyPetCard/MyPetCard';
 
 export default function MyPets({ navigation }) {
+    const [refreshing, setRefreshing] = useState(false);
     const [showAddHeaderIcon, setShowAddHeaderIcon] = useState(false);
     const [addPetButtonHeight, setAddPetButtonHeight] = useState(0);
     const [data, setData] = useState([
-        { key: "AddNewPet" },
-        { key: "0", name: "Teste", breed: "Labrador", imagePreview: 'a' },
-        { key: "1", name: "Teste", breed: "Labrador", imagePreview: 'a' }
+        { key: 0 },
+        { key: 1, name: "Teste", breed: "Labrador", imagePreview: 'a' },
+        { key: 2, name: "Teste", breed: "Labrador", imagePreview: 'a' }
     ]);
 
     useLayoutEffect(() => {
@@ -28,12 +29,24 @@ export default function MyPets({ navigation }) {
         navigation.navigate("CreatePet");
     }
 
+    function handleFetchData() {
+        setRefreshing(true);
+        setTimeout(() => {
+            setData((prevList) => [...prevList, { key: prevList.length + 1, name: "Teste", breed: "Labrador", imagePreview: 'a' }])
+            setRefreshing(false);
+        }, 1500)
+    }
+
     return (
         <MainView>
             <FlatList
+                refreshing={refreshing}
                 data={data}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={handleFetchData} />
+                }
                 renderItem={({ item }) => {
-                    if (item.key === "AddNewPet") {
+                    if (item.key === 0) {
                         return (
                             <View
                                 onLayout={({ nativeEvent }) => setAddPetButtonHeight(nativeEvent.layout.height)}
