@@ -10,8 +10,8 @@ export default function MyPets({ navigation }) {
     const [addPetButtonHeight, setAddPetButtonHeight] = useState(0);
     const [data, setData] = useState([
         { key: "AddNewPet" },
-        { key: "0", name: "Teste", breed: "Labrador" },
-        { key: "1", name: "Teste", breed: "Labrador" }
+        { key: "0", name: "Teste", breed: "Labrador", imagePreview: 'a' },
+        { key: "1", name: "Teste", breed: "Labrador", imagePreview: 'a' }
     ]);
 
     useLayoutEffect(() => {
@@ -43,13 +43,13 @@ export default function MyPets({ navigation }) {
                                         <TitleNewPet>Novo pet</TitleNewPet>
                                         <Text>Adicione seu novo pet aqui</Text>
                                     </View>
-                                    <AntDesign.Button name="plus" color="purple" size={25} backgroundColor="transparent" />
+                                    <AntDesign name="plus" color="purple" size={25} backgroundColor="transparent" />
                                 </AddNewPetButton>
                             </View>
                         );
                     } else {
                         return (
-                            <MyPetCard name={item.name} breed={item.breed} />
+                            <MyPetCard name={item.name} breed={item.breed} imagePreview={item.imagePreview} />
                         );
                     }
                 }}

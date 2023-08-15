@@ -73,6 +73,7 @@ export default function App() {
             component={InsideHome}
             options={{
               headerShown: false,
+              gestureEnabled: false,
               contentStyle: {
                 backgroundColor: "transparent"
               }

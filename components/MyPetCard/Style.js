@@ -13,7 +13,21 @@ export const MainView = styled.TouchableOpacity`
     align-items: center;
 `
 
+export const LeftView = styled.View`
+    flex-direction: row;
+    align-items: center;
+`
+
 export const TitleText = styled.Text`
     color: purple;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    font-size: 20px;
+`
+
+export const ImagePreview = styled.Image`
+    background-color: lightgray;
+    height: 50px;
+    width: 50px;
+    margin-right: 10px;
+    border-radius: 5px;
 `

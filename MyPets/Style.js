@@ -18,10 +18,7 @@ export const AddNewPetButton = styled.TouchableOpacity`
     margin-left: 25px;
     margin-top: 25px;
     margin-bottom: 35px;
-    padding-right: 0;
-    padding-left: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px;
     background-color: white;
     border-radius: 10px;
     align-items: center;
