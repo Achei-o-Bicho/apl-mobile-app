@@ -19,11 +19,6 @@ export const SubtitleNewPet = styled.Text`
     font-size: 15px;
 `
 
-export const PetList = styled.FlatList`
-
-`
-
-
 export const AddNewPetButton = styled.TouchableOpacity`
     flex-direction: row;
     justify-content: space-between;
@@ -34,6 +29,6 @@ export const AddNewPetButton = styled.TouchableOpacity`
     align-items: center;
 `
 
-export const NewPetView = styled.View`
-    
+export const PetList = styled.FlatList`
+
 `

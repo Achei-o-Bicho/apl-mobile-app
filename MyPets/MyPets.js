@@ -2,6 +2,7 @@ import React, { useState, useLayoutEffect } from 'react';
 import { AddNewPet, MainView, AddNewPetButton, NewPetView, TitleNewPet, SubtitleNewPet, PetList } from './Style';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 
 export default function MyPets({ navigation }) {
     const [showAddHeaderIcon, setShowAddHeaderIcon] = useState(false);
@@ -13,12 +14,16 @@ export default function MyPets({ navigation }) {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: showAddHeaderIcon && (() => (
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handleNavigationCreatePet}>
                     <AntDesign.Button name="plus" color="purple" size={25} backgroundColor="transparent" />
                 </TouchableOpacity>
             ))
         });
     }, [showAddHeaderIcon]);
+
+    function handleNavigationCreatePet() {
+        navigation.navigate("CreatePet");
+    }
 
     return (
         <MainView>
@@ -30,11 +35,11 @@ export default function MyPets({ navigation }) {
                             <AddNewPet
                                 onLayout={({ nativeEvent }) => setAddPetButtonHeight(nativeEvent.layout.height)}
                             >
-                                <AddNewPetButton>
-                                    <NewPetView>
+                                <AddNewPetButton onPress={handleNavigationCreatePet}>
+                                    <View>
                                         <TitleNewPet>Novo pet</TitleNewPet>
                                         <SubtitleNewPet>Adicione seu novo pet aqui</SubtitleNewPet>
-                                    </NewPetView>
+                                    </View>
                                     <AntDesign.Button name="plus" color="purple" size={25} backgroundColor="transparent" />
                                 </AddNewPetButton>
                             </AddNewPet>
