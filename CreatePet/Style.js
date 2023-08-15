@@ -25,3 +25,19 @@ export const NewPetView = styled.View`
     margin: 50px;
     padding: 10px;    
 `
+
+export const ContinueButton = styled.TouchableOpacity`
+    background-color: purple;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    border-radius: 10px;
+`
+
+export const TextContinue = styled.Text`
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+`

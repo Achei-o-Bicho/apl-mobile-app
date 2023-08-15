@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddNewPet, MainView, NewPetView, SubtitleNewPet, TitleNewPet } from './Style';
+import { AddNewPet, MainView, NewPetView, SubtitleNewPet, TitleNewPet, ContinueButton, TextContinue } from './Style';
 import { TextInput } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -17,6 +17,7 @@ export default function CreatePet() {
                     <SubtitleNewPet>
                         Informe o nome e data de nascimento do seu pet
                     </SubtitleNewPet>
+
                     <TextInput
                         label="Nome"
                         value={name}
@@ -42,6 +43,13 @@ export default function CreatePet() {
                             />
                         )}
                     />
+
+                    <ContinueButton>
+                        <TextContinue>
+                            Continuar
+                        </TextContinue>
+                    </ContinueButton>
+
                 </NewPetView>
             </AddNewPet>
         </MainView>
