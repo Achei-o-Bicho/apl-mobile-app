@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { ContentView, MainView, TransparentView, Title, Input, EnterButton, ButtonText } from './Style';
+import { ContentView, MainView, TransparentView, Title, Input, EnterButton, ButtonText, TitleView } from './Style';
+import { ActivityIndicator } from 'react-native';
 
 export default function LoginPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     return (
         <MainView>
@@ -13,9 +15,17 @@ export default function LoginPassword({ navigation, route }) {
                 behavior="padding"
                 enabled
             >
-                <Title>
-                    Senha de acesso
-                </Title>
+                <TitleView>
+                    <Title>
+                        Senha de acesso
+                    </Title>
+                    <ActivityIndicator
+                        animating={loading}
+                        hidesWhenStopped
+                        size='small'
+                        color='white'
+                    />
+                </TitleView>
                 <Input
                     secureTextEntry
                     autoFocus
@@ -29,8 +39,11 @@ export default function LoginPassword({ navigation, route }) {
                     onPress={() => {
                         console.log(route.params.email);
                         console.log(password);
-                        navigation.popToTop();
-                        navigation.navigate("InsideHome");
+                        setLoading(true);
+                        setTimeout(() => {
+                            navigation.popToTop();
+                            navigation.navigate("InsideHome");
+                        }, 1500)
                     }}
                 >
                     <ButtonText>Entrar</ButtonText>

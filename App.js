@@ -67,14 +67,18 @@ export default function App() {
             }}
           />
         </Stack.Group>
-        <Stack.Screen
-          name="InsideHome"
-          component={InsideHome}
-          options={{ 
-            gestureEnabled: false,
-            headerShown: false
-          }}
-        />
+        <Stack.Group>
+          <Stack.Screen
+            name="InsideHome"
+            component={InsideHome}
+            options={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: "transparent"
+              }
+            }}
+          />
+        </Stack.Group>
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>

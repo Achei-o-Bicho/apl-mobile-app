@@ -46,3 +46,9 @@ export const ButtonText = styled.Text`
     font-size: 16px;
     font-weight: 700;
 `
+
+export const TitleView = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`

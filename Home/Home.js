@@ -44,7 +44,7 @@ export default function Home({ navigation }) {
                     <ButtonCreateAccount onPress={() => navigation.navigate('CreateAccount')}>
                         <ButtonText>Abrir sua conta</ButtonText>
                     </ButtonCreateAccount>
-                    <ButtonHaveAccount onPress={() => navigation.navigate("HaveAccount")}>
+                    <ButtonHaveAccount onPress={() => navigation.navigate("InsideHome")}>
                         <HaveAccountButtonText>Já tenho conta</HaveAccountButtonText>
                     </ButtonHaveAccount>
                     <Button onPress={() => navigation.navigate("AboutUs")}>
