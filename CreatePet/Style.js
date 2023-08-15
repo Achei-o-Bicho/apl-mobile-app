@@ -41,3 +41,8 @@ export const TextContinue = styled.Text`
     font-weight: bold;
     font-size: 18px;
 `
+
+export const GenderPet = styled.View`
+    border: 1px solid black;
+    margin: 10px;
+`
