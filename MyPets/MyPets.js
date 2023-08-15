@@ -1,7 +1,6 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { MainView, AddNewPetButton, TitleNewPet } from './Style';
 import { AntDesign } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
 import { View, FlatList, Text, RefreshControl } from 'react-native';
 import MyPetCard from '../components/MyPetCard/MyPetCard';
 

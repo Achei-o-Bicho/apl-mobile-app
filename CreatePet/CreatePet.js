@@ -4,8 +4,9 @@ import { TextInput, RadioButton } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text';
 import { Button, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import BackButton from '../components/BackButton/BackButton';
 
-export default function CreatePet() {
+export default function CreatePet({ navigation }) {
     const [step, setStep] = React.useState(0);
     const [name, setName] = React.useState('');
     const [birthday, setBirthday] = React.useState('');
@@ -46,6 +47,7 @@ export default function CreatePet() {
 
     return (
         <MainView>
+            <BackButton navigation={navigation} />
             <AddNewPet>
                 {step === 0 && (
                     <NewPetView>

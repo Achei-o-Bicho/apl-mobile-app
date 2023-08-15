@@ -86,7 +86,7 @@ export default function App() {
             name="CreatePet"
             component={CreatePet}
             options={{
-              title: "Criar Pet",
+              headerShown: false,
               contentStyle: {
                 backgroundColor: "white"
               }
