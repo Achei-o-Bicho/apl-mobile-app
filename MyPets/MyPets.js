@@ -10,8 +10,8 @@ export default function MyPets({ navigation }) {
     const [addPetButtonHeight, setAddPetButtonHeight] = useState(0);
     const [data, setData] = useState([
         { key: 0 },
-        { key: 1, name: "Teste", breed: "Labrador", imagePreview: 'a' },
-        { key: 2, name: "Teste", breed: "Labrador", imagePreview: 'a' }
+        { key: 1, name: "Teste", breed: "Labrador", gender: "Male", description: "Um pouco bravo mas dócil", imagePreview: 'a' },
+        { key: 2, name: "Teste", breed: "Labrador", gender: "Male", imagePreview: 'a' }
     ]);
 
     useLayoutEffect(() => {
@@ -67,7 +67,19 @@ export default function MyPets({ navigation }) {
                         );
                     } else {
                         return (
-                            <MyPetCard name={item.name} breed={item.breed} imagePreview={item.imagePreview} />
+                            <MyPetCard
+                                name={item.name}
+                                breed={item.breed}
+                                imagePreview={item.imagePreview}
+                                onPress={() => {
+                                    navigation.navigate("MyPetInfo", {
+                                        name: item.name,
+                                        breed: item.breed,
+                                        gender: item.gender,
+                                        description: item.description
+                                    });
+                                }}
+                            />
                         );
                     }
                 }}

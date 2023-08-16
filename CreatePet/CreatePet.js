@@ -20,7 +20,9 @@ export default function CreatePet({ navigation }) {
     const [titlePage, setTitlePage] = useState("");
     const [step, setStep] = useState(0);
     const [name, setName] = useState('');
+    const [nameError, setNameError] = useState(false);
     const [birthday, setBirthday] = useState('');
+    const [birthdayError, setBirthdayError] = useState(false);
     const [selectedOption, setSelectedOption] = useState('');
     const [description, setDescription] = useState('');
     const [frontalImage, setFrontalImage] = useState(null);
@@ -38,14 +40,22 @@ export default function CreatePet({ navigation }) {
                 value={name}
                 returnKeyType='next'
                 autoFocus
-                onChange={setName}
+                error={nameError}
+                onChangeText={(text) => {
+                    setNameError(false);
+                    setName(text);
+                }}
                 style={{ marginBottom: 0 }}
+                onBlur={() => {
+                    setNameError(name === '');
+                }}
             />,
             <TextInput
                 label="Data de Nascimento"
                 mode='outlined'
                 value={birthday}
                 returnKeyType='next'
+                error={birthdayError}
                 render={props => (
                     <TextInputMask
                         {...props}
@@ -53,11 +63,19 @@ export default function CreatePet({ navigation }) {
                         options={{
                             format: 'DD/MM/YYYY'
                         }}
-                        onChangeText={text => setBirthday(text)}
+                        onChangeText={text => {
+                            setBirthdayError(false);
+                            setBirthday(text);
+                        }}
                         maxLength={10}
                     />
                 )}
-                onBlur={(_) => handleStep(1)}
+                onBlur={(_) => {
+                    setBirthdayError(birthday === '');
+                    if (!nameError && !birthdayError) {
+                        handleStep(1);
+                    }
+                }}
             />
         ], [
             <RadioButton.Group
@@ -319,6 +337,11 @@ export default function CreatePet({ navigation }) {
                                 return <StepView key={index}>{input}</StepView>;
                             })}
                         </InputsView>
+                        {step === 2 && (
+                            <ContinueButton onPress={() => handleStep(3)}>
+                                <TextContinue>Pular</TextContinue>
+                            </ContinueButton>
+                        )}
                     </Animatable.View>
                 )}
 
@@ -338,7 +361,12 @@ export default function CreatePet({ navigation }) {
                 )}
 
                 {step === 4 && (
-                    <ContinueButton onPress={() => navigation.goBack()}>
+                    <ContinueButton onPress={() => {
+                        if (nameError || birthdayError) {
+                            return refScroll.current.scrollTo({ x: 0, y: 0, animated: true });
+                        }
+                        navigation.goBack();
+                    }}>
                         <TextContinue>Cadastrar</TextContinue>
                     </ContinueButton>
                 )}

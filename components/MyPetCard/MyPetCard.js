@@ -3,9 +3,9 @@ import { ImagePreview, MainView, TitleText, LeftView } from './Style';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function MyPetCard({ name, breed, imagePreview }) {
+export default function MyPetCard({ name, breed, imagePreview, onPress }) {
     return (
-        <MainView>
+        <MainView onPress={onPress}>
             <LeftView>
                 <ImagePreview source={{ uri: imagePreview }} />
                 <View>

@@ -21,10 +21,8 @@ export const TitleNewPet = styled.Text`
 export const ContinueButton = styled.TouchableOpacity`
     background-color: purple;
     height: 55px;
-    display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30px;
     border-radius: 10px;
 `
 
@@ -32,6 +30,7 @@ export const TextContinue = styled.Text`
     color: white;
     font-weight: bold;
     font-size: 18px;
+    text-transform: uppercase;
 `
 
 export const GenderView = styled.View`
@@ -73,6 +72,5 @@ export const PlusIcon = styled(AntDesign)`
     z-index: 5;
     right: -10px;
     top: -10px;
-    clip-path: circle(40%);
     ${({ hasImage }) => hasImage && ('transform: rotate(45deg);')}
 `

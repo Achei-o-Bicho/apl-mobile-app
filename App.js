@@ -10,6 +10,7 @@ import InsideHome from './InsideHome/InsideHome';
 import CreatePet from './CreatePet/CreatePet';
 import BackButton from './components/BackButton/BackButton';
 import ModalInput from './components/ModalInput/ModalInput';
+import MyPetInfo from './MyPetInfo/MyPetInfo';
 
 const Stack = createNativeStackNavigator();
 
@@ -95,14 +96,15 @@ export default function App() {
             }}
           />
         </Stack.Group>
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Group>
           <Stack.Screen
-            name="ModalInput"
-            component={ModalInput}
+            name="MyPetInfo"
+            component={MyPetInfo}
             options={{
-              headerShown: false,
+              headerTintColor: "purple",
+              title: "",
               contentStyle: {
-                backgroundColor: "transparent"
+                backgroundColor: "white"
               }
             }}
           />
