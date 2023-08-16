@@ -8,6 +8,8 @@ import HaveAccount from './HaveAccount/HaveAccount';
 import LoginPassword from './LoginPassword/LoginPassword';
 import InsideHome from './InsideHome/InsideHome';
 import CreatePet from './CreatePet/CreatePet';
+import BackButton from './components/BackButton/BackButton';
+import ModalInput from './components/ModalInput/ModalInput';
 
 const Stack = createNativeStackNavigator();
 
@@ -86,9 +88,21 @@ export default function App() {
             name="CreatePet"
             component={CreatePet}
             options={{
-              headerShown: false,
+              headerTintColor: "purple",
               contentStyle: {
                 backgroundColor: "white"
+              }
+            }}
+          />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen
+            name="ModalInput"
+            component={ModalInput}
+            options={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: "transparent"
               }
             }}
           />

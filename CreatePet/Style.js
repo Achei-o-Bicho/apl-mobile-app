@@ -1,29 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
+import { AntDesign } from '@expo/vector-icons';
 
-export const MainView = styled.SafeAreaView`
+export const MainView = styled.KeyboardAvoidingView`
     flex: 1;
 `
 
-export const AddNewPet = styled.View`
+export const AddNewPet = styled.ScrollView`
+    flex: 1;
+    padding: 30px;
 `
 
 export const TitleNewPet = styled.Text`
     color: purple;
-    font-size: 26px;
-    margin-bottom: 10px;
-    text-align: center;
-`
-
-export const SubtitleNewPet = styled.Text`
     font-size: 20px;
+    margin-bottom: 40px;
     text-align: center;
-    margin-top: 25px;
-`
-
-export const NewPetView = styled.View`
-    margin: 50px;
-    padding: 10px;    
 `
 
 export const ContinueButton = styled.TouchableOpacity`
@@ -42,7 +34,45 @@ export const TextContinue = styled.Text`
     font-size: 18px;
 `
 
+export const GenderView = styled.View`
+    flex-direction: row;
+`
+
 export const GenderPet = styled.View`
     border: 1px solid black;
-    margin: 10px;
+    flex: 1;
+`
+
+export const InputsView = styled.View`
+    margin-bottom: 50px;
+`
+
+export const StepView = styled.View`
+    margin-top: 20px;
+`
+
+export const ImagesView = styled.View`
+    flex-direction: row;
+    justify-content: center;
+`
+
+export const ImagePet = styled.Image`
+    width: 120px;
+    height: 120px;
+    border-radius: 5px;
+`
+
+export const ImagePetButton = styled.TouchableOpacity`
+    position: relative;
+    border-radius: 5px;
+    border: 1px solid purple;
+`
+
+export const PlusIcon = styled(AntDesign)`
+    position: absolute;
+    z-index: 5;
+    right: -10px;
+    top: -10px;
+    clip-path: circle(40%);
+    ${({ hasImage }) => hasImage && ('transform: rotate(45deg);')}
 `

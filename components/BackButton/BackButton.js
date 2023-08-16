@@ -16,7 +16,7 @@ export default function BackButton({ navigation }) {
             underlayColor="transparent"
             activeOpacity={0.2}
             onPress={handleBackNavigation}
-            style={{ marginLeft: 5, marginTop: 10 }}
+            style={{ marginLeft: -15}}
         />
     );
 }
