@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
 import { ContentView, MainView, TransparentView, Title, Input, EnterButton, ButtonText, TitleView } from './Style';
 import { ActivityIndicator } from 'react-native';
+import { axiosConfig } from '../config/axiosConfig';
 
 export default function LoginPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const submitLogin = () => {
+        const req = {
+            email: route.params.email,
+            password: password
+        }
+
+        axiosConfig.post('/auth/login', req)
+            .then(() => {
+                setLoading(true);
+                navigation.popToTop();
+                navigation.navigate("InsideHome");
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+    }
 
     return (
         <MainView>
@@ -36,15 +54,7 @@ export default function LoginPassword({ navigation, route }) {
                 />
                 <EnterButton
                     disabled={password === ''}
-                    onPress={() => {
-                        console.log(route.params.email);
-                        console.log(password);
-                        setLoading(true);
-                        setTimeout(() => {
-                            navigation.popToTop();
-                            navigation.navigate("InsideHome");
-                        }, 1500)
-                    }}
+                    onPress={submitLogin}
                 >
                     <ButtonText>Entrar</ButtonText>
                 </EnterButton>
