@@ -119,6 +119,7 @@ export default function CreateAccount({ navigation }) {
             ],
             userResponse: '',
             keyboardType: 'default',
+            autoValidate: true,
             validate: async function (_) {
                 return await handleSendNewUser();
             },
@@ -172,25 +173,46 @@ export default function CreateAccount({ navigation }) {
     }, [isBotTyping])
 
     async function handleValidatePhoneNumber(number) {
-        const validateNumber = await apiPost('/users/validate-number', { number });
-        const { tokenOtp } = validateNumber;
-        codeNumber = tokenOtp;
-        return codeNumber !== null;
+        try {
+            const { tokenOtp } = await apiPost('/users/validate-number', { number });
+            codeNumber = tokenOtp;
+            return codeNumber !== null;
+        } catch (error) {
+            setChat({
+                ...chat.steps[4].feedback,
+                text: "Parece que estamos enfrentando um problema com o nosso sistema, tente novamente mais tarde"
+            });
+        }
     }
 
     async function handleSendNewUser() {
-        const response = await apiPost('/users', {
-            document: chat.steps[0].userResponse,
-            name: `${chat.steps[2].userResponse} ${chat.steps[3].userResponse}`,
-            contact: {
-                emailAddress: chat.steps[1].userResponse,
-                phone: chat.steps[4].userResponse
-            },
-            password: chat.steps[5].userResponse
-        });
-        console.log(response);
-        return newUser !== null;
+        try {
+            const { newUser } = await apiPost('/users', {
+                document: chat.steps[0].userResponse,
+                name: `${chat.steps[2].userResponse} ${chat.steps[3].userResponse}`,
+                contact: {
+                    emailAddress: chat.steps[1].userResponse,
+                    phone: chat.steps[4].userResponse
+                },
+                password: chat.steps[5].userResponse
+            });
+            console.log(newUser);
+            return newUser !== null;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
     }
+
+    useEffect(() => {
+        const chatStep = chat.steps[currentStep];
+        async function validateStep() {
+            await handleValidateStep(chatStep);
+        }
+        if (chatStep.autoValidate) {
+            validateStep()
+        }
+    }, [currentStep])
 
     const chatConversation = list.map((item, index) => {
         if (item.origin === 'bot') {
@@ -235,6 +257,23 @@ export default function CreateAccount({ navigation }) {
             scrollViewRef.current.scrollToEnd({ animated: true });
         }
     };
+
+    const handleValidateStep = async (chatStep) => {
+        if (await chatStep.validate(chatStep.userResponse)) {
+            setCurrentStep((prevStep) => prevStep + 1);
+        } else {
+            setTimeout(() => {
+                setList((prevList) => [
+                    ...prevList,
+                    {
+                        origin: 'bot',
+                        text: chatStep.feedback.text,
+                    },
+                ]);
+                setBotTyping(false);
+            }, 1500);
+        }
+    }
 
     return (
         <MainView
@@ -294,23 +333,8 @@ export default function CreateAccount({ navigation }) {
                                             isSecureText: chatStep.secureTextEntry
                                         },
                                     ]);
-
                                     setBotTyping(true);
-
-                                    if (await chatStep.validate(chatStep.userResponse)) {
-                                        setCurrentStep((prevStep) => prevStep + 1);
-                                    } else {
-                                        setTimeout(() => {
-                                            setList((prevList) => [
-                                                ...prevList,
-                                                {
-                                                    origin: 'bot',
-                                                    text: chatStep.feedback.text,
-                                                },
-                                            ]);
-                                            setBotTyping(false);
-                                        }, 1500);
-                                    }
+                                    await handleValidateStep(chatStep);
                                 }}
 
                             >

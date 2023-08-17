@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ButtonText, ContentView, EnterButton, FeedbackText, Input, KeyboardView, MainView, Title, TransparentView } from './Style';
 import validator from 'validator';
+import { Platform } from 'react-native';
 
 export default function HaveAccount({ navigation }) {
     const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ export default function HaveAccount({ navigation }) {
                 onPress={() => navigation.goBack()}
             />
             <KeyboardView
-                behavior="padding"
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 enabled
             >
                 <ContentView>

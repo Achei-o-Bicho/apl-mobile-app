@@ -40,7 +40,7 @@ export default function LoginPassword({ navigation, route }) {
                 onPress={() => navigation.goBack()}
             />
             <KeyboardView
-                behavior="padding"
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 enabled
             >
                 <ContentView>
