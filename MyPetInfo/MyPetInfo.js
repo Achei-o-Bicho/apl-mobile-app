@@ -38,7 +38,7 @@ export default function MyPetInfo({ navigation, route }) {
             </ImagesView>
             <ValuesView>
                 <View
-                    style={{ flexDirection: 'row' }}
+                    style={{ flexDirection: 'row', flex: 1 }}
                 >
                     <View
                         style={{ flex: 1 }}

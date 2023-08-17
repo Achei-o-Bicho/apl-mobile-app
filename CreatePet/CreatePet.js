@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useLayoutEffect, useEffect,
 import { AddNewPet, MainView, NewPetView, TitleNewPet, ContinueButton, TextContinue, GenderView, GenderPet, InputsView, StepView, ImagesView, ImagePet, ImagePetButton, PlusIcon } from './Style';
 import { TextInput, RadioButton } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text';
-import { Text, View } from 'react-native';
+import { Text, View, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import BackButton from '../components/BackButton/BackButton';
 import * as Animatable from 'react-native-animatable';
@@ -30,6 +30,7 @@ export default function CreatePet({ navigation }) {
     const [leftImage, setLeftImage] = useState(null);
     const [rightImage, setRightImage] = useState(null);
     const [titlePageHeight, setTitlePageHeight] = useState(0);
+    const [loading, setLoading] = useState(false);
     const refScroll = useRef(null);
 
     const inputs = [
@@ -361,12 +362,26 @@ export default function CreatePet({ navigation }) {
                 )}
 
                 {step === 4 && (
-                    <ContinueButton onPress={() => {
-                        if (nameError || birthdayError) {
-                            return refScroll.current.scrollTo({ x: 0, y: 0, animated: true });
-                        }
-                        navigation.goBack();
-                    }}>
+                    <ContinueButton
+                        disabled={loading}
+                        onPress={() => {
+                            if (nameError || birthdayError) {
+                                return refScroll.current.scrollTo({ x: 0, y: 0, animated: true });
+                            }
+                            setLoading(true);
+                            setTimeout(() => {
+                                navigation.goBack();
+                            }, 1500)
+                        }}>
+                        {loading && (
+                            <ActivityIndicator
+                                animating={loading}
+                                hidesWhenStopped
+                                size='small'
+                                color='white'
+                                style={{ position: 'absolute', right: 20 }}
+                            />
+                        )}
                         <TextContinue>Cadastrar</TextContinue>
                     </ContinueButton>
                 )}
