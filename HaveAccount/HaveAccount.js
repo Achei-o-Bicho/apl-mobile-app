@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ButtonText, ContentView, EnterButton, FeedbackText, Input, MainView, Title, TransparentView } from './Style';
+import { ButtonText, ContentView, EnterButton, FeedbackText, Input, KeyboardView, MainView, Title, TransparentView } from './Style';
 import validator from 'validator';
 
 export default function HaveAccount({ navigation }) {
@@ -11,39 +11,41 @@ export default function HaveAccount({ navigation }) {
             <TransparentView
                 onPress={() => navigation.goBack()}
             />
-            <ContentView
+            <KeyboardView
                 behavior="padding"
                 enabled
             >
-                <Title>
-                    Digite seu Email
-                </Title>
-                <Input
-                    autoFocus
-                    clearButtonMode='while-editing'
-                    enterKeyHint='next'
-                    keyboardType='email-address'
-                    value={email}
-                    onChangeText={(text) => {
-                        setFeedbackMessage({ show: false })
-                        setEmail(text.toLowerCase())
-                    }}
-                />
-                {feedbackMessage.show && (
-                    <FeedbackText>{feedbackMessage.text}</FeedbackText>
-                )}
-                <EnterButton
-                    onPress={() => {
-                        if (!validator.isEmail(email)) return setFeedbackMessage({
-                            show: true,
-                            text: "Insira um email válido"
-                        });
-                        navigation.navigate('LoginPassword', { email: email })
-                    }}
-                >
-                    <ButtonText>Entrar</ButtonText>
-                </EnterButton>
-            </ContentView>
+                <ContentView>
+                    <Title>
+                        Digite seu Email
+                    </Title>
+                    <Input
+                        autoFocus
+                        clearButtonMode='while-editing'
+                        enterKeyHint='next'
+                        keyboardType='email-address'
+                        value={email}
+                        onChangeText={(text) => {
+                            setFeedbackMessage({ show: false })
+                            setEmail(text.toLowerCase())
+                        }}
+                    />
+                    {feedbackMessage.show && (
+                        <FeedbackText>{feedbackMessage.text}</FeedbackText>
+                    )}
+                    <EnterButton
+                        onPress={() => {
+                            if (!validator.isEmail(email)) return setFeedbackMessage({
+                                show: true,
+                                text: "Insira um email válido"
+                            });
+                            navigation.navigate('LoginPassword', { email: email })
+                        }}
+                    >
+                        <ButtonText>Entrar</ButtonText>
+                    </EnterButton>
+                </ContentView>
+            </KeyboardView>
         </MainView>
     );
 }

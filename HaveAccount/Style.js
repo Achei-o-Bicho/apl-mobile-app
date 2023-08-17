@@ -3,18 +3,23 @@ import styled from 'styled-components';
 
 export const MainView = styled.View`
     flex: 1;
-    justify-content: flex-end;
 `
 
 export const TransparentView = styled.TouchableOpacity`
     flex: 1;
 `
 
-export const ContentView = styled.KeyboardAvoidingView`
-    flex: 1;
+export const KeyboardView = styled.KeyboardAvoidingView`
+    flex: 1.2;
+    background-color: purple;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+`
+
+export const ContentView = styled.View`
     background-color: purple;
     padding: 20px;
-    border-radius: 10px;
 `
 
 export const Title = styled.Text`

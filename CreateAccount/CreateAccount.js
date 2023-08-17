@@ -179,7 +179,7 @@ export default function CreateAccount({ navigation }) {
     }
 
     async function handleSendNewUser() {
-        const validateNumber = apiPost('/users', {
+        const response = await apiPost('/users', {
             document: chat.steps[0].userResponse,
             name: `${chat.steps[2].userResponse} ${chat.steps[3].userResponse}`,
             contact: {
@@ -188,8 +188,8 @@ export default function CreateAccount({ navigation }) {
             },
             password: chat.steps[5].userResponse
         });
-        const { tokenOtp } = await validateNumber;
-        return tokenOtp !== null;
+        console.log(response);
+        return newUser !== null;
     }
 
     const chatConversation = list.map((item, index) => {
