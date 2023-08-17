@@ -19,7 +19,7 @@ export const apiGet = async (endpoint) => {
 
 export const apiPost = async (endpoint, data) => {
     try {
-        const response = await fetch(`${BASE_URL}/${endpoint}`, {
+        const response = await fetch(`${BASE_URL}${endpoint}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

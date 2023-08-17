@@ -18,11 +18,10 @@ export default function LoginPassword({ navigation, route }) {
             password: password
         }
 
-        apiPost('apl-back-front/auth/login', req)
+        apiPost('/auth/login', req)
             .then(() => {
                 navigation.popToTop();
                 navigation.navigate("InsideHome");
-
             })
             .catch(() => {
                 setFeedbackMessage({

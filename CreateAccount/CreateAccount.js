@@ -9,6 +9,8 @@ const passwordValidator = require('password-validator');
 import validator from 'validator';
 import { apiPost } from '../config/api';
 
+var codeNumber = null;
+
 export default function CreateAccount({ navigation }) {
     const [chat, setChat] = useState({
         steps: [{
@@ -146,7 +148,6 @@ export default function CreateAccount({ navigation }) {
     const [isFinished, setFinished] = useState(false);
     const refChatInput = useRef(null);
     const scrollViewRef = useRef(null);
-    const [codeNumber, setCodeNumber] = useState(null);
 
     useEffect(() => {
         if (currentItemIndex < chat.steps[currentStep].bot.length) {
@@ -171,14 +172,14 @@ export default function CreateAccount({ navigation }) {
     }, [isBotTyping])
 
     async function handleValidatePhoneNumber(number) {
-        const validateNumber = apiPost('users/validate-number', { number });
-        const { tokenOtp } = await validateNumber;
-        setCodeNumber(tokenOtp);
-        return tokenOtp !== null;
+        const validateNumber = await apiPost('/users/validate-number', { number });
+        const { tokenOtp } = validateNumber;
+        codeNumber = tokenOtp;
+        return codeNumber !== null;
     }
 
     async function handleSendNewUser() {
-        const validateNumber = apiPost('users/validate-number', {
+        const validateNumber = apiPost('/users', {
             document: chat.steps[0].userResponse,
             name: `${chat.steps[2].userResponse} ${chat.steps[3].userResponse}`,
             contact: {
@@ -188,7 +189,6 @@ export default function CreateAccount({ navigation }) {
             password: chat.steps[5].userResponse
         });
         const { tokenOtp } = await validateNumber;
-        setCodeNumber(tokenOtp);
         return tokenOtp !== null;
     }
 
