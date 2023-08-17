@@ -52,3 +52,8 @@ export const TitleView = styled.View`
     justify-content: space-between;
     align-items: center;
 `
+
+export const FeedbackText = styled.Text`
+    margin-top: 10px;
+    color: yellow;
+`

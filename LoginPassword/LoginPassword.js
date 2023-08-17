@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { ContentView, MainView, TransparentView, Title, Input, EnterButton, ButtonText, TitleView } from './Style';
+import { ContentView, MainView, TransparentView, Title, Input, EnterButton, ButtonText, TitleView, FeedbackText } from './Style';
 import { ActivityIndicator } from 'react-native';
 import { axiosConfig } from '../config/axiosConfig';
 
 export default function LoginPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [feedbackMessage, setFeedbackMessage] = useState({});
 
     const submitLogin = () => {
+        setLoading(true);
         const req = {
             email: route.params.email,
             password: password
@@ -15,12 +17,11 @@ export default function LoginPassword({ navigation, route }) {
 
         axiosConfig.post('/auth/login', req)
             .then(() => {
-                setLoading(true);
                 navigation.popToTop();
                 navigation.navigate("InsideHome");
             })
-            .catch((error) => {
-                console.error(error);
+            .catch((_) => {
+                setFeedbackMessage({ show: true, text: "Senha ou email inválido, verifique e tente novamente" })
             })
     }
 
@@ -52,6 +53,9 @@ export default function LoginPassword({ navigation, route }) {
                     value={password}
                     onChangeText={(text) => setPassword(text.toLowerCase())}
                 />
+                {feedbackMessage.show && (
+                    <FeedbackText>{feedbackMessage.text}</FeedbackText>
+                )}
                 <EnterButton
                     disabled={password === ''}
                     onPress={submitLogin}
