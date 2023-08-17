@@ -7,6 +7,7 @@ import { SafeAreaView, TouchableOpacity } from 'react-native';
 import { cpf } from 'cpf-cnpj-validator';
 const passwordValidator = require('password-validator');
 import validator from 'validator';
+import { apiPost } from '../config/api';
 
 export default function CreateAccount({ navigation }) {
     const [chat, setChat] = useState({
@@ -71,7 +72,11 @@ export default function CreateAccount({ navigation }) {
             validate: async function (response) {
                 const internationalPattern = /^\+\d{1,3}\s?\d{1,14}$/
                 const phoneNumberPattern = /^\d{7,15}$/
-                return phoneNumberPattern.test(response) || internationalPattern.test(response);
+                if (phoneNumberPattern.test(response) || internationalPattern.test(response)) {
+                    return await handleValidatePhoneNumber(response);
+                } else {
+                    return false;
+                }
             },
             feedback: {
                 text: 'O seu número de telefone não parecer ser válido, tente novamente seguindo este padrão: +551234567890'
@@ -83,7 +88,7 @@ export default function CreateAccount({ navigation }) {
             userResponse: '',
             keyboardType: 'phone-pad',
             validate: async function (response) {
-                return response === '123456';
+                return response === codeNumber;
             },
             feedback: {
                 text: 'O código está incorreto, verifique e tente novamente'
@@ -108,9 +113,20 @@ export default function CreateAccount({ navigation }) {
             secureTextEntry: true
         }, {
             bot: [
+                'Só um momento que estamos processando suas informações',
+            ],
+            userResponse: '',
+            keyboardType: 'default',
+            validate: async function (_) {
+                return await handleSendNewUser();
+            },
+            feedback: {
+                text: 'Parece que algo não deu certo, tente novamente mais tarde'
+            }
+        }, {
+            bot: [
                 'Muito obrigado!',
-                'Recebemos as suas informações e estamos processando',
-                'Pode ser que demore um pouco, te avisaremos via WhatsApp'
+                'Agora é só concluir e entrar com a sua nova conta'
             ],
             userResponse: '',
             keyboardType: 'default',
@@ -130,6 +146,7 @@ export default function CreateAccount({ navigation }) {
     const [isFinished, setFinished] = useState(false);
     const refChatInput = useRef(null);
     const scrollViewRef = useRef(null);
+    const [codeNumber, setCodeNumber] = useState(null);
 
     useEffect(() => {
         if (currentItemIndex < chat.steps[currentStep].bot.length) {
@@ -153,6 +170,28 @@ export default function CreateAccount({ navigation }) {
         if (!isBotTyping && !isFinished) refChatInput.current.focus();
     }, [isBotTyping])
 
+    async function handleValidatePhoneNumber(number) {
+        const validateNumber = apiPost('users/validate-number', { number });
+        const { tokenOtp } = await validateNumber;
+        setCodeNumber(tokenOtp);
+        return tokenOtp !== null;
+    }
+
+    async function handleSendNewUser() {
+        const validateNumber = apiPost('users/validate-number', {
+            document: chat.steps[0].userResponse,
+            name: `${chat.steps[2].userResponse} ${chat.steps[3].userResponse}`,
+            contact: {
+                emailAddress: chat.steps[1].userResponse,
+                phone: chat.steps[4].userResponse
+            },
+            password: chat.steps[5].userResponse
+        });
+        const { tokenOtp } = await validateNumber;
+        setCodeNumber(tokenOtp);
+        return tokenOtp !== null;
+    }
+
     const chatConversation = list.map((item, index) => {
         if (item.origin === 'bot') {
             return (
@@ -165,13 +204,13 @@ export default function CreateAccount({ navigation }) {
                 <UserCell key={index}>
                     <CellText>
                         {
-                        item.isSecureText ?
-                            item.text
-                                .split('')
-                                .map(_ => '*')
-                                .join('')
+                            item.isSecureText ?
+                                item.text
+                                    .split('')
+                                    .map(_ => '*')
+                                    .join('')
                                 :
-                            item.text
+                                item.text
                         }
                     </CellText >
                 </UserCell >
@@ -280,7 +319,7 @@ export default function CreateAccount({ navigation }) {
                         </>
                     ) : (
                         <FinishButton
-                            onPress={() => navigation.goBack('Home')}
+                            onPress={() => navigation.goBack()}
                         >
                             <ButtonText>Concluir</ButtonText>
                         </FinishButton>
