@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ContentView, MainView, TransparentView, Title, Input, EnterButton, ButtonText, TitleView, FeedbackText } from './Style';
 import { ActivityIndicator } from 'react-native';
-import { axiosConfig } from '../config/axiosConfig';
+import { apiPost } from '../config/api';
 
 export default function LoginPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
