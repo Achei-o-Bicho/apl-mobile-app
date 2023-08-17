@@ -23,7 +23,13 @@ export default function LoginPassword({ navigation, route }) {
 
             })
             .catch(() => {
-                setFeedbackMessage({ show: true, text: "Senha ou email inválido, verifique e tente novamente" })
+                setFeedbackMessage({
+                    show: true,
+                    text: "Senha ou email inválido, verifique e tente novamente"
+                })
+            })
+            .finally(() => {
+                setLoading(false);
             })
     }
 
