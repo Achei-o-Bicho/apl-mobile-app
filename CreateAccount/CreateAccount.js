@@ -12,6 +12,15 @@ import { apiPost } from '../config/api';
 var codeNumber = null;
 
 export default function CreateAccount({ navigation }) {
+    const [list, setList] = useState([]);
+    const [currentItemIndex, setCurrentItemIndex] = useState(0);
+    const [isBotTyping, setBotTyping] = useState(true);
+    const [currentStep, setCurrentStep] = useState(0);
+    const [bottomViewHeight, setBottomViewHeight] = useState(0);
+    const [isFinished, setFinished] = useState(false);
+    const refChatInput = useRef(null);
+    const scrollViewRef = useRef(null);
+
     const [chat, setChat] = useState({
         steps: [{
             bot: [
@@ -115,14 +124,11 @@ export default function CreateAccount({ navigation }) {
             secureTextEntry: true
         }, {
             bot: [
-                'Só um momento que estamos processando suas informações',
+                'Só um momento enquanto processamos suas informações...',
             ],
             userResponse: '',
             keyboardType: 'default',
             autoValidate: true,
-            validate: async function (_) {
-                return await handleSendNewUser();
-            },
             feedback: {
                 text: 'Parece que algo não deu certo, tente novamente mais tarde'
             }
@@ -141,36 +147,33 @@ export default function CreateAccount({ navigation }) {
             }
         }]
     })
-    const [list, setList] = useState([]);
-    const [currentItemIndex, setCurrentItemIndex] = useState(0);
-    const [isBotTyping, setBotTyping] = useState(true);
-    const [currentStep, setCurrentStep] = useState(0);
-    const [bottomViewHeight, setBottomViewHeight] = useState(0);
-    const [isFinished, setFinished] = useState(false);
-    const refChatInput = useRef(null);
-    const scrollViewRef = useRef(null);
 
-    useEffect(() => {
-        if (currentItemIndex < chat.steps[currentStep].bot.length) {
-            const timeout = setTimeout(() => {
-                setList((prevList) => [...prevList, { text: chat.steps[currentStep].bot[currentItemIndex], origin: 'bot' }]);
-                setCurrentItemIndex((prevIndex) => prevIndex + 1);
-            }, 1500);
-
-            return () => clearTimeout(timeout);
-        } else {
-            setBotTyping(false);
+    const clearTextInput = () => {
+        if (refChatInput.current) {
+            refChatInput.current.clear();
         }
-    }, [currentItemIndex]);
+    }
 
-    useEffect(() => {
+    const scrollToBottom = () => {
+        if (scrollViewRef.current) {
+            scrollViewRef.current.scrollToEnd({ animated: true });
+        }
+    };
+
+    const handleNextStep = () => {
+        setCurrentStep((prevStep) => prevStep + 1);
         setCurrentItemIndex(0);
-        setFinished(currentStep >= (chat.steps.length - 1));
-    }, [currentStep])
+    }
 
-    useEffect(() => {
-        if (!isBotTyping && !isFinished) refChatInput.current.focus();
-    }, [isBotTyping])
+    const handleValidateStep = async (chatStep) => {
+        if (chatStep.validate || !chatStep.autoValidate) {
+            if (await chatStep.validate(chatStep.userResponse)) {
+                return handleNextStep();
+            } else {
+                return handleBotFeedback(chatStep);
+            }
+        }
+    }
 
     async function handleValidatePhoneNumber(number) {
         try {
@@ -187,93 +190,71 @@ export default function CreateAccount({ navigation }) {
 
     async function handleSendNewUser() {
         try {
-            const { newUser } = await apiPost('/users', {
-                document: chat.steps[0].userResponse,
-                name: `${chat.steps[2].userResponse} ${chat.steps[3].userResponse}`,
+            const data = {
+                document: await chat.steps[0].userResponse,
+                name: `${await chat.steps[2].userResponse} ${await chat.steps[3].userResponse}`,
                 contact: {
-                    emailAddress: chat.steps[1].userResponse,
-                    phone: chat.steps[4].userResponse
+                    emailAddress: await chat.steps[1].userResponse,
+                    phone: await chat.steps[4].userResponse
                 },
-                password: chat.steps[5].userResponse
-            });
-            console.log(newUser);
+                password: await chat.steps[5].userResponse
+            }
+            const { newUser } = await apiPost('/users', data);
             return newUser !== null;
         } catch (error) {
-            console.log(error);
             return false;
         }
     }
 
+    function handleBotFeedback(chatStep) {
+        return setTimeout(() => {
+            setList((prevList) => [
+                ...prevList,
+                {
+                    origin: 'bot',
+                    text: chatStep.feedback.text,
+                },
+            ]);
+            setBotTyping(false);
+        }, 1500);
+    }
+
+    useEffect(() => {
+        if (currentItemIndex < chat.steps[currentStep].bot.length) {
+            const timeout = setTimeout(() => {
+                setList((prevList) => [...prevList, { text: chat.steps[currentStep].bot[currentItemIndex], origin: 'bot' }]);
+                setCurrentItemIndex((prevIndex) => prevIndex + 1);
+            }, 1500);
+
+            return () => clearTimeout(timeout);
+        } else {
+            setBotTyping(false);
+        }
+    }, [currentItemIndex]);
+
     useEffect(() => {
         const chatStep = chat.steps[currentStep];
-        async function validateStep() {
-            await handleValidateStep(chatStep);
+        if (currentStep === 7) {
+            async function validateStep() {
+                return await handleSendNewUser();
+            }
+            if (chatStep.autoValidate) {
+                setBotTyping(true);
+                const sendedUser = validateStep();
+                if (sendedUser) {
+                    return handleNextStep();
+                } else {
+                    return handleBotFeedback(chatStep);
+                }
+            }
         }
-        if (chatStep.autoValidate) {
-            validateStep()
-        }
+        setFinished(currentStep >= (chat.steps.length - 1));
+        console.log(list)
     }, [currentStep])
 
-    const chatConversation = list.map((item, index) => {
-        if (item.origin === 'bot') {
-            return (
-                <BotCell key={index}>
-                    <CellText>{item.text}</CellText>
-                </BotCell>
-            )
-        } else {
-            return (
-                <UserCell key={index}>
-                    <CellText>
-                        {
-                            item.isSecureText ?
-                                item.text
-                                    .split('')
-                                    .map(_ => '*')
-                                    .join('')
-                                :
-                                item.text
-                        }
-                    </CellText >
-                </UserCell >
-            )
-        }
-    })
-
-    const showTypingGIF = isBotTyping && (
-        <ViewGIF>
-            <TypingAnimation color="pink" time={1000} count={3} />
-        </ViewGIF>
-    )
-
-    const clearTextInput = () => {
-        if (refChatInput.current) {
-            refChatInput.current.clear();
-        }
-    }
-
-    const scrollToBottom = () => {
-        if (scrollViewRef.current) {
-            scrollViewRef.current.scrollToEnd({ animated: true });
-        }
-    };
-
-    const handleValidateStep = async (chatStep) => {
-        if (await chatStep.validate(chatStep.userResponse)) {
-            setCurrentStep((prevStep) => prevStep + 1);
-        } else {
-            setTimeout(() => {
-                setList((prevList) => [
-                    ...prevList,
-                    {
-                        origin: 'bot',
-                        text: chatStep.feedback.text,
-                    },
-                ]);
-                setBotTyping(false);
-            }, 1500);
-        }
-    }
+    useEffect(() => {
+        if (!isBotTyping && !isFinished) refChatInput.current.focus();
+    }, [isBotTyping])
 
     return (
         <MainView
@@ -291,8 +272,28 @@ export default function CreateAccount({ navigation }) {
                         paddingBottom: isBotTyping ? 20 : 10
                     }}
                 >
-                    {chatConversation}
-                    {showTypingGIF}
+                    {list.map((item, index) => item.origin === 'bot' ? (
+                        <BotCell key={index}>
+                            <CellText>{item.text}</CellText>
+                        </BotCell>
+                    ) : (
+                        <UserCell key={index}>
+                            <CellText>{
+                                item.isSecureText ?
+                                    item.text
+                                        .split('')
+                                        .map(_ => '*')
+                                        .join('')
+                                    :
+                                    item.text
+                            }</CellText >
+                        </UserCell >
+                    ))}
+                    {isBotTyping && (
+                        <ViewGIF>
+                            <TypingAnimation color="pink" time={1000} count={3} />
+                        </ViewGIF>
+                    )}
                 </ChatView>
                 <BottomView
                     onLayout={(event) => {
