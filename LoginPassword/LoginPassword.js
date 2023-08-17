@@ -59,7 +59,7 @@ export default function LoginPassword({ navigation, route }) {
                     <FeedbackText>{feedbackMessage.text}</FeedbackText>
                 )}
                 <EnterButton
-                    disabled={password === ''}
+                    disabled={password === '' || loading}
                     onPress={submitLogin}
                 >
                     <ButtonText>Entrar</ButtonText>
