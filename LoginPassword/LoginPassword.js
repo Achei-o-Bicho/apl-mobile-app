@@ -8,7 +8,7 @@ export default function LoginPassword({ navigation, route }) {
     const [loading, setLoading] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState({});
 
-    const submitLogin = () => {
+    const submitLogin = async () => {
         setLoading(true);
 
         const headers = {
@@ -21,7 +21,7 @@ export default function LoginPassword({ navigation, route }) {
             password: password
         }
 
-        fetch('https://witty-cycles-tie.loca.lt//apl-back-front/auth/login', {
+        fetch('https://witty-cycles-tie.loca.lt/apl-back-front/auth/login', {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(req)
@@ -36,8 +36,15 @@ export default function LoginPassword({ navigation, route }) {
                 navigation.popToTop();
                 navigation.navigate("InsideHome");
             })
-            .catch(() => {
-                setFeedbackMessage({ show: true, text: "Senha ou email inválido, verifique e tente novamente" })
+            .catch((error) => {
+                console.log(error)
+                setFeedbackMessage({
+                    show: true,
+                    text: "Senha ou email inválido, verifique e tente novamente"
+                })
+            })
+            .finally(() => {
+                setLoading(false);
             })
     }
 
@@ -73,7 +80,7 @@ export default function LoginPassword({ navigation, route }) {
                     <FeedbackText>{feedbackMessage.text}</FeedbackText>
                 )}
                 <EnterButton
-                    disabled={password === ''}
+                    disabled={password === '' || loading}
                     onPress={submitLogin}
                 >
                     <ButtonText>Entrar</ButtonText>
