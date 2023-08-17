@@ -10,17 +10,33 @@ export default function LoginPassword({ navigation, route }) {
 
     const submitLogin = () => {
         setLoading(true);
+
+        const headers = {
+            'Bypass-Tunnel-Reminder': 'Bypass-Tunnel-Reminder',
+            'Content-Type': 'application/json'
+        }
+
         const req = {
             email: route.params.email,
             password: password
         }
 
-        axiosConfig.post('/auth/login', req)
+        fetch('https://witty-cycles-tie.loca.lt//apl-back-front/auth/login', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(req)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro de requisição: ' + response.status);
+                }
+                return response.json();
+            })
             .then(() => {
                 navigation.popToTop();
                 navigation.navigate("InsideHome");
             })
-            .catch((_) => {
+            .catch(() => {
                 setFeedbackMessage({ show: true, text: "Senha ou email inválido, verifique e tente novamente" })
             })
     }
