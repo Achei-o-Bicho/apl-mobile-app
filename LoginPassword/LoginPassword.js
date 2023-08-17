@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ContentView, MainView, TransparentView, Title, Input, EnterButton, ButtonText, TitleView, FeedbackText } from './Style';
 import { ActivityIndicator } from 'react-native';
-import { axiosConfig } from '../config/axiosConfig';
+import { apiPost } from '../config/api';
 
 export default function LoginPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
@@ -11,30 +11,16 @@ export default function LoginPassword({ navigation, route }) {
     const submitLogin = () => {
         setLoading(true);
 
-        const headers = {
-            'Bypass-Tunnel-Reminder': 'Bypass-Tunnel-Reminder',
-            'Content-Type': 'application/json'
-        }
-
         const req = {
             email: route.params.email,
             password: password
         }
 
-        fetch('https://witty-cycles-tie.loca.lt//apl-back-front/auth/login', {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(req)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro de requisição: ' + response.status);
-                }
-                return response.json();
-            })
+        apiPost('apl-back-front/auth/login', req)
             .then(() => {
                 navigation.popToTop();
                 navigation.navigate("InsideHome");
+
             })
             .catch(() => {
                 setFeedbackMessage({ show: true, text: "Senha ou email inválido, verifique e tente novamente" })
