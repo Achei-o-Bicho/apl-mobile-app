@@ -7,7 +7,7 @@ export const MainView = styled.View`
 `
 
 export const TransparentView = styled.TouchableOpacity`
-    flex: 1.2;
+    flex: 1;
 `
 
 export const ContentView = styled.KeyboardAvoidingView`
