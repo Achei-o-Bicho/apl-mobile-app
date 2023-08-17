@@ -8,43 +8,22 @@ export default function LoginPassword({ navigation, route }) {
     const [loading, setLoading] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState({});
 
-    const submitLogin = async () => {
+    const submitLogin = () => {
         setLoading(true);
-
-        const headers = {
-            'Bypass-Tunnel-Reminder': 'Bypass-Tunnel-Reminder',
-            'Content-Type': 'application/json'
-        }
 
         const req = {
             email: route.params.email,
             password: password
         }
 
-        fetch('https://witty-cycles-tie.loca.lt/apl-back-front/auth/login', {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(req)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro de requisição: ' + response.status);
-                }
-                return response.json();
-            })
+        apiPost('apl-back-front/auth/login', req)
             .then(() => {
                 navigation.popToTop();
                 navigation.navigate("InsideHome");
+
             })
-            .catch((error) => {
-                console.log(error)
-                setFeedbackMessage({
-                    show: true,
-                    text: "Senha ou email inválido, verifique e tente novamente"
-                })
-            })
-            .finally(() => {
-                setLoading(false);
+            .catch(() => {
+                setFeedbackMessage({ show: true, text: "Senha ou email inválido, verifique e tente novamente" })
             })
     }
 
