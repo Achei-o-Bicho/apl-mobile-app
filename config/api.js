@@ -41,7 +41,12 @@ export const apiPost = async (endpoint, data, timeout = 5000) => {
         clearTimeout(timeoutId);
 
         if (!response.ok) {
-            throw new Error('Erro de requisição');
+            throw new Error(`
+Erro de requisição
+URL: ${response.url}
+StatusCode: ${response.status}
+ResponseBody: ${response.body}
+            `);
         }
 
         const responseData = await response.json();
