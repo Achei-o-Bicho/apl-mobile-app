@@ -7,7 +7,7 @@ export const apiGet = async (endpoint, timeout = 5000) => {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-        const response = await fetch(`${BASE_URL}/${endpoint}`, {
+        const response = await fetch(`${BASE_URL}${endpoint}`, {
             signal: controller.signal
         });
 
@@ -29,7 +29,7 @@ export const apiPost = async (endpoint, data, timeout = 5000) => {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-        const response = await fetch(`${BASE_URL}/${endpoint}`, {
+        const response = await fetch(`${BASE_URL}${endpoint}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
