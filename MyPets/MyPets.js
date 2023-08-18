@@ -38,7 +38,7 @@ export default function MyPets({ navigation }) {
         try {
             const { pets } = await apiGet(`/users/pets/${userId}`);
             setUserPets(pets);
-            const [addElement, content] = data;
+            const [addElement, _] = data;
             setData([addElement, ...pets])
         } catch (error) {
             console.log(error)

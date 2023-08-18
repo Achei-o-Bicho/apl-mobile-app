@@ -24,16 +24,21 @@ export const apiGet = async (endpoint, timeout = 5000) => {
     }
 };
 
-export const apiPost = async (endpoint, data, timeout = 5000) => {
+export const apiPost = async (
+    endpoint,
+    data,
+    headers = {
+        'Content-Type': 'application/json',
+    },
+    timeout = 5000
+) => {
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
         const response = await fetch(`${BASE_URL}${endpoint}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: headers,
             body: JSON.stringify(data),
             signal: controller.signal
         });
@@ -52,6 +57,7 @@ ResponseBody: ${response.body}
         const responseData = await response.json();
         return responseData;
     } catch (error) {
+        console.log(error);
         throw error;
     }
 };

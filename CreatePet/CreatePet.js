@@ -21,7 +21,7 @@ export default function CreatePet({ navigation }) {
     const [birthday, setBirthday] = useState('');
     const [birthdayError, setBirthdayError] = useState(false);
     const [selectedOption, setSelectedOption] = useState('');
-    const [description, setDescription] = useState('');
+    const [description, setDescription] = useState(null);
     const [frontalImage, setFrontalImage] = useState(null);
     const [profileImage, setProfileImage] = useState(null);
     const [leftImage, setLeftImage] = useState(null);
@@ -31,46 +31,6 @@ export default function CreatePet({ navigation }) {
     const refScroll = useRef(null);
 
     const { userId } = useUserContext();
-
-    const submitCreatePet = () => {
-        if (nameError || birthdayError) {
-            return refScroll.current.scrollTo({ x: 0, y: 0, animated: true });
-        }
-
-        setLoading(true);
-
-        const req = {
-            name: name,
-            gender: selectedOption,
-            birthday: birthday,
-            userId: userId
-        };
-
-        apiPost('pets', req)
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    };  
-
-    const submitSendImage = (imagePath) => {
-        const formData = new FormData();
-        formData.append('image', {
-            uri: imagePath,
-            type: 'image/jpeg',
-            name: 'image.jpg',
-          });
-
-        apiPost(`pets/${userId}/save-image/`, formData)
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
 
     const inputs = [
         [
@@ -131,13 +91,13 @@ export default function CreatePet({ navigation }) {
                     >
                         <RadioButton.Item
                             label="Macho"
-                            value="male"
+                            value="Male"
                         />
                     </GenderPet>
                     <GenderPet>
                         <RadioButton.Item
                             label="Fêmea"
-                            value="female"
+                            value="Female"
                         />
                     </GenderPet>
                 </GenderView>
@@ -241,6 +201,58 @@ export default function CreatePet({ navigation }) {
         ]
     ]
 
+    const handleInputErrors = () => {
+        if (nameError || birthdayError) {
+            return refScroll.current.scrollTo({ x: 0, y: 0, animated: true });
+        }
+    }
+
+    const submitCreatePet = async () => {
+        handleInputErrors();
+        setLoading(true);
+        try {
+            const data = {
+                name: name,
+                gender: selectedOption,
+                birthday: "2022-07-25",
+                userId: userId,
+                description: description
+            }
+            console.log(data);
+            const response = await apiPost('/pets', data);
+            console.log(response);
+            await handleSendAllImages(response._id);
+        } catch (error) {
+            console.log(error);
+        }
+        setLoading(false);
+    };
+
+    const handleSendAllImages = async (petId) => {
+        await submitSendImage(profileImage, "profile", petId);
+        await submitSendImage(frontalImage, "frontal", petId);
+        await submitSendImage(leftImage, "left", petId);
+        await submitSendImage(rightImage, "right", petId);
+    }
+
+    const submitSendImage = async (imagePath, position, petId) => {
+        const formData = new FormData();
+        formData.append('image', {
+            uri: imagePath,
+            type: 'image/jpeg',
+            name: `${position}.jpg`,
+        });
+        try {
+            console.log(formData)
+            const response = await apiPost(`/pets/${petId}/save-image`, formData, {
+                "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+            });
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const handleStep = (step) => {
         setStep(step);
     };
@@ -267,7 +279,6 @@ export default function CreatePet({ navigation }) {
 
         if (!imageResult.canceled) {
             const imageURI = imageResult.assets[0].uri
-            submitSendImage(imageURI);
             switch (position) {
                 case "frontal":
                     return setFrontalImage(imageURI);
