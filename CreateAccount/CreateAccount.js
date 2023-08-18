@@ -194,7 +194,7 @@ export default function CreateAccount({ navigation }) {
                 document: await chat.steps[0].userResponse,
                 name: `${await chat.steps[2].userResponse} ${await chat.steps[3].userResponse}`,
                 contact: {
-                    emailAddress: await chat.steps[1].userResponse,
+                    emailAddress: (await chat.steps[1].userResponse).toLowerCase(),
                     phone: await chat.steps[4].userResponse
                 },
                 password: await chat.steps[5].userResponse
@@ -233,23 +233,19 @@ export default function CreateAccount({ navigation }) {
     }, [currentItemIndex]);
 
     useEffect(() => {
+        setFinished(currentStep >= (chat.steps.length - 1));
         const chatStep = chat.steps[currentStep];
         if (currentStep === 7) {
             async function validateStep() {
-                return await handleSendNewUser();
-            }
-            if (chatStep.autoValidate) {
                 setBotTyping(true);
-                const sendedUser = validateStep();
-                if (sendedUser) {
+                if (await handleSendNewUser()) {
                     return handleNextStep();
                 } else {
                     return handleBotFeedback(chatStep);
                 }
             }
+            if (chatStep.autoValidate) validateStep();
         }
-        setFinished(currentStep >= (chat.steps.length - 1));
-        console.log(list)
     }, [currentStep])
 
     useEffect(() => {
