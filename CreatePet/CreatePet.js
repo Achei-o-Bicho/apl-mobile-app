@@ -8,7 +8,6 @@ import BackButton from '../components/BackButton/BackButton';
 import * as Animatable from 'react-native-animatable';
 import { apiPost } from '../config/api';
 import { useUserContext } from '../contexts/UserContext';
-import fs from 'fs';
 AnimatableTitleNewPet = Animatable.createAnimatableComponent(TitleNewPet);
 AnimatablePlusIcon = Animatable.createAnimatableComponent(PlusIcon);
 
@@ -63,7 +62,11 @@ export default function CreatePet({ navigation }) {
 
     const submitSendImage = (imagePath) => {
         const formData = new FormData();
-        formData.append('image', fs.createReadStream(imagePath));
+        formData.append('image', {
+            uri: imagePath,
+            type: 'image/jpeg',
+            name: 'image.jpg',
+          });
 
         apiPost(`pets/${userId}/save-image/`, formData)
         .then((response) => {
