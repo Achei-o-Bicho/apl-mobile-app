@@ -6,6 +6,9 @@ import { Text, View, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import BackButton from '../components/BackButton/BackButton';
 import * as Animatable from 'react-native-animatable';
+import { apiPost } from '../config/api';
+import { useUserContext } from '../contexts/UserContext';
+import fs from 'fs';
 AnimatableTitleNewPet = Animatable.createAnimatableComponent(TitleNewPet);
 AnimatablePlusIcon = Animatable.createAnimatableComponent(PlusIcon);
 
@@ -27,6 +30,44 @@ export default function CreatePet({ navigation }) {
     const [titlePageHeight, setTitlePageHeight] = useState(0);
     const [loading, setLoading] = useState(false);
     const refScroll = useRef(null);
+
+    const { userId } = useUserContext();
+
+    const submitCreatePet = () => {
+        if (nameError || birthdayError) {
+            return refScroll.current.scrollTo({ x: 0, y: 0, animated: true });
+        }
+
+        setLoading(true);
+
+        const req = {
+            name: name,
+            gender: selectedOption,
+            birthday: birthday,
+            userId: userId
+        };
+
+        apiPost('pets', req)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    };  
+
+    const submitSendImage = (imagePath) => {
+        const formData = new FormData();
+        formData.append('image', fs.createReadStream(imagePath));
+
+        apiPost(`pets/${userId}/save-image/`, formData)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
 
     const inputs = [
         [
@@ -223,6 +264,7 @@ export default function CreatePet({ navigation }) {
 
         if (!imageResult.canceled) {
             const imageURI = imageResult.assets[0].uri
+            submitSendImage(imageURI);
             switch (position) {
                 case "frontal":
                     return setFrontalImage(imageURI);
@@ -359,15 +401,7 @@ export default function CreatePet({ navigation }) {
                 {step === 4 && (
                     <ContinueButton
                         disabled={loading}
-                        onPress={() => {
-                            if (nameError || birthdayError) {
-                                return refScroll.current.scrollTo({ x: 0, y: 0, animated: true });
-                            }
-                            setLoading(true);
-                            setTimeout(() => {
-                                navigation.goBack();
-                            }, 1500)
-                        }}>
+                        onPress={submitCreatePet}>
                         {loading && (
                             <ActivityIndicator
                                 animating={loading}
