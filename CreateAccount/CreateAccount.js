@@ -197,7 +197,7 @@ export default function CreateAccount({ navigation }) {
                     emailAddress: (await chat.steps[1].userResponse).toLowerCase(),
                     phone: await chat.steps[4].userResponse
                 },
-                password: await chat.steps[5].userResponse
+                password: await chat.steps[6].userResponse
             }
             const { newUser } = await apiPost('/users', data);
             return newUser !== null;
