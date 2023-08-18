@@ -12,30 +12,24 @@ export default function LoginPassword({ navigation, route }) {
     const [feedbackMessage, setFeedbackMessage] = useState({});
     const { setUserId } = useUserContext();
 
-    const submitLogin = () => {
+    const submitLogin = async () => {
         setLoading(true);
-
-        const req = {
-            email: route.params.email,
-            password: password
+        try {
+            const { data } = await apiPost('/auth/login', {
+                email: route.params.email,
+                password: password
+            });
+            setUserId(data.userId);
+            navigation.popToTop();
+            navigation.navigate("InsideHome");
+        } catch (error) {
+            console.log(error)
+            setFeedbackMessage({
+                show: true,
+                text: "Senha ou email inválido, verifique e tente novamente"
+            })
         }
-
-        apiPost('/auth/login', req)
-            .then((response) => {
-                setUserId(response.userId);
-                navigation.popToTop();
-                navigation.navigate("InsideHome");
-            })
-            .catch((error) => {
-                console.log(error)
-                setFeedbackMessage({
-                    show: true,
-                    text: "Senha ou email inválido, verifique e tente novamente"
-                })
-            })
-            .finally(() => {
-                setLoading(false);
-            })
+        setLoading(false);
     }
 
     return (

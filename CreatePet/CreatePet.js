@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useLayoutEffect, useEffect, useRef } from 'react';
-import { AddNewPet, MainView, NewPetView, TitleNewPet, ContinueButton, TextContinue, GenderView, GenderPet, InputsView, StepView, ImagesView, ImagePet, ImagePetButton, PlusIcon } from './Style';
+import React, { useState, useLayoutEffect, useEffect, useRef } from 'react';
+import { AddNewPet, MainView, TitleNewPet, ContinueButton, TextContinue, GenderView, GenderPet, InputsView, StepView, ImagesView, ImagePet, ImagePetButton, PlusIcon } from './Style';
 import { TextInput, RadioButton } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text';
 import { Text, View, ActivityIndicator } from 'react-native';
@@ -9,11 +9,6 @@ import * as Animatable from 'react-native-animatable';
 AnimatableTitleNewPet = Animatable.createAnimatableComponent(TitleNewPet);
 AnimatablePlusIcon = Animatable.createAnimatableComponent(PlusIcon);
 
-const InputContext = createContext();
-
-export const useInputContext = () => {
-    return useContext(InputContext);
-};
 
 export default function CreatePet({ navigation }) {
     const [startForm, setStartForm] = useState(false);

@@ -2,13 +2,16 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyPets from '../../MyPets/MyPets';
 import Profile from '../../Profile/Profile';
-import { Ionicons, FontAwesome, AntDesign } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { useUserContext } from '../../contexts/UserContext';
 
 const Tab = createBottomTabNavigator();
 const ActiveTintColor = "purple"
 const IconSize = 32
 
 export default function TabBar() {
+    const { userId } = useUserContext();
+
     return (
         <Tab.Navigator>
             <Tab.Screen
@@ -27,8 +30,8 @@ export default function TabBar() {
                 name="Profile"
                 component={Profile}
                 options={() => ({
+                    title: userId,
                     tabBarActiveTintColor: ActiveTintColor,
-                    title: "Perfil",
                     headerTintColor: ActiveTintColor,
                     tabBarIcon: ({ color }) => {
                         return <FontAwesome name="user" size={IconSize} color={color} />
