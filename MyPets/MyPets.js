@@ -1,18 +1,17 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import { MainView, AddNewPetButton, TitleNewPet } from './Style';
 import { AntDesign } from '@expo/vector-icons';
 import { View, FlatList, Text, RefreshControl } from 'react-native';
+import { useUserContext } from '../contexts/UserContext';
 import MyPetCard from '../components/MyPetCard/MyPetCard';
+import { apiGet } from '../config/api';
 
 export default function MyPets({ navigation }) {
     const [refreshing, setRefreshing] = useState(false);
     const [showAddHeaderIcon, setShowAddHeaderIcon] = useState(false);
     const [addPetButtonHeight, setAddPetButtonHeight] = useState(0);
-    const [data, setData] = useState([
-        { key: 0 },
-        { key: 1, name: "Teste", breed: "Labrador", gender: "Male", description: "Um pouco bravo mas dócil", imagePreview: 'a' },
-        { key: 2, name: "Teste", breed: "Labrador", gender: "Male", imagePreview: 'a' }
-    ]);
+    const { userId, userPets, setUserPets } = useUserContext();
+    const [data, setData] = useState([{ key: 0 }, userPets]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -34,13 +33,22 @@ export default function MyPets({ navigation }) {
         navigation.navigate("CreatePet");
     }
 
-    function handleFetchData() {
+    async function handleFetchData() {
         setRefreshing(true);
-        setTimeout(() => {
-            setData((prevList) => [...prevList, { key: prevList.length + 1, name: "Teste", breed: "Labrador", imagePreview: 'a' }])
-            setRefreshing(false);
-        }, 1500)
+        try {
+            const { pets } = await apiGet(`/users/pets/${userId}`);
+            setUserPets(pets);
+            const [addElement, content] = data;
+            setData([addElement, ...pets])
+        } catch (error) {
+            console.log(error)
+        }
+        setRefreshing(false);
     }
+
+    useEffect(() => {
+        handleFetchData();
+    }, [])
 
     return (
         <MainView>

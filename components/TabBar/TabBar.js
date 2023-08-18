@@ -10,7 +10,7 @@ const ActiveTintColor = "purple"
 const IconSize = 32
 
 export default function TabBar() {
-    const { userId } = useUserContext();
+    const { userName } = useUserContext();
 
     return (
         <Tab.Navigator>
@@ -30,7 +30,7 @@ export default function TabBar() {
                 name="Profile"
                 component={Profile}
                 options={() => ({
-                    title: userId,
+                    title: userName,
                     tabBarActiveTintColor: ActiveTintColor,
                     headerTintColor: ActiveTintColor,
                     tabBarIcon: ({ color }) => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ContentView, MainView, TransparentView, Title, Input, EnterButton, ButtonText, TitleView, FeedbackText, KeyboardView } from './Style';
 import { ActivityIndicator } from 'react-native';
-import { apiPost } from '../config/api';
+import { apiGet, apiPost } from '../config/api';
 import BackButton from '../components/BackButton/BackButton';
 import { View } from 'react-native';
 import { useUserContext } from '../contexts/UserContext';
@@ -10,7 +10,7 @@ export default function LoginPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState({});
-    const { setUserId } = useUserContext();
+    const { setUserId, setUserName, setUserPets } = useUserContext();
 
     const submitLogin = async () => {
         setLoading(true);
@@ -19,17 +19,32 @@ export default function LoginPassword({ navigation, route }) {
                 email: route.params.email,
                 password: password
             });
-            setUserId(data.userId);
-            navigation.popToTop();
-            navigation.navigate("InsideHome");
+            try {
+                await fetchUserData(data.userId);
+                navigation.popToTop();
+                navigation.navigate("InsideHome");
+            } catch (error) {
+                console.log(error)
+                setFeedbackMessage({
+                    show: true,
+                    text: "Estamos passando por manutenção, tente novamente mais tarde"
+                })
+            }
         } catch (error) {
-            console.log(error)
+            console.log(error);
             setFeedbackMessage({
                 show: true,
                 text: "Senha ou email inválido, verifique e tente novamente"
             })
         }
         setLoading(false);
+    }
+
+    const fetchUserData = async (id) => {
+        const { name, pets } = await apiGet(`/users/pets/${id}`);
+        setUserId(id);
+        setUserName(name);
+        setUserPets(pets);
     }
 
     return (
