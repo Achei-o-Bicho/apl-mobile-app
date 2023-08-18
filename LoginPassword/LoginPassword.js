@@ -19,17 +19,9 @@ export default function LoginPassword({ navigation, route }) {
                 email: route.params.email,
                 password: password
             });
-            try {
-                await fetchUserData(data.userId);
-                navigation.popToTop();
-                navigation.navigate("InsideHome");
-            } catch (error) {
-                console.log(error)
-                setFeedbackMessage({
-                    show: true,
-                    text: "Estamos passando por manutenção, tente novamente mais tarde"
-                })
-            }
+            await fetchUserData(data.userId);
+            navigation.popToTop();
+            navigation.navigate("InsideHome");
         } catch (error) {
             console.log(error);
             setFeedbackMessage({
@@ -41,10 +33,18 @@ export default function LoginPassword({ navigation, route }) {
     }
 
     const fetchUserData = async (id) => {
-        const { name, pets } = await apiGet(`/users/pets/${id}`);
-        setUserId(id);
-        setUserName(name);
-        setUserPets(pets);
+        try {
+            const { name, pets } = await apiGet(`/users/pets/${id}`);
+            setUserId(id);
+            setUserName(name);
+            setUserPets(pets);
+        } catch (error) {
+            console.log(error);
+            setFeedbackMessage({
+                show: true,
+                text: "Estamos passando por manutenção, tente novamente mais tarde"
+            })
+        }
     }
 
     return (

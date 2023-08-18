@@ -78,23 +78,20 @@ export default function MyPets({ navigation }) {
                             </View>
                         );
                     } else {
-                        return (
-                            <MyPetCard
-                                name={item.name}
-                                breed={item.breed}
-                                imagePreview={item.imagePreview}
-                                description={item.description}
-                                onPress={() => {
-                                    navigation.navigate("MyPetInfo", {
-                                        imagePreview: item.image,
-                                        name: item.name,
-                                        breed: item.breed,
-                                        gender: item.gender,
-                                        description: item.description
-                                    });
-                                }}
-                            />
-                        );
+                        if (item) {
+                            console.log(item.images);
+                            return (
+                                <MyPetCard
+                                    name={item.name}
+                                    breed={item.breed}
+                                    // imagePreview={''}
+                                    description={item.description}
+                                    onPress={() => {
+                                        navigation.navigate("MyPetInfo", { pet: item });
+                                    }}
+                                />
+                            );
+                        }
                     }
                 }}
                 onScroll={(event) => {

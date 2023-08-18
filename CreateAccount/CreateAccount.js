@@ -7,6 +7,7 @@ import { SafeAreaView, TouchableOpacity } from 'react-native';
 import { cpf } from 'cpf-cnpj-validator';
 const passwordValidator = require('password-validator');
 import validator from 'validator';
+import cep from 'cep-promise';
 import { apiPost } from '../config/api';
 
 var codeNumber = null;
@@ -72,6 +73,23 @@ export default function CreateAccount({ navigation }) {
             },
             feedback: {
                 text: 'O seu sobrenome não pode ser um espaço em branco, tente novamente'
+            }
+        }, {
+            bot: [
+                'Qual é o seu CEP?'
+            ],
+            userResponse: '',
+            keyboardType: 'default',
+            validate: async function (response) {
+                try {
+                    const { errors } = await cep(response);
+                    return errors !== null;
+                } catch (error) {
+                    return false;
+                }
+            },
+            feedback: {
+                text: 'O CEP digitado não parece ser válido, tente novamente'
             }
         }, {
             bot: [
@@ -195,9 +213,10 @@ export default function CreateAccount({ navigation }) {
                 name: `${await chat.steps[2].userResponse} ${await chat.steps[3].userResponse}`,
                 contact: {
                     emailAddress: (await chat.steps[1].userResponse).toLowerCase(),
-                    phone: await chat.steps[4].userResponse
+                    phone: await chat.steps[5].userResponse
                 },
-                password: await chat.steps[6].userResponse
+                password: await chat.steps[7].userResponse,
+                zipCode: await chat.steps[4].userResponse
             }
             const { newUser } = await apiPost('/users', data);
             return newUser !== null;
@@ -235,7 +254,7 @@ export default function CreateAccount({ navigation }) {
     useEffect(() => {
         setFinished(currentStep >= (chat.steps.length - 1));
         const chatStep = chat.steps[currentStep];
-        if (currentStep === 7) {
+        if (currentStep === 8) {
             async function validateStep() {
                 setBotTyping(true);
                 if (await handleSendNewUser()) {

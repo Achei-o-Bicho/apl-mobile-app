@@ -3,20 +3,33 @@ import BackButton from '../components/BackButton/BackButton';
 import { ImagePet, ImagesView, MainView, ValuePet, ValuesView } from './Style';
 import { View, Text, Dimensions } from 'react-native';
 import Carousel, { PaginationLight } from 'react-native-x-carousel';
+import { apiPost } from '../config/api';
 
 
 export default function MyPetInfo({ navigation, route }) {
     const { width } = Dimensions.get('window');
-    const { name, imagePreview, breed, gender, description } = route.params;
-    const [images, setImages] = useState([{ uri: imagePreview }]);
+    const { pet } = route.params;
+    const [images, setImages] = useState([{ uri: '' }]);
+
+    async function fetchAllImages(petId) {
+        try {
+            const { images } = await apiPost('/pets/images', {
+                idPet: petId
+            });
+            setImages(() => pet.images.map((image) => { uri: image.base64 }));
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
         navigation.setOptions({
-            title: name,
+            title: pet.name,
             headerLeft: (() => (
                 <BackButton navigation={navigation} />
             ))
         });
+        // fetchAllImages(pet._id);
     }, [])
 
     return (
@@ -42,25 +55,25 @@ export default function MyPetInfo({ navigation, route }) {
                         style={{ flex: 1 }}
                     >
                         <Text>Nome:</Text>
-                        <ValuePet>{name}</ValuePet>
+                        <ValuePet>{pet.name}</ValuePet>
                     </View>
                     <View
                         style={{ flex: 1 }}
                     >
                         <Text>Gênero:</Text>
-                        <ValuePet>{gender === "Male" ? "Macho" : "Fêmea"}</ValuePet>
+                        <ValuePet>{pet.gender === "Male" ? "Macho" : "Fêmea"}</ValuePet>
                     </View>
                 </View>
-                {breed && (
+                {pet.breed && (
                     <>
                         <Text>Raça:</Text>
-                        <ValuePet>{breed}</ValuePet>
+                        <ValuePet>{pet.breed}</ValuePet>
                     </>
                 )}
-                {description && (
+                {pet.description && (
                     <View>
                         <Text>Descrição:</Text>
-                        <ValuePet>{description}</ValuePet>
+                        <ValuePet>{pet.description}</ValuePet>
                     </View>
                 )}
             </ValuesView>
