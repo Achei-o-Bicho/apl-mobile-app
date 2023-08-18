@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import BackButton from '../components/BackButton/BackButton';
-import { ImagePet, ImagesView, MainView, TitlePet, ValuePet, ValuesView } from './Style';
+import { ImagePet, ImagesView, MainView, ValuePet, ValuesView } from './Style';
 import { View, Text, Dimensions } from 'react-native';
 import Carousel, { PaginationLight } from 'react-native-x-carousel';
 
 
 export default function MyPetInfo({ navigation, route }) {
     const { width } = Dimensions.get('window');
-    const { name, breed, gender, description } = route.params;
-    const [images, setImages] = useState([{
-        uri: ''
-    }]);
+    const { name, imagePreview, breed, gender, description } = route.params;
+    const [images, setImages] = useState([{ uri: imagePreview }]);
 
     useEffect(() => {
         navigation.setOptions({
@@ -50,11 +48,15 @@ export default function MyPetInfo({ navigation, route }) {
                         style={{ flex: 1 }}
                     >
                         <Text>Gênero:</Text>
-                        <ValuePet>{gender}</ValuePet>
+                        <ValuePet>{gender === "Male" ? "Macho" : "Fêmea"}</ValuePet>
                     </View>
                 </View>
-                <Text>Raça:</Text>
-                <ValuePet>{breed}</ValuePet>
+                {breed && (
+                    <>
+                        <Text>Raça:</Text>
+                        <ValuePet>{breed}</ValuePet>
+                    </>
+                )}
                 {description && (
                     <View>
                         <Text>Descrição:</Text>

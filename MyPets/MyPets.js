@@ -47,7 +47,11 @@ export default function MyPets({ navigation }) {
     }
 
     useEffect(() => {
-        handleFetchData();
+        async function fetchData() {
+            await handleFetchData();
+        }
+        fetchData();
+        console.log(data);
     }, [])
 
     return (
@@ -79,8 +83,10 @@ export default function MyPets({ navigation }) {
                                 name={item.name}
                                 breed={item.breed}
                                 imagePreview={item.imagePreview}
+                                description={item.description}
                                 onPress={() => {
                                     navigation.navigate("MyPetInfo", {
+                                        imagePreview: item.image,
                                         name: item.name,
                                         breed: item.breed,
                                         gender: item.gender,

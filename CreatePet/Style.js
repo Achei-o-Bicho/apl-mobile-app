@@ -25,6 +25,7 @@ export const ContinueButton = styled.TouchableOpacity`
     justify-content: center;
     border-radius: 10px;
     position: relative;
+    margin-top: 20px;
 `
 
 export const TextContinue = styled.Text`

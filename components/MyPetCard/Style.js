@@ -16,12 +16,12 @@ export const MainView = styled.TouchableOpacity`
 export const LeftView = styled.View`
     flex-direction: row;
     align-items: center;
+    width: 75%;
 `
 
 export const TitleText = styled.Text`
     color: purple;
-    margin-bottom: 10px;
-    font-size: 20px;
+    font-size: 18px;
 `
 
 export const ImagePreview = styled.Image`
@@ -30,4 +30,8 @@ export const ImagePreview = styled.Image`
     width: 50px;
     margin-right: 10px;
     border-radius: 5px;
+`
+
+export const ContentView = styled.View`
+    justify-content: space-between;
 `

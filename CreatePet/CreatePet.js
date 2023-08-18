@@ -29,6 +29,7 @@ export default function CreatePet({ navigation }) {
     const [titlePageHeight, setTitlePageHeight] = useState(0);
     const [loading, setLoading] = useState(false);
     const refScroll = useRef(null);
+    const [feedbackMessage, setFeedbackMessage] = useState(null);
 
     const { userId } = useUserContext();
 
@@ -208,6 +209,7 @@ export default function CreatePet({ navigation }) {
     }
 
     const submitCreatePet = async () => {
+        setFeedbackMessage(null);
         handleInputErrors();
         setLoading(true);
         try {
@@ -218,12 +220,12 @@ export default function CreatePet({ navigation }) {
                 userId: userId,
                 description: description
             }
-            console.log(data);
-            const response = await apiPost('/pets', data);
-            console.log(response);
-            await handleSendAllImages(response._id);
+            const { _id } = await apiPost('/pets', data);
+            await handleSendAllImages(_id);
+            navigation.goBack();
         } catch (error) {
             console.log(error);
+            setFeedbackMessage("Estamos enfrentando algum problema para criar o seu PET, tente novamente mais tarde")
         }
         setLoading(false);
     };
@@ -243,13 +245,12 @@ export default function CreatePet({ navigation }) {
             name: `${position}.jpg`,
         });
         try {
-            console.log(formData)
-            const response = await apiPost(`/pets/${petId}/save-image`, formData, {
+            await apiPost(`/pets/${petId}/save-image`, formData, {
                 "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-            });
-            console.log(response);
+            }, 60000);
         } catch (error) {
             console.log(error);
+            setFeedbackMessage("Estamos enfrentando algum problema ao salvar suas imagens, tente novamente mais tarde")
         }
     }
 
@@ -413,20 +414,29 @@ export default function CreatePet({ navigation }) {
                 )}
 
                 {step === 4 && (
-                    <ContinueButton
-                        disabled={loading}
-                        onPress={submitCreatePet}>
-                        {loading && (
-                            <ActivityIndicator
-                                animating={loading}
-                                hidesWhenStopped
-                                size='small'
-                                color='white'
-                                style={{ position: 'absolute', right: 20 }}
-                            />
+                    <>
+                        {feedbackMessage && (
+                            <Text
+                                style={{ color: 'red' }}
+                            >
+                                {feedbackMessage}
+                            </Text>
                         )}
-                        <TextContinue>Cadastrar</TextContinue>
-                    </ContinueButton>
+                        <ContinueButton
+                            disabled={loading}
+                            onPress={submitCreatePet}>
+                            {loading && (
+                                <ActivityIndicator
+                                    animating={loading}
+                                    hidesWhenStopped
+                                    size='small'
+                                    color='white'
+                                    style={{ position: 'absolute', right: 20 }}
+                                />
+                            )}
+                            <TextContinue>Cadastrar</TextContinue>
+                        </ContinueButton>
+                    </>
                 )}
 
             </AddNewPet>

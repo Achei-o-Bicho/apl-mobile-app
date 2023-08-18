@@ -36,10 +36,11 @@ export const apiPost = async (
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
+        console.log(data)
         const response = await fetch(`${BASE_URL}${endpoint}`, {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify(data),
+            body: data instanceof FormData ? data : JSON.stringify(data),
             signal: controller.signal
         });
 
