@@ -4,11 +4,13 @@ import { ActivityIndicator } from 'react-native';
 import { apiPost } from '../config/api';
 import BackButton from '../components/BackButton/BackButton';
 import { View } from 'react-native';
+import { useUserContext } from '../contexts/UserContext';
 
 export default function LoginPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState({});
+    const { setUserId } = useUserContext();
 
     const submitLogin = () => {
         setLoading(true);
@@ -19,11 +21,13 @@ export default function LoginPassword({ navigation, route }) {
         }
 
         apiPost('/auth/login', req)
-            .then(() => {
+            .then((response) => {
+                setUserId(response.userId);
                 navigation.popToTop();
                 navigation.navigate("InsideHome");
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error)
                 setFeedbackMessage({
                     show: true,
                     text: "Senha ou email inválido, verifique e tente novamente"
