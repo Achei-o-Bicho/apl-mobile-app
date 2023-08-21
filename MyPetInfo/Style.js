@@ -12,8 +12,10 @@ export const ImagesView = styled.View`
 
 export const ImagePet = styled.Image`
     background-color: lightgray;
-    height: 350px;
-    ${({ width }) => `width: ${width}px;`}
+    ${({ width }) => `
+    width: ${width}px;
+    height: ${width * 0.8}px;
+    `}
 `
 
 export const ValuesView = styled.View`

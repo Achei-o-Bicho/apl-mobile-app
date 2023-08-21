@@ -5,9 +5,11 @@ import { View, FlatList, Text, RefreshControl } from 'react-native';
 import { useUserContext } from '../contexts/UserContext';
 import MyPetCard from '../components/MyPetCard/MyPetCard';
 import { apiGet } from '../config/api';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function MyPets({ navigation }) {
-    const [refreshing, setRefreshing] = useState(false);
+    const isFocused = useIsFocused();
+    const [refreshing, setRefreshing] = useState(true);
     const [showAddHeaderIcon, setShowAddHeaderIcon] = useState(false);
     const [addPetButtonHeight, setAddPetButtonHeight] = useState(0);
     const { userId, userPets, setUserPets } = useUserContext();
@@ -50,8 +52,10 @@ export default function MyPets({ navigation }) {
         async function fetchData() {
             await handleFetchData();
         }
-        fetchData();
-    }, [])
+        if (isFocused) {
+            fetchData()
+        }
+    }, [isFocused])
 
     return (
         <MainView>
