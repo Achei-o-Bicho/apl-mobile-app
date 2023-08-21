@@ -1,16 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ImagePreview, MainView, TitleText, LeftView, ContentView } from './Style';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function MyPetCard({ name, description, imagePreview, onPress }) {
-    useEffect(() => {
-        console.log(imagePreview)
-    }, [])
     return (
         <MainView onPress={onPress}>
             <LeftView>
-                <ImagePreview source={{ uri: imagePreview }} />
+                <ImagePreview source={{ uri: `data:image/jpeg;base64,${imagePreview}` }} />
                 <ContentView>
                     <TitleText>{name}</TitleText>
                     <Text

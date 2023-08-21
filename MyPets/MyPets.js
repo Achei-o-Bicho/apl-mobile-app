@@ -51,7 +51,6 @@ export default function MyPets({ navigation }) {
             await handleFetchData();
         }
         fetchData();
-        console.log(data);
     }, [])
 
     return (
@@ -78,13 +77,12 @@ export default function MyPets({ navigation }) {
                             </View>
                         );
                     } else {
-                        if (item) {
-                            console.log(item.images);
+                        if (item && item.images && item.images[0] && item.images[0].base64) {
                             return (
                                 <MyPetCard
                                     name={item.name}
                                     breed={item.breed}
-                                    // imagePreview={''}
+                                    imagePreview={item.images[0].base64}
                                     description={item.description}
                                     onPress={() => {
                                         navigation.navigate("MyPetInfo", { pet: item });

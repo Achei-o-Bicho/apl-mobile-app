@@ -9,14 +9,16 @@ import { apiPost } from '../config/api';
 export default function MyPetInfo({ navigation, route }) {
     const { width } = Dimensions.get('window');
     const { pet } = route.params;
-    const [images, setImages] = useState([{ uri: '' }]);
+    const [petImages, setPetImages] = useState([{ image: '' }]);
 
     async function fetchAllImages(petId) {
         try {
             const { images } = await apiPost('/pets/images', {
                 idPet: petId
             });
-            setImages(() => pet.images.map((image) => { uri: image.base64 }));
+            if (images && images[0] && images[0].image) {
+                setPetImages(images);
+            }
         } catch (error) {
             console.log(error)
         }
@@ -29,7 +31,7 @@ export default function MyPetInfo({ navigation, route }) {
                 <BackButton navigation={navigation} />
             ))
         });
-        // fetchAllImages(pet._id);
+        fetchAllImages(pet._id);
     }, [])
 
     return (
@@ -37,12 +39,12 @@ export default function MyPetInfo({ navigation, route }) {
             <ImagesView>
                 <Carousel
                     pagination={PaginationLight}
-                    data={images}
+                    data={petImages}
                     renderItem={(item, index) => (
                         <ImagePet
                             key={index}
                             width={width}
-                            source={{ uri: item.uri }}
+                            source={{ uri: `data:image/jpeg;base64,${item.image}` }}
                         />
                     )}
                 />

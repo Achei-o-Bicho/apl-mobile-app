@@ -415,13 +415,13 @@ export default function CreatePet({ navigation }) {
 
                 {step === 4 && (
                     <>
-                        {feedbackMessage && (
+                        {/* {feedbackMessage && (
                             <Text
                                 style={{ color: 'red' }}
                             >
                                 {feedbackMessage}
                             </Text>
-                        )}
+                        )} */}
                         <ContinueButton
                             disabled={loading}
                             onPress={submitCreatePet}>
