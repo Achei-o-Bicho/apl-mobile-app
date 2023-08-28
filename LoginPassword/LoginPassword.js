@@ -9,7 +9,7 @@ import { useUserContext } from '../contexts/UserContext';
 export default function LoginPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [feedbackMessage, setFeedbackMessage] = useState({});
+    const [feedbackMessage, setFeedbackMessage] = useState(null);
     const { setUserId, setUserName, setUserPets } = useUserContext();
 
     const submitLogin = async () => {
@@ -24,27 +24,16 @@ export default function LoginPassword({ navigation, route }) {
             navigation.navigate("InsideHome");
         } catch (error) {
             console.log(error);
-            setFeedbackMessage({
-                show: true,
-                text: "Senha ou email inválido, verifique e tente novamente"
-            })
+            setFeedbackMessage("Senha ou email inválido, verifique e tente novamente");
         }
         setLoading(false);
     }
 
     const fetchUserData = async (id) => {
-        try {
-            const { name, pets } = await apiGet(`/users/pets/${id}`);
-            setUserId(id);
-            setUserName(name);
-            setUserPets(pets);
-        } catch (error) {
-            console.log(error);
-            setFeedbackMessage({
-                show: true,
-                text: "Estamos passando por manutenção, tente novamente mais tarde"
-            })
-        }
+        const { name, pets } = await apiGet(`/users/pets/${id}`);
+        setUserId(id);
+        setUserName(name);
+        setUserPets(pets);
     }
 
     return (
@@ -80,10 +69,9 @@ export default function LoginPassword({ navigation, route }) {
                         enterKeyHint='enter'
                         value={password}
                         onChangeText={(text) => setPassword(text.toLowerCase())}
+                        onKeyPress={() => setFeedbackMessage(null)}
                     />
-                    {feedbackMessage.show && (
-                        <FeedbackText>{feedbackMessage.text}</FeedbackText>
-                    )}
+                    {feedbackMessage && <FeedbackText>{feedbackMessage}</FeedbackText>}
                     <EnterButton
                         disabled={password === '' || loading}
                         onPress={submitLogin}

@@ -13,7 +13,7 @@ export default function MyPets({ navigation }) {
     const [showAddHeaderIcon, setShowAddHeaderIcon] = useState(false);
     const [addPetButtonHeight, setAddPetButtonHeight] = useState(0);
     const { userId, userPets, setUserPets } = useUserContext();
-    const [data, setData] = useState([{ key: 0 }, userPets]);
+    const [data, setData] = useState([userPets]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -40,8 +40,7 @@ export default function MyPets({ navigation }) {
         try {
             const { pets } = await apiGet(`/users/pets/${userId}`);
             setUserPets(pets);
-            const [addElement, _] = data;
-            setData([addElement, ...pets])
+            setData(pets);
         } catch (error) {
             console.log(error)
         }
@@ -65,35 +64,32 @@ export default function MyPets({ navigation }) {
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={handleFetchData} />
                 }
-                renderItem={({ item }) => {
-                    if (item.key === 0) {
-                        return (
-                            <View
-                                onLayout={({ nativeEvent }) => setAddPetButtonHeight(nativeEvent.layout.height)}
-                            >
-                                <AddNewPetButton onPress={handleNavigationCreatePet}>
-                                    <View>
-                                        <TitleNewPet>Novo pet</TitleNewPet>
-                                        <Text>Adicione seu novo pet aqui</Text>
-                                    </View>
-                                    <AntDesign name="plus" color="purple" size={25} backgroundColor="transparent" />
-                                </AddNewPetButton>
+                ListHeaderComponent={(
+                    <View
+                        onLayout={({ nativeEvent }) => setAddPetButtonHeight(nativeEvent.layout.height)}
+                    >
+                        <AddNewPetButton onPress={handleNavigationCreatePet}>
+                            <View>
+                                <TitleNewPet>Novo pet</TitleNewPet>
+                                <Text>Adicione seu novo pet aqui</Text>
                             </View>
+                            <AntDesign name="plus" color="purple" size={25} backgroundColor="transparent" />
+                        </AddNewPetButton>
+                    </View>
+                )}
+                renderItem={({ item }) => {
+                    if (item && item.images && item.images[0] && item.images[0].base64) {
+                        return (
+                            <MyPetCard
+                                name={item.name}
+                                breed={item.breed}
+                                imagePreview={item.images[0].base64}
+                                description={item.description}
+                                onPress={() => {
+                                    navigation.navigate("MyPetInfo", { pet: item });
+                                }}
+                            />
                         );
-                    } else {
-                        if (item && item.images && item.images[0] && item.images[0].base64) {
-                            return (
-                                <MyPetCard
-                                    name={item.name}
-                                    breed={item.breed}
-                                    imagePreview={item.images[0].base64}
-                                    description={item.description}
-                                    onPress={() => {
-                                        navigation.navigate("MyPetInfo", { pet: item });
-                                    }}
-                                />
-                            );
-                        }
                     }
                 }}
                 onScroll={(event) => {
