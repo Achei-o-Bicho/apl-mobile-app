@@ -185,53 +185,47 @@ export default function CreateAccount({ navigation }) {
 
     const handleValidateStep = async (chatStep) => {
         if (chatStep.validate || !chatStep.autoValidate) {
-            if (await chatStep.validate(chatStep.userResponse)) {
-                return handleNextStep();
-            } else {
-                return handleBotFeedback(chatStep);
+            try {
+                if (await chatStep.validate(chatStep.userResponse)) {
+                    return handleNextStep();
+                } else {
+                    return handleBotFeedback(chatStep);
+                }
+            } catch (error) {
+                console.log(error);
+                handleBotFeedback(null, "Parece que estamos enfrentando um problema com o nosso sistema, tente novamente mais tarde");
             }
         }
     }
 
     async function handleValidatePhoneNumber(number) {
-        try {
-            const { tokenOtp } = await apiPost('/users/validate-number', { number });
-            codeNumber = tokenOtp;
-            return codeNumber !== null;
-        } catch (error) {
-            setChat({
-                ...chat.steps[4].feedback,
-                text: "Parece que estamos enfrentando um problema com o nosso sistema, tente novamente mais tarde"
-            });
-        }
+        const { tokenOtp } = await apiPost('/users/validate-number', { number });
+        codeNumber = tokenOtp;
+        return codeNumber !== null;
     }
 
     async function handleSendNewUser() {
-        try {
-            const data = {
-                document: await chat.steps[0].userResponse,
-                name: `${await chat.steps[2].userResponse} ${await chat.steps[3].userResponse}`,
-                contact: {
-                    emailAddress: (await chat.steps[1].userResponse).toLowerCase(),
-                    phone: await chat.steps[5].userResponse
-                },
-                password: await chat.steps[7].userResponse,
-                zipCode: await chat.steps[4].userResponse
-            }
-            const { newUser } = await apiPost('/users', data);
-            return newUser !== null;
-        } catch (error) {
-            return false;
+        const data = {
+            document: await chat.steps[0].userResponse,
+            name: `${await chat.steps[2].userResponse} ${await chat.steps[3].userResponse}`,
+            contact: {
+                emailAddress: (await chat.steps[1].userResponse).toLowerCase(),
+                phone: await chat.steps[5].userResponse
+            },
+            password: await chat.steps[7].userResponse,
+            zipCode: await chat.steps[4].userResponse
         }
+        const { newUser } = await apiPost('/users', data);
+        return newUser !== null;
     }
 
-    function handleBotFeedback(chatStep) {
+    function handleBotFeedback(chatStep, message = chatStep.feedback.text) {
         return setTimeout(() => {
             setList((prevList) => [
                 ...prevList,
                 {
                     origin: 'bot',
-                    text: chatStep.feedback.text,
+                    text: message,
                 },
             ]);
             setBotTyping(false);
@@ -257,11 +251,7 @@ export default function CreateAccount({ navigation }) {
         if (currentStep === 8) {
             async function validateStep() {
                 setBotTyping(true);
-                if (await handleSendNewUser()) {
-                    return handleNextStep();
-                } else {
-                    return handleBotFeedback(chatStep);
-                }
+                if (await handleSendNewUser()) return handleNextStep();
             }
             if (chatStep.autoValidate) validateStep();
         }
