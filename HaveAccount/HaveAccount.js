@@ -28,7 +28,7 @@ export default function HaveAccount({ navigation }) {
                         value={email}
                         onChangeText={(text) => {
                             setFeedbackMessage({ show: false })
-                            setEmail(text.toLowerCase())
+                            setEmail(text)
                         }}
                     />
                     {feedbackMessage.show && (

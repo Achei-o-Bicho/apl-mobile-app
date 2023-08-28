@@ -16,7 +16,7 @@ export default function LoginPassword({ navigation, route }) {
         setLoading(true);
         try {
             const { data } = await apiPost('/auth/login', {
-                email: route.params.email,
+                email: (route.params.email).toLowerCase(),
                 password: password
             });
             await fetchUserData(data.userId);
