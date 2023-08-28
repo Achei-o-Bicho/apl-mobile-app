@@ -2,12 +2,13 @@ import config from './configEnviroment';
 
 const BASE_URL = config.API_URL;
 
-export const apiGet = async (endpoint, timeout = 5000) => {
+export const apiGet = async (endpoint, headers = null, timeout = 5000) => {
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
         const response = await fetch(`${BASE_URL}${endpoint}`, {
+            headers,
             signal: controller.signal
         });
 

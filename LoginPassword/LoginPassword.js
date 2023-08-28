@@ -19,7 +19,8 @@ export default function LoginPassword({ navigation, route }) {
                 email: (route.params.email).toLowerCase(),
                 password: password
             });
-            await fetchUserData(data.userId);
+            const { userId, accessToken } = data;
+            await fetchUserData(userId, accessToken);
             navigation.popToTop();
             navigation.navigate("InsideHome");
         } catch (error) {
@@ -29,8 +30,10 @@ export default function LoginPassword({ navigation, route }) {
         setLoading(false);
     }
 
-    const fetchUserData = async (id) => {
-        const { name, pets } = await apiGet(`/users/pets/${id}`);
+    const fetchUserData = async (id, accessToken) => {
+        const { name, pets } = await apiGet(`/users/pets/${id}`, {
+            "Authorization": `Bearer ${accessToken}`
+        });
         setUserId(id);
         setUserName(name);
         setUserPets(pets);
