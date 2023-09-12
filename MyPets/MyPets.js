@@ -12,7 +12,7 @@ export default function MyPets({ navigation }) {
     const [refreshing, setRefreshing] = useState(true);
     const [showAddHeaderIcon, setShowAddHeaderIcon] = useState(false);
     const [addPetButtonHeight, setAddPetButtonHeight] = useState(0);
-    const { userId, userPets, setUserPets } = useUserContext();
+    const { userId, userPets, setUserPets, accessToken } = useUserContext();
     const [data, setData] = useState([userPets]);
 
     useLayoutEffect(() => {
@@ -38,7 +38,9 @@ export default function MyPets({ navigation }) {
     async function handleFetchData() {
         setRefreshing(true);
         try {
-            const { pets } = await apiGet(`/users/pets/${userId}`);
+            const { pets } = await apiGet(`/users/pets/${userId}`, {
+                "Authorization": `Bearer ${accessToken}`
+            });
             setUserPets(pets);
             setData(pets);
         } catch (error) {

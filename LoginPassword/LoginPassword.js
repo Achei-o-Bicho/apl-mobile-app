@@ -10,7 +10,7 @@ export default function LoginPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState(null);
-    const { setUserId, setUserName, setUserPets } = useUserContext();
+    const { setUserId, setUserName, setUserPets, setAccessToken } = useUserContext();
 
     const submitLogin = async () => {
         setLoading(true);
@@ -37,6 +37,7 @@ export default function LoginPassword({ navigation, route }) {
         setUserId(id);
         setUserName(name);
         setUserPets(pets);
+        setAccessToken(accessToken);
     }
 
     return (

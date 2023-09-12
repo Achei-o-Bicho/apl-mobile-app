@@ -30,6 +30,19 @@ export default function TabBar() {
                 })}
             />
             <Tab.Screen
+                name="PetID"
+                component={PetID}
+                options={() => ({
+                    title: "Pet ID",
+                    headerShown: false,
+                    tabBarActiveTintColor: ActiveTintColor,
+                    headerTintColor: ActiveTintColor,
+                    tabBarIcon: ({ color }) => {
+                        return <PetIDIcon color={color} viewBox="-44 -170 1000 1000" />
+                    }
+                })}
+            />
+            <Tab.Screen
                 name="Profile"
                 component={Profile}
                 options={() => ({
@@ -38,18 +51,6 @@ export default function TabBar() {
                     headerTintColor: ActiveTintColor,
                     tabBarIcon: ({ color }) => {
                         return <FontAwesome name="user" size={IconSize} color={color} />
-                    }
-                })}
-            />
-            <Tab.Screen
-                name="PetID"
-                component={PetID}
-                options={() => ({
-                    title: "PET ID",
-                    tabBarActiveTintColor: ActiveTintColor,
-                    headerTintColor: ActiveTintColor,
-                    tabBarIcon: ({ color }) => {
-                        return <PetIDIcon color={color} viewBox="-35 -150 1000 1000" />
                     }
                 })}
             />
