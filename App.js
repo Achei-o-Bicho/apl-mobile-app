@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CreateAccount from './CreateAccount/CreateAccount';
@@ -110,7 +109,6 @@ export default function App() {
             />
           </Stack.Group>
         </Stack.Navigator>
-        <StatusBar style="auto" />
       </NavigationContainer>
     </UserProvider>
   );
