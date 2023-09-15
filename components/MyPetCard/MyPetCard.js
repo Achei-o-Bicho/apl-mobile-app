@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImagePreview, MainView, TitleText, LeftView, ContentView } from './Style';
 import { View, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function MyPetCard({ name, description, imagePreview, onPress }) {
     return (

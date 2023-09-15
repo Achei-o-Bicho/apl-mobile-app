@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { useEffect, useState, useRef } from 'react/cjs/react.development';
 import TypingAnimation from '../components/TypingAnimation/TypingAnimation';
@@ -356,7 +355,6 @@ export default function CreateAccount({ navigation }) {
                     )}
                 </BottomView>
             </SafeAreaView>
-            <StatusBar style="light" />
         </MainView>
     )
 }

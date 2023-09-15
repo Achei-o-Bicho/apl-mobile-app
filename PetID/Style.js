@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Camera } from 'expo-camera';
+import { Camera } from 'react-native-vision-camera';
 
 export const MainView = styled.View`
     flex: 1;

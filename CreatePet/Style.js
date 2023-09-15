@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { AntDesign } from '@expo/vector-icons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export const MainView = styled.KeyboardAvoidingView`
     flex: 1;

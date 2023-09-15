@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react';
 import { MainView, AddNewPetButton, TitleNewPet } from './Style';
-import { AntDesign } from '@expo/vector-icons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { View, FlatList, Text, RefreshControl } from 'react-native';
 import { useUserContext } from '../contexts/UserContext';
 import MyPetCard from '../components/MyPetCard/MyPetCard';

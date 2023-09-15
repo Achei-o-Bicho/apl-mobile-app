@@ -1,12 +1,12 @@
-import { Camera, CameraType } from 'expo-camera';
+import { Camera, CameraPermissionStatus, useCameraDevice } from 'react-native-vision-camera';
 import { useEffect, useRef, useState } from 'react';
 import { Button, View } from 'react-native';
 import { CameraPreview, MainView, PermissionNotGarantedText, RecentScannedList, SafeArea } from './Style';
 import { useIsFocused } from '@react-navigation/native';
 
-export default function App() {
+export default function PetID() {
     const isFocused = useIsFocused();
-    const [permission, requestPermission] = Camera.useCameraPermissions();
+    const [permission, setPermission] = useState();
     const cameraRef = useRef(null);
 
     if (!permission) {
@@ -22,7 +22,13 @@ export default function App() {
         );
     }
 
+    async function requestPermission() {
+        const newCameraPermission = await Camera.requestCameraPermission();
+        setPermission(newCameraPermission);
+    }
+
     useEffect(() => {
+        requestPermission();
         if (cameraRef.current) {
             isFocused ? cameraRef.current.resumePreview() : cameraRef.current.pausePreview();
         }
@@ -33,7 +39,7 @@ export default function App() {
             <SafeArea>
                 <CameraPreview
                     ref={cameraRef}
-                    type={CameraType.back}
+                    device={useCameraDevice()} 
                 >
                     <RecentScannedList
                         
