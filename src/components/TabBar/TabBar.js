@@ -6,7 +6,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useUserContext } from '../../contexts/UserContext';
 import PetID from '../../PetID/PetID';
-import * as Svg from 'react-native-svg';
 import PetIDIcon from '../PetIDIcon/PetIDIcon';
 
 const Tab = createBottomTabNavigator();
