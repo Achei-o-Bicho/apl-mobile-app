@@ -11,6 +11,6 @@ export const DotView = styled(Animated.View)`
     background-color: ${(props) => props.color};
     width: 10px;
     height: 10px;
-    border-radius: 50%;
+    border-radius: 5px;
     margin: 5px;
 `
