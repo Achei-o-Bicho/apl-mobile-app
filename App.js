@@ -1,15 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import CreateAccount from './CreateAccount/CreateAccount';
-import Home from './Home/Home';
-import AboutUs from './AboutUs/AboutUs';
-import HaveAccount from './HaveAccount/HaveAccount';
-import LoginPassword from './LoginPassword/LoginPassword';
-import InsideHome from './InsideHome/InsideHome';
-import CreatePet from './CreatePet/CreatePet';
-import MyPetInfo from './MyPetInfo/MyPetInfo';
-import { UserProvider } from './contexts/UserContext';
+import CreateAccount from './src/CreateAccount/CreateAccount';
+import Home from './src/Home/Home';
+import AboutUs from './src/AboutUs/AboutUs';
+import HaveAccount from './src/HaveAccount/HaveAccount';
+import LoginPassword from './src/LoginPassword/LoginPassword';
+import InsideHome from './src/InsideHome/InsideHome';
+import CreatePet from './src/CreatePet/CreatePet';
+import MyPetInfo from './src/MyPetInfo/MyPetInfo';
+import { UserProvider } from './src/contexts/UserContext';
 
 const Stack = createNativeStackNavigator();
 

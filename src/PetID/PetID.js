@@ -1,6 +1,7 @@
+import React from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { Button, View } from 'react-native';
-import { CameraPreview, MainView, PermissionNotGarantedText } from './Style';
+import { Button, View, Text } from 'react-native';
+import { MainView } from './Style';
 
 export default function PetID() {
     const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -14,7 +15,7 @@ export default function PetID() {
             <MainView
                 style={{ alignItems: 'center' }}
             >
-                <PermissionNotGarantedText>Precisamos da sua permissão para mostrar a câmera</PermissionNotGarantedText>
+                <Text>Precisamos da sua permissão para mostrar a câmera</Text>
                 <Button onPress={requestPermission} title="Permitir" />
             </MainView>
         );
@@ -22,7 +23,8 @@ export default function PetID() {
 
     return (
         <MainView>
-            <CameraPreview
+            <Camera
+                style={{ flex: 1 }}
                 type={CameraType.back}
             />
         </MainView>
