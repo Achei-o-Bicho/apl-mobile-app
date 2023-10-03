@@ -3,7 +3,7 @@ import { AddNewPet, MainView, TitleNewPet, ContinueButton, TextContinue, GenderV
 import { TextInput, RadioButton } from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text';
 import { Text, View, ActivityIndicator } from 'react-native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import BackButton from '../components/BackButton/BackButton';
 import * as Animatable from 'react-native-animatable';
 import { apiPost } from '../config/api';
@@ -265,12 +265,20 @@ export default function CreatePet({ navigation }) {
     };
 
     const handleImageUpload = async (position) => {
-        const imageResult = await launchImageLibrary({
-            mediaTypes: 'photo',
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            alert("Permissão para acessar a galeria é necessária!");
+            return;
+        }
+
+        const imageResult = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
             quality: 1,
         });
 
-        if (!imageResult.didCancel) {
+        if (!imageResult.canceled) {
             const imageURI = imageResult.assets[0].uri
             switch (position) {
                 case "frontal":

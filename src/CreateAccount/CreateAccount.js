@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState, useRef } from 'react/cjs/react.development';
+import React, { useEffect, useState, useRef } from 'react';
 import TypingAnimation from '../components/TypingAnimation/TypingAnimation';
 import { MainView, BottomView, ChatView, BotCell, UserCell, CellText, ChatInput, AirPlaneButton, ViewGIF, FinishButton, ButtonText } from './Style';
 import { SafeAreaView, TouchableOpacity } from 'react-native';

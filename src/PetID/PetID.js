@@ -1,51 +1,32 @@
-import { Camera, CameraPermissionStatus, useCameraDevice } from 'react-native-vision-camera';
-import { useEffect, useRef, useState } from 'react';
-import { Button, View } from 'react-native';
-import { CameraPreview, MainView, PermissionNotGarantedText, RecentScannedList, SafeArea } from './Style';
-import { useIsFocused } from '@react-navigation/native';
+import React from 'react';
+import { Camera, CameraType } from 'expo-camera';
+import { Button, View, Text } from 'react-native';
+import { MainView } from './Style';
 
 export default function PetID() {
-    const isFocused = useIsFocused();
-    const [permission, setPermission] = useState();
-    const cameraRef = useRef(null);
+    const [permission, requestPermission] = Camera.useCameraPermissions();
 
     if (!permission) {
-        return <View />;
+        return <View />
     }
 
     if (!permission.granted) {
         return (
-            <MainView>
-                <PermissionNotGarantedText>Precisamos da sua permissão para mostrar a câmera</PermissionNotGarantedText>
+            <MainView
+                style={{ alignItems: 'center' }}
+            >
+                <Text>Precisamos da sua permissão para mostrar a câmera</Text>
                 <Button onPress={requestPermission} title="Permitir" />
             </MainView>
         );
     }
 
-    async function requestPermission() {
-        const newCameraPermission = await Camera.requestCameraPermission();
-        setPermission(newCameraPermission);
-    }
-
-    useEffect(() => {
-        requestPermission();
-        if (cameraRef.current) {
-            isFocused ? cameraRef.current.resumePreview() : cameraRef.current.pausePreview();
-        }
-    }, [isFocused])
-
     return (
         <MainView>
-            <SafeArea>
-                <CameraPreview
-                    ref={cameraRef}
-                    device={useCameraDevice()} 
-                >
-                    <RecentScannedList
-                        
-                    />
-                </CameraPreview>
-            </SafeArea>
+            <Camera
+                style={{ flex: 1 }}
+                type={CameraType.back}
+            />
         </MainView>
     );
 }
