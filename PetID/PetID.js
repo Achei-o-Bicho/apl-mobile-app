@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
 import { Camera, CameraType } from 'expo-camera';
 import { Button, View } from 'react-native';
-import { CameraPreview, MainView, PermissionNotGarantedText, RecentScannedList, SafeArea } from './Style';
-import { useIsFocused } from '@react-navigation/native';
+import { CameraPreview, MainView, PermissionNotGarantedText } from './Style';
 
 export default function PetID() {
     const [permission, requestPermission] = Camera.useCameraPermissions();
