@@ -5,7 +5,6 @@ import { Camera } from 'expo-camera';
 export const MainView = styled.View`
     flex: 1;
     justify-content: center;
-    align-items: center;
 `
 
 export const SafeArea = styled.SafeAreaView`
