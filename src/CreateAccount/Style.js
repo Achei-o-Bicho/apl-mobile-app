@@ -11,11 +11,10 @@ export const BottomView = styled.View`
     justify-content: center;
     align-items: center;
     background-color: purple;
-    width: 100%;
 `
 
 export const ChatView = styled.ScrollView`
-    height: 90%;
+    height: 89.1%;
     padding: 5px 0;
     background-color: white;
 `
