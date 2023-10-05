@@ -1,10 +1,16 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
-import { MainView, Text, Paw } from './Style';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, Paw } from './Style';
 
 export default function AboutUs({ navigation }) {
     return (
-        <MainView>
+        <ScrollView
+            contentContainerStyle={{
+                flexGrow: 1,
+                alignItems: 'center',
+                padding: 25
+            }}
+        >
             <View>
                 <Text>
                     É com grande preocupação que compartilhamos informações sobre o aumento significativo do número de animais de estimação em situação de desamparo no Brasil, especialmente durante os anos de 2018 e 2020. De acordo com o Instituto Pet Brasil (IPB), os dados coletados durante um levantamento em 2018 revelaram que aproximadamente 3,9 milhões de animais estavam nessas condições. No entanto, esse número sofreu um alarmante crescimento de 126% no início da pandemia, em 2020.
@@ -23,6 +29,6 @@ export default function AboutUs({ navigation }) {
                     source={require('../assets/paw.png')}
                 />
             </TouchableOpacity>
-        </MainView>
+        </ScrollView>
     );
 };
