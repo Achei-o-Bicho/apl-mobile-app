@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { ButtonText, ContentView, EnterButton, FeedbackText, Input, KeyboardView, MainView, Title, TransparentView } from './Style';
 import validator from 'validator';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
+import BackButton from '../components/BackButton/BackButton';
 
 export default function HaveAccount({ navigation }) {
     const [email, setEmail] = useState('');
@@ -9,17 +10,24 @@ export default function HaveAccount({ navigation }) {
 
     return (
         <MainView>
-            <TransparentView
-                onPress={() => navigation.goBack()}
-            />
+            {Platform.OS === 'ios' && (
+                <TransparentView
+                    onPress={() => navigation.goBack()}
+                />
+            )}
             <KeyboardView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 enabled
             >
                 <ContentView>
-                    <Title>
-                        Digite seu Email
-                    </Title>
+                    <View
+                        style={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
+                        <BackButton navigation={navigation} color="white" />
+                        <Title>
+                            Digite seu Email
+                        </Title>
+                    </View>
                     <Input
                         autoFocus
                         clearButtonMode='while-editing'

@@ -402,8 +402,10 @@ export default function CreatePet({ navigation }) {
                     <Animatable.View
                         animation="fadeInUpBig"
                     >
-                        <Text>
-                            Tire fotos do seu PET seguindo o padrão do desenho
+                        <Text
+                            style={{ textAlign: 'center' }}
+                        >
+                            Tire fotos do seu PET seguindo o padrão do desenho, de preferência em um fundo limpo e claro
                         </Text>
                         <InputsView>
                             {handleStepInput(3).map((input, index) => {

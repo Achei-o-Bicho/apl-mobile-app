@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Platform } from 'react-native';
 
-export const MainView = styled.View`
+export const MainView = styled.SafeAreaView`
     flex: 1;
 `
 
@@ -12,8 +13,10 @@ export const TransparentView = styled.TouchableOpacity`
 export const KeyboardView = styled.KeyboardAvoidingView`
     flex: 1.2;
     background-color: purple;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    ${Platform.OS == 'ios' && (`
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    `)}
     overflow: hidden;
 `
 

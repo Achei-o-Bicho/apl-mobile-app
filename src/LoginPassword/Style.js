@@ -13,8 +13,10 @@ export const TransparentView = styled.TouchableOpacity`
 export const KeyboardView = styled.KeyboardAvoidingView`
     flex: 1.4;
     background-color: purple;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    ${Platform.OS == 'ios' && (`
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    `)}
     overflow: hidden;
 `
 

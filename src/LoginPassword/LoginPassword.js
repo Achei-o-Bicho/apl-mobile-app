@@ -42,9 +42,11 @@ export default function LoginPassword({ navigation, route }) {
 
     return (
         <MainView>
-            <TransparentView
-                onPress={() => navigation.goBack()}
-            />
+            {Platform.OS === 'ios' && (
+                <TransparentView
+                    onPress={() => navigation.goBack()}
+                />
+            )}
             <KeyboardView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 enabled
