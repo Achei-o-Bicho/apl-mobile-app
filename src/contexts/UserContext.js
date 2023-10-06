@@ -6,6 +6,7 @@ export const UserProvider = ({ children }) => {
   const [userId, setUserId] = useState('');
   const [userName, setUserName] = useState('');
   const [userPets, setUserPets] = useState([]);
+  const [addingNewPet, setAddingNewPet] = useState(false);
   const [accessToken, setAccessToken] = useState('');
 
   return (
@@ -13,7 +14,8 @@ export const UserProvider = ({ children }) => {
       userId, setUserId,
       userName, setUserName,
       userPets, setUserPets,
-      accessToken, setAccessToken
+      accessToken, setAccessToken,
+      addingNewPet, setAddingNewPet
     }}>
       {children}
     </UserContext.Provider>

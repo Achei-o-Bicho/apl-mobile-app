@@ -31,7 +31,7 @@ export default function CreatePet({ navigation }) {
     const refScroll = useRef(null);
     const [feedbackMessage, setFeedbackMessage] = useState(null);
 
-    const { userId } = useUserContext();
+    const { userId, setAddingNewPet } = useUserContext();
 
     const inputs = [
         [
@@ -222,6 +222,7 @@ export default function CreatePet({ navigation }) {
             }
             const { _id } = await apiPost('/pets', data);
             await handleSendAllImages(_id);
+            setAddingNewPet(true);
             navigation.goBack();
         } catch (error) {
             console.log(error);
