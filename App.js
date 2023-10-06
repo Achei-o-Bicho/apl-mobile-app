@@ -110,7 +110,7 @@ export default function App() {
             />
           </Stack.Group>
         </Stack.Navigator>
-        <StatusBar style="auto" />
+        <StatusBar style="dark" />
       </NavigationContainer>
     </UserProvider>
   );
