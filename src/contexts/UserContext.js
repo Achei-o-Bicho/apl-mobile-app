@@ -8,6 +8,8 @@ export const UserProvider = ({ children }) => {
   const [userPets, setUserPets] = useState([]);
   const [addingNewPet, setAddingNewPet] = useState(false);
   const [accessToken, setAccessToken] = useState('');
+  const [recognizing, setRecognizing] = useState(false);
+  const [endToEnd, setEndToEnd] = useState('');
 
   return (
     <UserContext.Provider value={{
@@ -15,7 +17,9 @@ export const UserProvider = ({ children }) => {
       userName, setUserName,
       userPets, setUserPets,
       accessToken, setAccessToken,
-      addingNewPet, setAddingNewPet
+      addingNewPet, setAddingNewPet,
+      recognizing, setRecognizing,
+      endToEnd, setEndToEnd
     }}>
       {children}
     </UserContext.Provider>

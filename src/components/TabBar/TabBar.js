@@ -32,8 +32,8 @@ export default function TabBar() {
                 name="PetID"
                 component={PetID}
                 options={() => ({
-                    title: "Pet ID",
-                    headerShown: false,
+                    title: "Mire a câmera de frente para o PET",
+                    tabBarLabel: "Pet ID",
                     tabBarActiveTintColor: ActiveTintColor,
                     headerTintColor: ActiveTintColor,
                     tabBarIcon: ({ color }) => {
