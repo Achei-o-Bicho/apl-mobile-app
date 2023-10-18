@@ -232,10 +232,18 @@ export default function CreatePet({ navigation }) {
     };
 
     const handleSendAllImages = async (petId) => {
-        await submitSendImage(profileImage, "profile", petId);
-        await submitSendImage(frontalImage, "frontal", petId);
-        await submitSendImage(leftImage, "left", petId);
-        await submitSendImage(rightImage, "right", petId);
+        const imagePositions = [
+            { image: profileImage, position: "profile" },
+            { image: frontalImage, position: "frontal" },
+            { image: leftImage, position: "left" },
+            { image: rightImage, position: "right" },
+        ];
+
+        for (const { image, position } of imagePositions) {
+            if (image) {
+                await submitSendImage(image, position, petId);
+            }
+        }
     }
 
     const submitSendImage = async (imagePath, position, petId) => {
@@ -304,7 +312,7 @@ export default function CreatePet({ navigation }) {
                             case 'profile':
                                 setProfileImage(selectedImages[imageIndex].uri);
                                 break;
-                                case 'left':
+                            case 'left':
                                 setLeftImage(selectedImages[imageIndex].uri);
                                 break;
                             case 'right':
@@ -331,7 +339,7 @@ export default function CreatePet({ navigation }) {
                             case 'profile':
                                 setProfileImage(selectedImages[imageIndex].uri);
                                 break;
-                                case 'left':
+                            case 'left':
                                 setLeftImage(selectedImages[imageIndex].uri);
                                 break;
                             case 'right':
