@@ -232,10 +232,18 @@ export default function CreatePet({ navigation }) {
     };
 
     const handleSendAllImages = async (petId) => {
-        await submitSendImage(profileImage, "profile", petId);
-        await submitSendImage(frontalImage, "frontal", petId);
-        await submitSendImage(leftImage, "left", petId);
-        await submitSendImage(rightImage, "right", petId);
+        const imagePositions = [
+            { image: profileImage, position: "profile" },
+            { image: frontalImage, position: "frontal" },
+            { image: leftImage, position: "left" },
+            { image: rightImage, position: "right" },
+        ];
+
+        for (const { image, position } of imagePositions) {
+            if (image) {
+                await submitSendImage(image, position, petId);
+            }
+        }
     }
 
     const submitSendImage = async (imagePath, position, petId) => {
@@ -275,23 +283,77 @@ export default function CreatePet({ navigation }) {
 
         const imageResult = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
+            allowsEditing: false,
             quality: 1,
+            allowsMultipleSelection: true,
+            selectionLimit: 4
         });
 
         if (!imageResult.canceled) {
-            const imageURI = imageResult.assets[0].uri
-            switch (position) {
-                case "frontal":
-                    return setFrontalImage(imageURI);
-                case "left":
-                    return setLeftImage(imageURI);
-                case "profile":
-                    return setProfileImage(imageURI);
-                case "right":
-                    return setRightImage(imageURI);
-                default:
-                    return alert("Ocorreu um erro, tente novamente");
+            const selectedImages = imageResult.assets;
+
+            const imageMap = {
+                frontal: frontalImage,
+                profile: profileImage,
+                left: leftImage,
+                right: rightImage,
+            };
+
+            let availablePositions = 0;
+            let imageIndex = 0;
+
+            for (const position in imageMap) {
+                if (!imageMap[position]) {
+                    if (imageIndex < selectedImages.length) {
+                        switch (position) {
+                            case 'frontal':
+                                setFrontalImage(selectedImages[imageIndex].uri);
+                                break;
+                            case 'profile':
+                                setProfileImage(selectedImages[imageIndex].uri);
+                                break;
+                            case 'left':
+                                setLeftImage(selectedImages[imageIndex].uri);
+                                break;
+                            case 'right':
+                                setRightImage(selectedImages[imageIndex].uri);
+                                break;
+                            default:
+                                alert('Ocorreu um erro, tente novamente');
+                                break;
+                        }
+
+                        imageIndex++;
+                        availablePositions++;
+                    }
+                }
+            }
+
+            while (imageIndex < selectedImages.length && availablePositions < 4) {
+                for (const position in imageMap) {
+                    if (!imageMap[position]) {
+                        switch (position) {
+                            case 'frontal':
+                                setFrontalImage(selectedImages[imageIndex].uri);
+                                break;
+                            case 'profile':
+                                setProfileImage(selectedImages[imageIndex].uri);
+                                break;
+                            case 'left':
+                                setLeftImage(selectedImages[imageIndex].uri);
+                                break;
+                            case 'right':
+                                setRightImage(selectedImages[imageIndex].uri);
+                                break;
+                            default:
+                                alert('Ocorreu um erro, tente novamente');
+                                break;
+                        }
+
+                        imageIndex++;
+                        availablePositions++;
+                    }
+                }
             }
         }
     };
