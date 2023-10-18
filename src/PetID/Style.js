@@ -31,4 +31,5 @@ export const ActivityIndicatorContainer = styled.View`
     background-color: rgba(0,0,0,0.5);
     border-radius: 10px;
     padding: 20px;
+    position: relative;
 `
