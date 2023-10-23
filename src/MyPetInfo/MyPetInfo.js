@@ -4,17 +4,21 @@ import { ImagePet, ImagesView, MainView, ValuePet, ValuesView } from './Style';
 import { View, Text, Dimensions } from 'react-native';
 import Carousel, { PaginationLight } from 'react-native-x-carousel';
 import { apiPost } from '../config/api';
+import { useUserContext } from '../contexts/UserContext';
 
 
 export default function MyPetInfo({ navigation, route }) {
     const { width } = Dimensions.get('window');
     const { pet } = route.params;
     const [petImages, setPetImages] = useState([{ image: '' }]);
+    const { accessToken } = useUserContext();
 
     async function fetchAllImages(petId) {
         try {
             const { images } = await apiPost('/pets/images', {
                 idPet: petId
+            }, {
+                "Authorization": `Bearer ${accessToken}`
             });
             if (images && images[0] && images[0].image) {
                 setPetImages(images);

@@ -8,7 +8,7 @@ import { ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Toast from 'react-native-root-toast';
 
-const verifyTimeout = 60000;
+const verifyTimeout = 5000;
 
 export default function PetID() {
     const [permission, requestPermission] = Camera.useCameraPermissions();
@@ -101,8 +101,8 @@ export default function PetID() {
         }
     }
 
-    const finallyRecognize = async (petIdentifier) => {
-        Toast.show(petIdentifier, {
+    const finallyRecognize = async (pet) => {
+        Toast.show(pet, {
             duration: 5000,
             position: Toast.positions.CENTER,
             animation: true,
