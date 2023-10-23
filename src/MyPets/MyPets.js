@@ -50,15 +50,15 @@ export default function MyPets({ navigation }) {
     }
 
     useEffect(() => {
-        async function fetchData() {
-            await handleFetchData();
-        }
         if (addingNewPet) {
-            fetchData();
+            handleFetchData();
             setAddingNewPet(!addingNewPet);
         }
-        console.log(data)
     }, [isFocused])
+
+    useEffect(() => {
+        handleFetchData();
+    }, [])
 
     return (
         <MainView>
