@@ -50,21 +50,6 @@ export default function PetID() {
         }
     }, [errorMessage])
 
-    if (!permission) {
-        return <View />
-    }
-
-    if (!permission.granted) {
-        return (
-            <MainView
-                style={{ alignItems: 'center' }}
-            >
-                <Text>Precisamos da sua permissão para mostrar a câmera</Text>
-                <Button onPress={requestPermission} title="Permitir" />
-            </MainView>
-        );
-    }
-
     const startRecognize = async (imagePath) => {
         const formData = new FormData();
         formData.append('image', {
@@ -121,6 +106,17 @@ export default function PetID() {
             const { uri } = await cameraRef.current.takePictureAsync();
             await startRecognize(uri);
         }
+    }
+
+    if (permission === null || !permission.granted) {
+        return (
+            <MainView
+                style={{ alignItems: 'center' }}
+            >
+                <Text>Precisamos da sua permissão para mostrar a câmera</Text>
+                <Button onPress={requestPermission} title="Permitir" />
+            </MainView>
+        );
     }
 
     return (

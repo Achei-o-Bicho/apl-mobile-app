@@ -34,14 +34,14 @@ ResponseBody: ${response.body}
 export const apiPost = async (
     endpoint,
     data,
-    headers = {
-        'Content-Type': 'application/json',
-    },
+    headers = {},
     timeout = 5000
 ) => {
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+        headers["Content-Type"] = 'application/json';
 
         const response = await fetch(`${BASE_URL}${endpoint}`, {
             method: 'POST',
