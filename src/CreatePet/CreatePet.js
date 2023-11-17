@@ -31,7 +31,7 @@ export default function CreatePet({ navigation }) {
     const refScroll = useRef(null);
     const [feedbackMessage, setFeedbackMessage] = useState(null);
 
-    const { userId, setAddingNewPet } = useUserContext();
+    const { userId, setAddingNewPet, accessToken } = useUserContext();
 
     const inputs = [
         [
@@ -255,8 +255,9 @@ export default function CreatePet({ navigation }) {
         });
         try {
             await apiPost(`/pets/${petId}/save-image`, formData, {
-                "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-            }, 60000);
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${accessToken}`
+            }, 20000);
         } catch (error) {
             console.log(error);
             setFeedbackMessage("Estamos enfrentando algum problema ao salvar suas imagens, tente novamente mais tarde")

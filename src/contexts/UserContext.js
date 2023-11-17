@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
   const [recognizing, setRecognizing] = useState(false);
   const [endToEnd, setEndToEnd] = useState(null);
   const [petToRecognizePicture, setPetToRecognizePicture] = useState(null);
+  const [recentScannedPets, setRecentScannedPets] = useState([]);
 
   return (
     <UserContext.Provider value={{
@@ -21,7 +22,8 @@ export const UserProvider = ({ children }) => {
       addingNewPet, setAddingNewPet,
       recognizing, setRecognizing,
       endToEnd, setEndToEnd,
-      petToRecognizePicture, setPetToRecognizePicture
+      petToRecognizePicture, setPetToRecognizePicture,
+      recentScannedPets, setRecentScannedPets
     }}>
       {children}
     </UserContext.Provider>

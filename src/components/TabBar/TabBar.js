@@ -2,10 +2,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyPets from '../../MyPets/MyPets';
 import Profile from '../../Profile/Profile';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { useUserContext } from '../../contexts/UserContext';
 import PetID from '../../PetID/PetID';
 import PetIDIcon from '../PetIDIcon/PetIDIcon';
+import RecentScanners from '../../RecentScanners/RecentScanners';
 
 const Tab = createBottomTabNavigator();
 const ActiveTintColor = "purple"
@@ -50,6 +51,17 @@ export default function TabBar() {
                     headerTintColor: ActiveTintColor,
                     tabBarIcon: ({ color }) => {
                         return <FontAwesome name="user" size={IconSize} color={color} />
+                    }
+                })}
+            />
+            <Tab.Screen
+                name="Recentes"
+                component={RecentScanners}
+                options={() => ({
+                    tabBarActiveTintColor: ActiveTintColor,
+                    headerTintColor: ActiveTintColor,
+                    tabBarIcon: ({ color }) => {
+                        return <FontAwesome5 name="history" size={IconSize} color={color} />
                     }
                 })}
             />

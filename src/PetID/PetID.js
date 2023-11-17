@@ -10,7 +10,7 @@ import Toast from 'react-native-root-toast';
 
 const verifyTimeout = 5000;
 
-export default function PetID() {
+export default function PetID({ navigation }) {
     const [permission, requestPermission] = Camera.useCameraPermissions();
     const [cameraIsReady, setCameraIsReady] = useState(false);
     const cameraRef = useRef(null);
@@ -71,29 +71,23 @@ export default function PetID() {
 
     const verifyRecognize = async (timeout) => {
         try {
-            const { resultRecognator } = await apiGet(`/recognize/${endToEnd}`, {
+            const { results } = await apiGet(`/recognize/${endToEnd}`, {
                 "Authorization": `Bearer ${accessToken}`
             });
-            if (!resultRecognator) {
+            if (!results) {
                 setTimeout(async () => {
                     await verifyRecognize(timeout);
                 }, timeout);
             } else {
-                await finallyRecognize(resultRecognator);
+                await finallyRecognize(results);
             }
         } catch (error) {
             console.log(error)
         }
     }
 
-    const finallyRecognize = async (pet) => {
-        Toast.show(pet, {
-            duration: 5000,
-            position: Toast.positions.CENTER,
-            animation: true,
-            hideOnPress: false,
-            delay: 0
-        });
+    const finallyRecognize = async (findedPets) => {
+        handleNavigationFindedPets(findedPets);
         setRecognizing(false);
         setEndToEnd(null);
     }
@@ -106,6 +100,10 @@ export default function PetID() {
             const { uri } = await cameraRef.current.takePictureAsync();
             await startRecognize(uri);
         }
+    }
+
+    function handleNavigationFindedPets(pets) {
+        navigation.navigate("FindedPets", { results: pets });
     }
 
     if (permission === null || !permission.granted) {

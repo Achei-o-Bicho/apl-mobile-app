@@ -23,7 +23,7 @@ ResponseBody: ${response.body}
             `);
         }
 
-        console.log(response)
+        // console.log(response)
         const data = await response.json();
         return data;
     } catch (error) {
@@ -41,7 +41,9 @@ export const apiPost = async (
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-        headers["Content-Type"] = 'application/json';
+        if (!("Content-Type" in headers)) {
+            headers["Content-Type"] = 'application/json';
+        }
 
         const response = await fetch(`${BASE_URL}${endpoint}`, {
             method: 'POST',
@@ -64,7 +66,7 @@ ResponseBody: ${response.body}
         const responseData = await response.json();
         return responseData;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         throw error;
     }
 };
