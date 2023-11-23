@@ -1,28 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MainView } from './Style';
 import { FlatList } from 'react-native';
 import MyPetCard from '../components/MyPetCard/MyPetCard';
 import { useUserContext } from '../contexts/UserContext';
 
 export default function FindedPets({ navigation, route }) {
-    const results = useState(route.params.results);
-    const { setRecentScannedPets } = useUserContext();
+    const { results } = route.params;
+    const { recentScannedPets, setRecentScannedPets } = useUserContext();
 
     return (
         <MainView>
             <FlatList
+            style={{ marginTop: 40 }}
                 data={results}
-                renderItem={({ result }) => {
-                    if (result && result.pet.images && result.pet.images[0] && result.pet.images[0].base64) {
+                renderItem={({ item }) => {
+                    if (item && item.pet.images && item.pet.images[0] && item.pet.images[0].base64) {
                         return (
                             <MyPetCard
-                                name={result.pet.name}
-                                breed={result.pet.breed}
-                                imagePreview={result.pet.images[0].base64}
-                                description={result.pet.description}
+                                name={item.pet.name}
+                                breed={item.pet.breed}
+                                imagePreview={item.pet.images[0].base64}
+                                description={item.pet.description}
                                 onPress={() => {
-                                    navigation.navigate("MyPetInfo", { pet: result.pet });
-                                    setRecentScannedPets((prev) => [...prev, result.pet])
+                                    setRecentScannedPets((prev) => [...prev, item.pet]);
+                                    navigation.navigate("MyPetInfo", { pet: item.pet });
                                 }}
                             />
                         );

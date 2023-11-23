@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MyPets from '../../MyPets/MyPets';
 import Profile from '../../Profile/Profile';
@@ -13,7 +13,7 @@ const ActiveTintColor = "purple"
 const IconSize = 32
 
 export default function TabBar() {
-    const { userName } = useUserContext();
+    const { userName, recentScannedPets } = useUserContext();
 
     return (
         <Tab.Navigator>
@@ -54,17 +54,19 @@ export default function TabBar() {
                     }
                 })}
             />
-            <Tab.Screen
-                name="Recentes"
-                component={RecentScanners}
-                options={() => ({
-                    tabBarActiveTintColor: ActiveTintColor,
-                    headerTintColor: ActiveTintColor,
-                    tabBarIcon: ({ color }) => {
-                        return <FontAwesome5 name="history" size={IconSize} color={color} />
-                    }
-                })}
-            />
+            {recentScannedPets.length > 0 && (
+                <Tab.Screen
+                    name="Recentes"
+                    component={RecentScanners}
+                    options={() => ({
+                        tabBarActiveTintColor: ActiveTintColor,
+                        headerTintColor: ActiveTintColor,
+                        tabBarIcon: ({ color }) => {
+                            return <FontAwesome5 name="history" size={IconSize} color={color} />
+                        }
+                    })}
+                />
+            )}
         </Tab.Navigator>
     );
 }

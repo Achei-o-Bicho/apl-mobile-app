@@ -3,4 +3,5 @@ import styled from 'styled-components';
 
 export const MainView = styled.SafeAreaView`
     flex: 1;
+    background-color: #f2f2f2;
 `
