@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "62a2adc5-f067-4a39-a398-e86a754da0f1"
+      }
+    },
+    "name": "Achei o bicho",
+    "icon": "./src/assets/icon.png",
+    "version": "1.0.0",
+    "slug": "acheiobicho",
+    "platforms": ["ios", "android"],
+    "ios": {
+      "bundleIdentifier": "com.kalibeg.acheiobicho"
+    },
+    "android": {
+      "package": "com.kalibeg.acheiobicho"
+    }
+  }
+}

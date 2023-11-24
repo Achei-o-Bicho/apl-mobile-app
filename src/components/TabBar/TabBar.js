@@ -6,7 +6,7 @@ import { Ionicons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { useUserContext } from '../../contexts/UserContext';
 import PetID from '../../PetID/PetID';
 import PetIDIcon from '../PetIDIcon/PetIDIcon';
-import RecentScanners from '../../RecentScanners/RecentScanners';
+import ChatList from '../ChatList/ChatList';
 
 const Tab = createBottomTabNavigator();
 const ActiveTintColor = "purple"
@@ -43,10 +43,22 @@ export default function TabBar() {
                 })}
             />
             <Tab.Screen
+                name="Chat"
+                component={ChatList}
+                options={() => ({
+                    tabBarActiveTintColor: ActiveTintColor,
+                    headerTintColor: ActiveTintColor,
+                    tabBarIcon: ({ color }) => {
+                        return <Ionicons name="chatbubble-ellipses-outline" size={IconSize} color={color} />
+                    }
+                })}
+            />
+            <Tab.Screen
                 name="Profile"
                 component={Profile}
                 options={() => ({
                     title: userName ? userName : "Perfil",
+                    tabBarLabel: userName.split(" ")[0],
                     tabBarActiveTintColor: ActiveTintColor,
                     headerTintColor: ActiveTintColor,
                     tabBarIcon: ({ color }) => {
@@ -54,19 +66,6 @@ export default function TabBar() {
                     }
                 })}
             />
-            {recentScannedPets.length > 0 && (
-                <Tab.Screen
-                    name="Recentes"
-                    component={RecentScanners}
-                    options={() => ({
-                        tabBarActiveTintColor: ActiveTintColor,
-                        headerTintColor: ActiveTintColor,
-                        tabBarIcon: ({ color }) => {
-                            return <FontAwesome5 name="history" size={IconSize} color={color} />
-                        }
-                    })}
-                />
-            )}
         </Tab.Navigator>
     );
 }

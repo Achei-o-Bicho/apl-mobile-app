@@ -12,6 +12,7 @@ import MyPetInfo from './src/MyPetInfo/MyPetInfo';
 import { UserProvider } from './src/contexts/UserContext';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import FindedPets from './src/FindedPets/FindedPets';
+import ChatConversation from './src/components/ChatConversation/ChatConversation';
 
 const Stack = createNativeStackNavigator();
 
@@ -119,6 +120,18 @@ export default function App() {
                 options={{
                   headerTintColor: "purple",
                   title: "Escolha o PET mais semelhante",
+                  contentStyle: {
+                    backgroundColor: "white"
+                  }
+                }}
+              />
+            </Stack.Group>
+            <Stack.Group>
+              <Stack.Screen
+                name="ChatConversation"
+                component={ChatConversation}
+                options={{
+                  headerTintColor: "purple",
                   contentStyle: {
                     backgroundColor: "white"
                   }
