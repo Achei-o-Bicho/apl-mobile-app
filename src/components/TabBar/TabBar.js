@@ -46,6 +46,8 @@ export default function TabBar() {
                 name="Chat"
                 component={ChatList}
                 options={() => ({
+                    title: "Ultimas conversas",
+                    tabBarLabel: "Chat",
                     tabBarActiveTintColor: ActiveTintColor,
                     headerTintColor: ActiveTintColor,
                     tabBarIcon: ({ color }) => {
