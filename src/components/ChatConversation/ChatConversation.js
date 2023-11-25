@@ -7,12 +7,18 @@ export default function ChatConversation({ navigation, route }) {
     const { chat, name, socket } = route.params;
     const [messages, setMessages] = useState(chat.messages);
     const [messageText, setMessageText] = useState();
+    const { userId } = useUserContext();
     const scrollViewRef = useRef(null);
 
+    // setMessages(rooms.filter((room) => room._id === chat._id)[0].messages)
     useEffect(() => {
         navigation.setOptions({ title: name });
         socket.connect();
-        socket.on('get_all_messages', (rooms) => setMessages(rooms.messages));
+        socket.on('get_all_messages', (rooms) => {
+            if (rooms === typeof(Array)) {
+                console.log(rooms.filter((room) => room._id === chat._id)[0].messages)
+            }
+        });
         scrollToBottom();
 
         return () => {
@@ -27,7 +33,7 @@ export default function ChatConversation({ navigation, route }) {
             room: {
                 id: chat._id
             }
-        })
+        }, (response) => setMessages(response.messages))
         setMessageText();
         scrollToBottom();
     }
@@ -54,16 +60,16 @@ export default function ChatConversation({ navigation, route }) {
                 data={messages}
                 renderItem={({ item }) => {
                     if (item) {
-                        if (item.isOwner) {
-                            return <SenderCell>
-                                <CellText>{item.message}</CellText>
-                                <TimeText>{item.createdAt}</TimeText>
-                            </SenderCell>
-                        } else {
+                        if (item.user === userId) {
                             return <ReceiverCell>
                                 <CellText>{item.message}</CellText>
                                 <TimeText>{item.createdAt}</TimeText>
                             </ReceiverCell>
+                        } else {
+                            return <SenderCell>
+                                <CellText>{item.message}</CellText>
+                                <TimeText>{item.createdAt}</TimeText>
+                            </SenderCell>
                         }
                     }
                 }}
