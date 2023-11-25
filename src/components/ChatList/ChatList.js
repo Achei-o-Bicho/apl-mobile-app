@@ -9,14 +9,16 @@ export default function ChatList({ navigation }) {
     const [rooms, setRooms] = useState([]);
     const { accessToken } = useUserContext();
     const socket = io("http://3.229.11.208:8080/", {
+        autoConnect: false,
         extraHeaders: {
             "Authorization": `Bearer ${accessToken}`
         }
     });
 
     useEffect(() => {
-        socket.on('connect', () => console.log(socket.id))
+        socket.connect();
         socket.on('get_all_messages', (rooms) => setRooms(rooms));
+        console.log(rooms);
 
         return () => {
             socket.disconnect();
