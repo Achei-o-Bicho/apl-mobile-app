@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TypingAnimation from '../components/TypingAnimation/TypingAnimation';
-import { MainView, BottomView, ChatView, BotCell, UserCell, CellText, ChatInput, AirPlaneButton, ViewGIF, FinishButton, ButtonText } from './Style';
+import { MainView, BottomView, ChatView, BotCell, UserCell, CellText, ChatInput, AirPlaneButton, ViewGIF, FinishButton, ButtonText, BotCellText, UserCellText } from './Style';
 import { KeyboardAvoidingView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { cpf } from 'cpf-cnpj-validator';
 const passwordValidator = require('password-validator');
@@ -281,11 +281,11 @@ export default function CreateAccount({ navigation }) {
                 >
                     {list.map((item, index) => item.origin === 'bot' ? (
                         <BotCell key={index}>
-                            <CellText>{item.text}</CellText>
+                            <BotCellText>{item.text}</BotCellText>
                         </BotCell>
                     ) : (
                         <UserCell key={index}>
-                            <CellText>{
+                            <UserCellText>{
                                 item.isSecureText ?
                                     item.text
                                         .split('')
@@ -293,7 +293,7 @@ export default function CreateAccount({ navigation }) {
                                         .join('')
                                     :
                                     item.text
-                            }</CellText >
+                            }</UserCellText>
                         </UserCell >
                     ))}
                     {isBotTyping && (

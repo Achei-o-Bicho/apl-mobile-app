@@ -28,7 +28,12 @@ export const Cell = styled.View`
 
 export const BotCell = styled(Cell)`
     align-self: flex-start;
-    background-color: #A0A0A0;
+    background-color: lightgray;
+`
+
+export const BotCellText = styled.Text`
+    color: black;
+    font-size: 16px;
 `
 
 export const UserCell = styled(Cell)`
@@ -36,7 +41,7 @@ export const UserCell = styled(Cell)`
     background-color: purple;
 `
 
-export const CellText = styled.Text`
+export const UserCellText = styled.Text`
     color: white;
     font-size: 16px;
 `
