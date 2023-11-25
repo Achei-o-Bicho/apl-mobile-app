@@ -29,7 +29,7 @@ export default function ChatConversation({ navigation, route }) {
     function handleSendSocketMessage(message) {
         socket.emit("send_message", {
             message: message,
-            userIdReceiver: chat.idUserConversationPartner !== userId ? userId : chat.idUserConversationPartner,
+            userIdReceiver: chat.idUserConversationPartner === userId ? userId : chat.idUserConversationPartner,
             room: {
                 id: chat._id
             }
