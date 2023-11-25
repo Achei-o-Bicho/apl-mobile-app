@@ -10,8 +10,14 @@ export default function ChatConversation({ navigation, route }) {
     const scrollViewRef = useRef(null);
 
     useEffect(() => {
-        navigation.setOptions({ title: name })
+        navigation.setOptions({ title: name });
+        socket.connect();
+        socket.on('get_all_messages', (rooms) => setMessages(rooms.messages));
         scrollToBottom();
+
+        return () => {
+            socket.disconnect();
+        };
     }, [])
     
     function handleSendSocketMessage(message) {
@@ -21,7 +27,7 @@ export default function ChatConversation({ navigation, route }) {
             room: {
                 id: chat._id
             }
-        }, (response) => console.log(response))
+        })
         setMessageText();
         scrollToBottom();
     }

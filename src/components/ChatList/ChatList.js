@@ -18,7 +18,6 @@ export default function ChatList({ navigation }) {
     useEffect(() => {
         socket.connect();
         socket.on('get_all_messages', (rooms) => setRooms(rooms));
-        console.log(rooms);
 
         return () => {
             socket.disconnect();
