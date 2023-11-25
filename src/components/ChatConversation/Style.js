@@ -65,7 +65,7 @@ export const ChatInput = styled.TextInput`
     flex: 1;
     height: 38px;
     border: 1px solid white;
-    color: white;
+    color: black;
     padding: 8px 15px;
     border-radius: 8px;
     font-size: 16px;

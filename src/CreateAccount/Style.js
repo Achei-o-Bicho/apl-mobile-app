@@ -22,30 +22,32 @@ export const ChatView = styled.ScrollView`
 export const Cell = styled.View`
     padding: 10px 15px;
     margin: 5px;
-    border-radius: 15px;
+    border-radius: 8px;
     max-width: 80%;
 `
 
 export const BotCell = styled(Cell)`
     align-self: flex-start;
-    background-color: pink;
+    background-color: #A0A0A0;
 `
 
 export const UserCell = styled(Cell)`
     align-self: flex-end;
-    background-color: lightgray;
+    background-color: purple;
 `
 
 export const CellText = styled.Text`
+    color: white;
     font-size: 16px;
 `
 
 export const ChatInput = styled.TextInput`
+    background-color: white;
     width: 80%;
     border: 1px solid white;
-    color: white;
+    color: black;
     padding: 8px 15px;
-    border-radius: 20px;
+    border-radius: 8px;
     font-size: 16px;
     margin: 12px 10px 12px 0;
 `

@@ -308,7 +308,7 @@ export default function CreateAccount({ navigation }) {
                             <ChatInput
                                 ref={refChatInput}
                                 placeholder={isBotTyping ? "Aguarde..." : "Digite aqui"}
-                                placeholderTextColor="lightgray"
+                                placeholderTextColor="#adadad"
                                 editable={!isBotTyping}
                                 keyboardType={chat.steps[currentStep].keyboardType}
                                 secureTextEntry={chat.steps[currentStep].secureTextEntry}

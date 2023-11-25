@@ -19,7 +19,6 @@ export default function ChatConversation({ navigation, route }) {
             }
         })
         setMessageText();
-        scrollToBottom();
     }
 
     const scrollToBottom = () => {
@@ -86,7 +85,8 @@ export default function ChatConversation({ navigation, route }) {
                         value={messageText}
                         onChangeText={setMessageText}
                         placeholder="Digite aqui..."
-                        placeholderTextColor="lightgray"
+                        placeholderTextColor="#adadad"
+                        onFocus={scrollToBottom}
                     />
                     <TouchableOpacity
                         onPress={() => handleSendSocketMessage(messageText)}
