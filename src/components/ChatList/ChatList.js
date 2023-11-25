@@ -7,7 +7,7 @@ import ChatSelection from '../ChatSelection/ChatSelection';
 
 export default function ChatList({ navigation }) {
     const [rooms, setRooms] = useState([]);
-    const { accessToken } = useUserContext();
+    const { accessToken, userId } = useUserContext();
     const socket = io("http://3.229.11.208:8080/", {
         autoConnect: false,
         extraHeaders: {
@@ -28,14 +28,15 @@ export default function ChatList({ navigation }) {
         <FlatList
             data={rooms}
             renderItem={({ item }) => {
+                const nameUserConversationPartner = item.receiver._id === userId ? item.sender.name : item.receiver.name
                 if (item && item.sender && item.sender.name && item.messages && item.messages[item.messages.length - 1].message && item.messages[item.messages.length - 1].createdAt) {
                     return <>
                         <ChatSelection
-                            name={item.sender.name}
+                            name={nameUserConversationPartner}
                             lastMessage={item.messages[item.messages.length - 1].message}
                             date={item.messages[item.messages.length - 1].createdAt}
                             onPress={() => {
-                                navigation.navigate("ChatConversation", { chat: item, name: item.sender.name, socket })
+                                navigation.navigate("ChatConversation", { chat: item, name: nameUserConversationPartner, socket })
                             }}
                         />
                         <Separator />

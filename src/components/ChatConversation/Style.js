@@ -21,7 +21,7 @@ export const ChatView = styled.ScrollView`
 
 export const ReceiverCell = styled(Cell)`
     align-self: flex-start;
-    background-color: #A0A0A0;
+    background-color: lightgray;
     align-items: flex-start;
 `
 
@@ -42,12 +42,12 @@ export const TimeSextSender = styled.Text`
 `
 
 export const CellTextReceiver = styled.Text`
-    color: white;
+    color: black;
     font-size: 16px;
 `
 
 export const TimeSextReceiver = styled.Text`
-    color: white;
+    color: black;
     font-size: 10px;
 `
 
