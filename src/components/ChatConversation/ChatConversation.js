@@ -15,7 +15,7 @@ export default function ChatConversation({ navigation, route }) {
         navigation.setOptions({ title: name });
         socket.connect();
         socket.on('get_all_messages', (rooms) => {
-            if (rooms === typeof(Array) && rooms.length > 0) {
+            if (rooms === typeof (Array) && rooms.length > 0) {
                 console.log(rooms.filter((room) => room._id === chat._id)[0].messages)
             }
         });
@@ -25,11 +25,11 @@ export default function ChatConversation({ navigation, route }) {
             socket.disconnect();
         };
     }, [])
-    
+
     function handleSendSocketMessage(message) {
         socket.emit("send_message", {
             message: message,
-            userIdReceiver: chat.idUserConversationPartner === userId ? userId : chat.idUserConversationPartner,
+            userIdReceiver: userId === chat.sender._id ? chat.receiver._id : chat.sender._id,
             room: {
                 id: chat._id
             }

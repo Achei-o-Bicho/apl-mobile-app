@@ -3,10 +3,6 @@ import { Date, LastMessage, MainView, Name, TopView } from './Style'
 
 export default function ChatSelection({ name, date, lastMessage, onPress }) {
 
-    useEffect(() => {
-        console.log(date)
-    }, [])
-
     function formatDate(date) {
         let dateObject = new Date(date);
         var options = { day: '2-digit', month: '2-digit', year: 'numeric' };
