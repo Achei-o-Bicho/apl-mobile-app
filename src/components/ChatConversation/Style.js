@@ -27,7 +27,7 @@ export const ReceiverCell = styled(Cell)`
 
 export const SenderCell = styled(Cell)`
     align-self: flex-end;
-    background-color: aliceblue;
+    background-color: lightgray;
     align-items: flex-end;
 `
 

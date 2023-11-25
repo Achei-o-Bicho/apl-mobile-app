@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { KeyboardAvoidingView, TouchableOpacity, Platform, ScrollView } from 'react-native';
+import { KeyboardAvoidingView, TouchableOpacity, Platform, ScrollView, View } from 'react-native';
 import { AirPlaneButton, BottomView, CellText, ChatInput, MainView, ReceiverCell, SenderCell, TimeText } from './Style';
 import { useUserContext } from '../../contexts/UserContext';
 
@@ -55,42 +55,46 @@ export default function ChatConversation({ navigation, route }) {
             enabled
             keyboardVerticalOffset={90}
         >
-            <ScrollView
-                ref={scrollViewRef}
-                onContentSizeChange={scrollToBottom}
-                contentContainerStyle={{
-                    flexGrow: 1,
-                    justifyContent: 'flex-end',
-                    backgroundColor: 'white'
-                }}
+            <View
+                style={{ flex: 1, backgroundColor: 'white' }}
             >
-                {messages.map((message) => {
-                    if (message.user === userId) {
-                        return <ReceiverCell>
-                            <CellText>{message.message}</CellText>
-                            <TimeText>{formatDate(message.createdAt)}</TimeText>
-                        </ReceiverCell>
-                    } else {
-                        return <SenderCell>
-                            <CellText>{message.message}</CellText>
-                            <TimeText>{formatDate(message.createdAt)}</TimeText>
-                        </SenderCell>
-                    }
-                })}
-            </ScrollView>
-            <BottomView>
-                <ChatInput
-                    value={messageText}
-                    onChangeText={setMessageText}
-                    placeholder="Digite aqui..."
-                    placeholderTextColor="lightgray"
-                />
-                <TouchableOpacity
-                    onPress={() => handleSendSocketMessage(messageText)}
+                <ScrollView
+                    ref={scrollViewRef}
+                    onContentSizeChange={scrollToBottom}
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        justifyContent: 'flex-end',
+                        backgroundColor: 'white'
+                    }}
                 >
-                    <AirPlaneButton source={require('../../assets/paperplane.circle.fill.png')} />
-                </TouchableOpacity>
-            </BottomView>
+                    {messages.map((message) => {
+                        if (message.user === userId) {
+                            return <ReceiverCell>
+                                <CellText>{message.message}</CellText>
+                                <TimeText>{formatDate(message.createdAt)}</TimeText>
+                            </ReceiverCell>
+                        } else {
+                            return <SenderCell>
+                                <CellText>{message.message}</CellText>
+                                <TimeText>{formatDate(message.createdAt)}</TimeText>
+                            </SenderCell>
+                        }
+                    })}
+                </ScrollView>
+                <BottomView>
+                    <ChatInput
+                        value={messageText}
+                        onChangeText={setMessageText}
+                        placeholder="Digite aqui..."
+                        placeholderTextColor="lightgray"
+                    />
+                    <TouchableOpacity
+                        onPress={() => handleSendSocketMessage(messageText)}
+                    >
+                        <AirPlaneButton source={require('../../assets/paperplane.circle.fill.png')} />
+                    </TouchableOpacity>
+                </BottomView>
+            </View>
         </KeyboardAvoidingView>
     </MainView>
 }

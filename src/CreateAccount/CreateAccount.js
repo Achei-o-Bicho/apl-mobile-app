@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TypingAnimation from '../components/TypingAnimation/TypingAnimation';
 import { MainView, BottomView, ChatView, BotCell, UserCell, CellText, ChatInput, AirPlaneButton, ViewGIF, FinishButton, ButtonText } from './Style';
-import { SafeAreaView, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { cpf } from 'cpf-cnpj-validator';
 const passwordValidator = require('password-validator');
 import validator from 'validator';
@@ -15,7 +15,6 @@ export default function CreateAccount({ navigation }) {
     const [currentItemIndex, setCurrentItemIndex] = useState(0);
     const [isBotTyping, setBotTyping] = useState(true);
     const [currentStep, setCurrentStep] = useState(0);
-    const [bottomViewHeight, setBottomViewHeight] = useState(0);
     const [isFinished, setFinished] = useState(false);
     const refChatInput = useRef(null);
     const scrollViewRef = useRef(null);
@@ -264,12 +263,13 @@ export default function CreateAccount({ navigation }) {
     }, [isBotTyping])
 
     return (
-        <MainView
-            behavior="position"
-            enabled
-            keyboardVerticalOffset={Platform.OS === 'ios' ? bottomViewHeight : 0}
-        >
-            <SafeAreaView>
+        <MainView>
+            <KeyboardAvoidingView
+               style={{ flex: 1, backgroundColor: 'purple' }}
+               behavior={Platform.OS == "ios" ? "padding" : null}
+               enabled
+               keyboardVerticalOffset={90}
+            >
                 <ChatView
                     ref={scrollViewRef}
                     onContentSizeChange={scrollToBottom}
@@ -302,11 +302,7 @@ export default function CreateAccount({ navigation }) {
                         </ViewGIF>
                     )}
                 </ChatView>
-                <BottomView
-                    onLayout={(event) => {
-                        setBottomViewHeight(event.nativeEvent.layout.height)
-                    }}
-                >
+                <BottomView>
                     {!isFinished ? (
                         <>
                             <ChatInput
@@ -357,7 +353,7 @@ export default function CreateAccount({ navigation }) {
                         </FinishButton>
                     )}
                 </BottomView>
-            </SafeAreaView>
+            </KeyboardAvoidingView>
         </MainView>
     )
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const MainView = styled.KeyboardAvoidingView`
+export const MainView = styled.SafeAreaView`
     background-color: purple;
     flex: 1;
 `
@@ -33,7 +33,7 @@ export const BotCell = styled(Cell)`
 
 export const UserCell = styled(Cell)`
     align-self: flex-end;
-    background-color: aliceblue;
+    background-color: lightgray;
 `
 
 export const CellText = styled.Text`
