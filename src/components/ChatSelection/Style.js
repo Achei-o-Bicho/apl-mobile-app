@@ -13,7 +13,6 @@ export const Name = styled.Text`
     color: purple;
     font-size: 15px;
     font-weight: 600;
-    flex: 1;
 `
 
 export const LastMessage = styled.Text`
@@ -21,7 +20,8 @@ export const LastMessage = styled.Text`
 `
 
 export const TopView = styled.View`
-    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
 `
 
 export const Date = styled.Text`

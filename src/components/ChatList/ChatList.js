@@ -7,7 +7,7 @@ import ChatSelection from '../ChatSelection/ChatSelection';
 
 export default function ChatList({ navigation }) {
     const [rooms, setRooms] = useState([]);
-    const { accessToken, userId } = useUserContext();
+    const { accessToken } = useUserContext();
     const socket = io("http://3.229.11.208:8080/", {
         extraHeaders: {
             "Authorization": `Bearer ${accessToken}`
@@ -18,6 +18,10 @@ export default function ChatList({ navigation }) {
         socket.on('connect', () => {
             socket.emit('get_all_rooms', (rooms) => setRooms(rooms));
         });
+
+        return () => {
+            socket.on('disconnect');
+        };
     }, [socket])
 
     return <MainView>
@@ -31,7 +35,7 @@ export default function ChatList({ navigation }) {
                             lastMessage={item.messages[item.messages.length - 1].message}
                             date={item.messages[item.messages.length - 1].createdAt}
                             onPress={() => {
-                                navigation.navigate("ChatConversation", { chat: item })
+                                navigation.navigate("ChatConversation", { chat: item, name: item.sender.name, socket })
                             }}
                         />
                         <Separator />

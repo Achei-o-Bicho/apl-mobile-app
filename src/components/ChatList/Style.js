@@ -6,7 +6,8 @@ export const MainView = styled.SafeAreaView`
 `
 
 export const Separator = styled.View`
-    background-color: gray;
-    height: 0.5px;
-    width: 100%;
+    background-color: lightgray;
+    height: 0.3px;
+    margin-left: 10px;
+    margin-right: 10px;
 `

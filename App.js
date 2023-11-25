@@ -131,9 +131,13 @@ export default function App() {
                 name="ChatConversation"
                 component={ChatConversation}
                 options={{
-                  headerTintColor: "purple",
+                  headerBackTitle: "",
+                  headerTintColor: "white",
+                  headerStyle: {
+                    backgroundColor: "purple"
+                  },
                   contentStyle: {
-                    backgroundColor: "white"
+                    backgroundColor: "purple"
                   }
                 }}
               />
