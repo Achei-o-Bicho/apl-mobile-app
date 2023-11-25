@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, KeyboardAvoidingView, TouchableOpacity, Keyboard, KeyboardEvent, Platform } from 'react-native';
+import { KeyboardAvoidingView, TouchableOpacity, Platform, ScrollView } from 'react-native';
 import { AirPlaneButton, BottomView, CellText, ChatInput, MainView, ReceiverCell, SenderCell, TimeText } from './Style';
 import { useUserContext } from '../../contexts/UserContext';
 
@@ -9,17 +9,6 @@ export default function ChatConversation({ navigation, route }) {
     const [messageText, setMessageText] = useState();
     const { userId } = useUserContext();
     const scrollViewRef = useRef(null);
-    
-    useEffect(() => {
-        navigation.setOptions({ title: name });
-        socket.connect();
-        socket.on('get_all_messages', (rooms) => setMessages(rooms.filter((room) => room._id === chat._id)[0].messages));
-        scrollToBottom();
-
-        return () => {
-            socket.disconnect();
-        };
-    }, [])
 
     function handleSendSocketMessage(message) {
         socket.emit("send_message", {
@@ -46,6 +35,19 @@ export default function ChatConversation({ navigation, route }) {
         return newDate;
     }
 
+    useEffect(() => {
+        navigation.setOptions({ title: name });
+        socket.connect();
+        socket.on('get_all_messages', (rooms) => {
+            setMessages(rooms.filter((room) => room._id === chat._id)[0].messages)
+            scrollToBottom();
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [])
+
     return <MainView>
         <KeyboardAvoidingView
             style={{ flex: 1, backgroundColor: 'white' }}
@@ -53,29 +55,28 @@ export default function ChatConversation({ navigation, route }) {
             enabled
             keyboardVerticalOffset={Platform.OS == "ios" ? 92 : 90}
         >
-            <FlatList
+            <ScrollView
+                ref={scrollViewRef}
+                onContentSizeChange={scrollToBottom}
                 contentContainerStyle={{
                     flexGrow: 1,
                     justifyContent: 'flex-end'
                 }}
-                ref={scrollViewRef}
-                data={messages}
-                renderItem={({ item }) => {
-                    if (item) {
-                        if (item.user === userId) {
-                            return <ReceiverCell>
-                                <CellText>{item.message}</CellText>
-                                <TimeText>{formatDate(item.createdAt)}</TimeText>
-                            </ReceiverCell>
-                        } else {
-                            return <SenderCell>
-                                <CellText>{item.message}</CellText>
-                                <TimeText>{formatDate(item.createdAt)}</TimeText>
-                            </SenderCell>
-                        }
+            >
+                {messages.map((message) => {
+                    if (message.user === userId) {
+                        return <ReceiverCell>
+                            <CellText>{message.message}</CellText>
+                            <TimeText>{formatDate(message.createdAt)}</TimeText>
+                        </ReceiverCell>
+                    } else {
+                        return <SenderCell>
+                            <CellText>{message.message}</CellText>
+                            <TimeText>{formatDate(message.createdAt)}</TimeText>
+                        </SenderCell>
                     }
-                }}
-            />
+                })}
+            </ScrollView>
             <BottomView>
                 <ChatInput
                     value={messageText}
