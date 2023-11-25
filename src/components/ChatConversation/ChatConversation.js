@@ -15,7 +15,7 @@ export default function ChatConversation({ navigation, route }) {
         navigation.setOptions({ title: name });
         socket.connect();
         socket.on('get_all_messages', (rooms) => {
-            if (rooms === typeof(Array)) {
+            if (rooms === typeof(Array) && rooms.length > 0) {
                 console.log(rooms.filter((room) => room._id === chat._id)[0].messages)
             }
         });
@@ -29,7 +29,7 @@ export default function ChatConversation({ navigation, route }) {
     function handleSendSocketMessage(message) {
         socket.emit("send_message", {
             message: message,
-            userIdReceiver: chat.idUserConversationPartner,
+            userIdReceiver: chat.idUserConversationPartner !== userId ? userId : chat.idUserConversationPartner,
             room: {
                 id: chat._id
             }
@@ -43,6 +43,13 @@ export default function ChatConversation({ navigation, route }) {
             scrollViewRef.current.scrollToEnd({ animated: true });
         }
     };
+
+    function formatDate(date) {
+        let dateObject = new Date(date);
+        var options = { hour: '2-digit', minute: '2-digit', hour12: false };
+        var newDate = dateObject.toLocaleDateString('pt-BR', options);
+        return newDate;
+    }
 
     return <MainView>
         <KeyboardAvoidingView
@@ -63,12 +70,12 @@ export default function ChatConversation({ navigation, route }) {
                         if (item.user === userId) {
                             return <ReceiverCell>
                                 <CellText>{item.message}</CellText>
-                                <TimeText>{item.createdAt}</TimeText>
+                                <TimeText>{formatDate(item.createdAt)}</TimeText>
                             </ReceiverCell>
                         } else {
                             return <SenderCell>
                                 <CellText>{item.message}</CellText>
-                                <TimeText>{item.createdAt}</TimeText>
+                                <TimeText>{formatDate(item.createdAt)}</TimeText>
                             </SenderCell>
                         }
                     }
