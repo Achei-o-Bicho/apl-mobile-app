@@ -9,16 +9,11 @@ export default function ChatConversation({ navigation, route }) {
     const [messageText, setMessageText] = useState();
     const { userId } = useUserContext();
     const scrollViewRef = useRef(null);
-
-    // setMessages(rooms.filter((room) => room._id === chat._id)[0].messages)
+    
     useEffect(() => {
         navigation.setOptions({ title: name });
         socket.connect();
-        socket.on('get_all_messages', (rooms) => {
-            if (rooms === typeof (Array) && rooms.length > 0) {
-                console.log(rooms.filter((room) => room._id === chat._id)[0].messages)
-            }
-        });
+        socket.on('get_all_messages', (rooms) => setMessages(rooms.filter((room) => room._id === chat._id)[0].messages));
         scrollToBottom();
 
         return () => {
@@ -33,7 +28,7 @@ export default function ChatConversation({ navigation, route }) {
             room: {
                 id: chat._id
             }
-        }, (response) => setMessages(response.messages))
+        })
         setMessageText();
         scrollToBottom();
     }
