@@ -15,14 +15,13 @@ export default function ChatList({ navigation }) {
     });
 
     useEffect(() => {
-        socket.on('connect', () => {
-            socket.emit('get_all_rooms', (rooms) => setRooms(rooms));
-        });
+        socket.on('connect', () => console.log(socket.id))
+        socket.on('get_all_messages', (rooms) => setRooms(rooms));
 
         return () => {
-            socket.on('disconnect');
+            socket.disconnect();
         };
-    }, [socket])
+    }, [])
 
     return <MainView>
         <FlatList

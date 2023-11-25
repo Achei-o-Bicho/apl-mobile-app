@@ -22,7 +22,7 @@ export default function ChatConversation({ navigation, route }) {
                 id: chat._id
             }
         })
-        socket.emit('get_all_rooms', (rooms) => setMessages(rooms.filter((room) => room._id == chat._id)[0].messages));
+        socket.on('get_all_messages', (rooms) => setMessages(rooms.filter((room) => room._id == chat._id)[0].messages));
         setMessageText();
         scrollToBottom();
     }
