@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { MainView, Separator } from './Style';
-import { io } from 'socket.io-client';
 import { useUserContext } from '../../contexts/UserContext';
 import { FlatList } from 'react-native';
 import ChatSelection from '../ChatSelection/ChatSelection';
 
 export default function ChatList({ navigation }) {
     const [rooms, setRooms] = useState([]);
-    const { accessToken, userId } = useUserContext();
-    const socket = io("http://3.229.11.208:8080/", {
-        autoConnect: false,
-        extraHeaders: {
-            "Authorization": `Bearer ${accessToken}`
-        }
-    });
+    const { userId, socket } = useUserContext();
+
+    function formatDate(date) {
+        let dateObject = new Date(date);
+        var options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        var newDate = dateObject.toLocaleDateString('pt-BR', options);
+        return newDate;
+    }
 
     useEffect(() => {
         socket.connect();
@@ -34,9 +34,9 @@ export default function ChatList({ navigation }) {
                         <ChatSelection
                             name={nameUserConversationPartner}
                             lastMessage={item.messages[item.messages.length - 1].message}
-                            date={item.messages[item.messages.length - 1].createdAt}
+                            date={formatDate(item.messages[item.messages.length - 1].createdAt)}
                             onPress={() => {
-                                navigation.navigate("ChatConversation", { chat: item, name: nameUserConversationPartner, socket })
+                                navigation.navigate("ChatConversation", { chat: item, name: nameUserConversationPartner })
                             }}
                         />
                         <Separator />

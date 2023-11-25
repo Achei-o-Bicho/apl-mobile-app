@@ -5,12 +5,13 @@ import { apiGet, apiPost } from '../config/api';
 import BackButton from '../components/BackButton/BackButton';
 import { View } from 'react-native';
 import { useUserContext } from '../contexts/UserContext';
+import { io } from 'socket.io-client';
 
 export default function LoginPassword({ navigation, route }) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState(null);
-    const { setUserId, setUserName, setUserPets, setAccessToken } = useUserContext();
+    const { setUserId, setUserName, setUserPets, setAccessToken, setSocket } = useUserContext();
 
     const submitLogin = async () => {
         setLoading(true);
@@ -20,6 +21,12 @@ export default function LoginPassword({ navigation, route }) {
                 password: password
             });
             const { userId, accessToken } = data;
+            setSocket(io("http://3.229.11.208:8080/", {
+                autoConnect: false,
+                extraHeaders: {
+                    "Authorization": `Bearer ${accessToken}`
+                }
+            }));
             await fetchUserData(userId, accessToken);
             navigation.popToTop();
             navigation.navigate("InsideHome");

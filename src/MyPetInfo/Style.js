@@ -27,3 +27,23 @@ export const ValuePet = styled.Text`
     font-size: 20px;
     color: purple;
 `
+
+export const Button = styled.TouchableOpacity`
+    width: 100%;
+    align-items: center;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+`
+
+export const ChatButton = styled(Button)`
+    background-color: purple;
+    border: 2px solid purple;
+`
+
+export const ButtonText = styled.Text`
+    text-transform: uppercase;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+`

@@ -4,10 +4,10 @@ import { AirPlaneButton, BottomView, CellTextSender, ChatInput, MainView, Receiv
 import { useUserContext } from '../../contexts/UserContext';
 
 export default function ChatConversation({ navigation, route }) {
-    const { chat, name, socket } = route.params;
+    const { chat, name } = route.params;
     const [messages, setMessages] = useState(chat.messages);
     const [messageText, setMessageText] = useState();
-    const { userId } = useUserContext();
+    const { userId, socket } = useUserContext();
     const scrollViewRef = useRef(null);
 
     function handleSendSocketMessage(message) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BackButton from '../components/BackButton/BackButton';
-import { ImagePet, ImagesView, MainView, ValuePet, ValuesView } from './Style';
+import { ButtonText, ChatButton, ImagePet, ImagesView, MainView, ValuePet, ValuesView } from './Style';
 import { View, Text, Dimensions } from 'react-native';
 import Carousel, { PaginationLight } from 'react-native-x-carousel';
 import { apiPost } from '../config/api';
@@ -9,9 +9,9 @@ import { useUserContext } from '../contexts/UserContext';
 
 export default function MyPetInfo({ navigation, route }) {
     const { width } = Dimensions.get('window');
-    const { pet } = route.params;
+    const { pet, showChatButton, owner } = route.params;
     const [petImages, setPetImages] = useState([{ image: '' }]);
-    const { accessToken } = useUserContext();
+    const { accessToken, socket } = useUserContext();
 
     async function fetchAllImages(petId) {
         try {
@@ -26,6 +26,14 @@ export default function MyPetInfo({ navigation, route }) {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    function handleSendSocketMessage() {
+        socket.emit("send_message", {
+            message: `Olá, encontrei o seu pet ${pet.name}. Retorne o contato o mais breve possível.`,
+            userIdReceiver: owner.id,
+        })
+        navigation.navigate("ChatConversation", { chat: item, name: owner.name })
     }
 
     useEffect(() => {
@@ -81,6 +89,11 @@ export default function MyPetInfo({ navigation, route }) {
                         <Text>Descrição:</Text>
                         <ValuePet>{pet.description}</ValuePet>
                     </View>
+                )}
+                {!showChatButton && (
+                    <ChatButton onPress={handleSendSocketMessage}>
+                        <ButtonText>Conversar com o dono</ButtonText>
+                    </ChatButton>
                 )}
             </ValuesView>
         </MainView>
