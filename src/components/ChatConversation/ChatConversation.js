@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { KeyboardAvoidingView, TouchableOpacity, Platform, ScrollView, View } from 'react-native';
-import { AirPlaneButton, BottomView, CellText, ChatInput, MainView, ReceiverCell, SenderCell, TimeText } from './Style';
+import { AirPlaneButton, BottomView, CellTextSender, ChatInput, MainView, ReceiverCell, SenderCell, TimeSextSender, CellTextReceiver, TimeSextReceiver } from './Style';
 import { useUserContext } from '../../contexts/UserContext';
 
 export default function ChatConversation({ navigation, route }) {
@@ -70,13 +70,13 @@ export default function ChatConversation({ navigation, route }) {
                     {messages.map((message) => {
                         if (message.user === userId) {
                             return <ReceiverCell>
-                                <CellText>{message.message}</CellText>
-                                <TimeText>{formatDate(message.createdAt)}</TimeText>
+                                <CellTextReceiver>{message.message}</CellTextReceiver>
+                                <TimeSextReceiver>{formatDate(message.createdAt)}</TimeSextReceiver>
                             </ReceiverCell>
                         } else {
                             return <SenderCell>
-                                <CellText>{message.message}</CellText>
-                                <TimeText>{formatDate(message.createdAt)}</TimeText>
+                                <CellTextSender>{message.message}</CellTextSender>
+                                <TimeSextSender>{formatDate(message.createdAt)}</TimeSextSender>
                             </SenderCell>
                         }
                     })}

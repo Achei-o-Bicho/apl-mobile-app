@@ -9,7 +9,7 @@ export const MainView = styled.SafeAreaView`
 export const Cell = styled.View`
     padding: 10px 15px;
     margin: 5px;
-    border-radius: 20px;
+    border-radius: 8px;
     max-width: 80%;
 `
 
@@ -21,21 +21,33 @@ export const ChatView = styled.ScrollView`
 
 export const ReceiverCell = styled(Cell)`
     align-self: flex-start;
-    background-color: pink;
+    background-color: #A0A0A0;
     align-items: flex-start;
 `
 
 export const SenderCell = styled(Cell)`
     align-self: flex-end;
-    background-color: lightgray;
+    background-color: purple;
     align-items: flex-end;
 `
 
-export const CellText = styled.Text`
+export const CellTextSender = styled.Text`
+    color: white;
     font-size: 16px;
 `
 
-export const TimeText = styled.Text`
+export const TimeSextSender = styled.Text`
+    color: white;
+    font-size: 10px;
+`
+
+export const CellTextReceiver = styled.Text`
+    color: white;
+    font-size: 16px;
+`
+
+export const TimeSextReceiver = styled.Text`
+    color: white;
     font-size: 10px;
 `
 
@@ -49,12 +61,13 @@ export const BottomView = styled.View`
 `
 
 export const ChatInput = styled.TextInput`
+    background-color: white;
     flex: 1;
     height: 38px;
     border: 1px solid white;
     color: white;
     padding: 8px 15px;
-    border-radius: 20px;
+    border-radius: 8px;
     font-size: 16px;
     margin: 12px 10px 12px 0;
 `
