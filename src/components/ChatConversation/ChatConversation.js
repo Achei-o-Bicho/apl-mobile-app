@@ -50,17 +50,18 @@ export default function ChatConversation({ navigation, route }) {
 
     return <MainView>
         <KeyboardAvoidingView
-            style={{ flex: 1, backgroundColor: 'white' }}
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            style={{ flex: 1, backgroundColor: 'purple' }}
+            behavior={Platform.OS == "ios" ? "padding" : null}
             enabled
-            keyboardVerticalOffset={Platform.OS == "ios" ? 92 : 90}
+            keyboardVerticalOffset={90}
         >
             <ScrollView
                 ref={scrollViewRef}
                 onContentSizeChange={scrollToBottom}
                 contentContainerStyle={{
                     flexGrow: 1,
-                    justifyContent: 'flex-end'
+                    justifyContent: 'flex-end',
+                    backgroundColor: 'white'
                 }}
             >
                 {messages.map((message) => {
