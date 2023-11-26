@@ -21,12 +21,13 @@ export default function LoginPassword({ navigation, route }) {
                 password: password
             });
             const { userId, accessToken } = data;
-            setSocket(io("http://3.229.11.208:8080/", {
+            const socket = io("http://3.229.11.208:8080/", {
                 autoConnect: false,
                 extraHeaders: {
                     "Authorization": `Bearer ${accessToken}`
                 }
-            }));
+            })
+            setSocket(socket);
             await fetchUserData(userId, accessToken);
             navigation.popToTop();
             navigation.navigate("InsideHome");

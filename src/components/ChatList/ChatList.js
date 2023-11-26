@@ -15,10 +15,6 @@ export default function ChatList({ navigation }) {
             setIsLoading(false);
             setRooms(rooms);
         });
-
-        return () => {
-            socket.disconnect();
-        };
     }, [])
 
     function formatDate(date) {
