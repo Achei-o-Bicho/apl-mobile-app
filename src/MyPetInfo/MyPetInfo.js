@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BackButton from '../components/BackButton/BackButton';
 import { ButtonText, ChatButton, ImagePet, ImagesView, MainView, ValuePet, ValuesView } from './Style';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text, Dimensions, ActivityIndicator } from 'react-native';
 import Carousel, { PaginationLight } from 'react-native-x-carousel';
 import { apiPost } from '../config/api';
 import { useUserContext } from '../contexts/UserContext';
@@ -12,6 +12,7 @@ export default function MyPetInfo({ navigation, route }) {
     const { pet, showChatButton, owner } = route.params;
     const [petImages, setPetImages] = useState([{ image: '' }]);
     const { accessToken, socket } = useUserContext();
+    const [isLoading, setIsLoading] = useState(true);
 
     async function fetchAllImages(petId) {
         try {
@@ -26,6 +27,7 @@ export default function MyPetInfo({ navigation, route }) {
         } catch (error) {
             console.log(error)
         }
+        setIsLoading(false);
     }
 
     function handleSendSocketMessage() {
@@ -49,18 +51,22 @@ export default function MyPetInfo({ navigation, route }) {
 
     return (
         <MainView>
-            <ImagesView>
-                <Carousel
-                    pagination={PaginationLight}
-                    data={petImages}
-                    renderItem={(item, index) => (
-                        <ImagePet
-                            key={index}
-                            width={width}
-                            source={{ uri: `data:image/jpeg;base64,${item.image}` }}
-                        />
-                    )}
-                />
+            <ImagesView
+                width={width}
+            >
+                {isLoading ? <ActivityIndicator size="large" color="white" /> : (
+                    <Carousel
+                        pagination={PaginationLight}
+                        data={petImages}
+                        renderItem={(item, index) => {
+                            return <ImagePet
+                                key={index}
+                                width={width}
+                                source={{ uri: `data:image/jpeg;base64,${item.image}` }}
+                            />
+                        }}
+                    />
+                )}
             </ImagesView>
             <ValuesView>
                 <View

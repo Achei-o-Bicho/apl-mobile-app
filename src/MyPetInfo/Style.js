@@ -7,7 +7,11 @@ export const MainView = styled.ScrollView`
 
 export const ImagesView = styled.View`
     justify-content: center;
-    background-color: purple;
+    background-color: lightgray;
+    ${({ width }) => `
+    width: ${width}px;
+    height: ${width * 0.8}px;
+    `}
 `
 
 export const ImagePet = styled.Image`
