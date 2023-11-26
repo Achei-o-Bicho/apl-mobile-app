@@ -5,7 +5,7 @@ import { useUserContext } from '../../contexts/UserContext';
 
 export default function ChatConversation({ navigation, route }) {
     const { chat, name } = route.params;
-    const [messages, setMessages] = useState(chat.messages);
+    const [messages, setMessages] = useState(chat.messages ? chat.messages : []);
     const [messageText, setMessageText] = useState();
     const { userId, socket } = useUserContext();
     const scrollViewRef = useRef(null);

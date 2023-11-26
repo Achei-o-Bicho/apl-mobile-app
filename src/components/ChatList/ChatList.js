@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MainView, Separator } from './Style';
 import { useUserContext } from '../../contexts/UserContext';
-import { ActivityIndicator, FlatList } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
 import ChatSelection from '../ChatSelection/ChatSelection';
 
 export default function ChatList({ navigation }) {
@@ -28,6 +28,11 @@ export default function ChatList({ navigation }) {
         {isLoading ? <ActivityIndicator style={{ flex: 1 }} size="large" /> : (
             <FlatList
                 data={rooms}
+                ListEmptyComponent={() => (
+                    <View>
+                        {/* <Image source={} /> */}
+                    </View>
+                )}
                 ItemSeparatorComponent={() => <Separator />}
                 renderItem={({ item, index }) => {
                     const nameUserConversationPartner = item.receiver._id === userId ? item.sender.name : item.receiver.name

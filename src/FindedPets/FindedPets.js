@@ -23,7 +23,7 @@ export default function FindedPets({ navigation, route }) {
                                 description={item.pet.description}
                                 onPress={() => {
                                     setRecentScannedPets((prev) => [...prev, item.pet]);
-                                    navigation.navigate("MyPetInfo", { pet: item.pet, showChatButton: item.isOwner, owner: item.user });
+                                    navigation.navigate("MyPetInfo", { pet: item.pet, showChatButton: !item.isOwner, owner: item.user });
                                 }}
                             />
                         );

@@ -37,11 +37,12 @@ export default function MyPetInfo({ navigation, route }) {
                 message: `Olá, encontrei o seu pet ${pet.name}. Retorne o contato o mais breve possível.`,
                 userIdReceiver: owner.id,
             })
+            console.log(response);
             setChat(response);
         } catch (error) {
             console.log(error);
         }
-        navigation.popToTop()
+        navigation.pop(2);
         navigation.navigate("ChatConversation", { chat: chat, name: owner.name })
     }
 
