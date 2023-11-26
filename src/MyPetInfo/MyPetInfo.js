@@ -33,6 +33,7 @@ export default function MyPetInfo({ navigation, route }) {
             message: `Olá, encontrei o seu pet ${pet.name}. Retorne o contato o mais breve possível.`,
             userIdReceiver: owner.id,
         })
+        navigation.popToTop()
         navigation.navigate("ChatConversation", { chat: item, name: owner.name })
     }
 
@@ -90,7 +91,7 @@ export default function MyPetInfo({ navigation, route }) {
                         <ValuePet>{pet.description}</ValuePet>
                     </View>
                 )}
-                {!showChatButton && (
+                {showChatButton && (
                     <ChatButton onPress={handleSendSocketMessage}>
                         <ButtonText>Conversar com o dono</ButtonText>
                     </ChatButton>

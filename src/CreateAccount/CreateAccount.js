@@ -298,7 +298,7 @@ export default function CreateAccount({ navigation }) {
                     ))}
                     {isBotTyping && (
                         <ViewGIF>
-                            <TypingAnimation color="pink" time={1000} count={3} />
+                            <TypingAnimation color="lightgray" time={1000} count={3} />
                         </ViewGIF>
                     )}
                 </ChatView>
