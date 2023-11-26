@@ -36,7 +36,6 @@ export default function MyPets({ navigation }) {
     }
 
     async function handleFetchData() {
-        setRefreshing(true);
         try {
             const { pets } = await apiGet(`/users/pets/${userId}`, {
                 "Authorization": `Bearer ${accessToken}`
@@ -46,6 +45,11 @@ export default function MyPets({ navigation }) {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    function handleRefresing() {
+        setRefreshing(true);
+        handleFetchData();
         setRefreshing(false);
     }
 
@@ -66,7 +70,7 @@ export default function MyPets({ navigation }) {
                 refreshing={refreshing}
                 data={data}
                 refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={handleFetchData} />
+                    <RefreshControl refreshing={refreshing} onRefresh={handleRefresing} />
                 }
                 ListHeaderComponent={(
                     <View
