@@ -67,14 +67,14 @@ export default function ChatConversation({ navigation, route }) {
                         backgroundColor: 'white'
                     }}
                 >
-                    {messages.map((message) => {
+                    {messages.map((message, index) => {
                         if (message.user === userId) {
-                            return <ReceiverCell>
+                            return <ReceiverCell key={index}>
                                 <CellTextReceiver>{message.message}</CellTextReceiver>
                                 <TimeSextReceiver>{formatDate(message.createdAt)}</TimeSextReceiver>
                             </ReceiverCell>
                         } else {
-                            return <SenderCell>
+                            return <SenderCell key={index}>
                                 <CellTextSender>{message.message}</CellTextSender>
                                 <TimeSextSender>{formatDate(message.createdAt)}</TimeSextSender>
                             </SenderCell>

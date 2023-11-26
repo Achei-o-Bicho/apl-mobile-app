@@ -33,19 +33,18 @@ export default function ChatList({ navigation }) {
             <FlatList
                 data={rooms}
                 ItemSeparatorComponent={() => <Separator />}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
                     const nameUserConversationPartner = item.receiver._id === userId ? item.sender.name : item.receiver.name
                     if (item && item.sender && item.sender.name && item.messages && item.messages[item.messages.length - 1].message && item.messages[item.messages.length - 1].createdAt) {
-                        return <>
-                            <ChatSelection
-                                name={nameUserConversationPartner}
-                                lastMessage={item.messages[item.messages.length - 1].message}
-                                date={formatDate(item.messages[item.messages.length - 1].createdAt)}
-                                onPress={() => {
-                                    navigation.navigate("ChatConversation", { chat: item, name: nameUserConversationPartner })
-                                }}
-                            />
-                        </>
+                        return <ChatSelection
+                            key={index}
+                            name={nameUserConversationPartner}
+                            lastMessage={item.messages[item.messages.length - 1].message}
+                            date={formatDate(item.messages[item.messages.length - 1].createdAt)}
+                            onPress={() => {
+                                navigation.navigate("ChatConversation", { chat: item, name: nameUserConversationPartner })
+                            }}
+                        />
                     }
                 }}
             />
