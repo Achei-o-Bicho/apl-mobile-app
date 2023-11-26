@@ -16,18 +16,18 @@ const IconSize = 32
 export default function TabBar() {
     const isFocused = useIsFocused();
     const { userName, socket } = useUserContext();
-    const [showChat, setShowChat] = useState(false);
+    const [showChat, setShowChat] = useState(true);
 
     useEffect(() => {
-        socket.connect();
-        socket.on('get_all_messages', (rooms) => {
-            setShowChat(rooms.length > 0)
-            socket.disconnect();
-        });
+        // socket.connect();
+        // socket.on('get_all_messages', (rooms) => {
+        //     setShowChat(rooms.length > 0)
+        //     socket.disconnect();
+        // });
 
-        return () => {
-            socket.disconnect();
-        };
+        // return () => {
+        //     socket.disconnect();
+        // };
     }, [isFocused])
 
     return (

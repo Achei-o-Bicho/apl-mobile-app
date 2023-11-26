@@ -10,14 +10,14 @@ export default function ChatConversation({ navigation, route }) {
     const { userId, socket } = useUserContext();
     const scrollViewRef = useRef(null);
 
-    function handleSendSocketMessage(message) {
+    function handleSendSocketMessage() {
         socket.emit("send_message", {
-            message: message,
+            message: messageText,
             userIdReceiver: userId === chat.sender._id ? chat.receiver._id : chat.sender._id,
             room: {
                 id: chat._id
             }
-        }, (response) => console.log(response))
+        })
         setMessageText();
     }
 
@@ -90,7 +90,7 @@ export default function ChatConversation({ navigation, route }) {
                         onFocus={scrollToBottom}
                     />
                     <TouchableOpacity
-                        onPress={() => handleSendSocketMessage(messageText)}
+                        onPress={handleSendSocketMessage}
                     >
                         <AirPlaneButton source={require('../../assets/paperplane.circle.fill.png')} />
                     </TouchableOpacity>

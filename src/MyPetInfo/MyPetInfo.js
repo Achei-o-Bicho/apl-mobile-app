@@ -13,6 +13,7 @@ export default function MyPetInfo({ navigation, route }) {
     const [petImages, setPetImages] = useState([{ image: '' }]);
     const { accessToken, socket } = useUserContext();
     const [isLoading, setIsLoading] = useState(true);
+    const [chat, setChat] = useState([]);
 
     async function fetchAllImages(petId) {
         try {
@@ -30,13 +31,18 @@ export default function MyPetInfo({ navigation, route }) {
         setIsLoading(false);
     }
 
-    function handleSendSocketMessage() {
-        socket.emit("send_message", {
-            message: `Olá, encontrei o seu pet ${pet.name}. Retorne o contato o mais breve possível.`,
-            userIdReceiver: owner.id,
-        })
+    async function handleSendSocketMessage() {
+        try {
+            let response = await socket.emitWithAck("send_message", {
+                message: `Olá, encontrei o seu pet ${pet.name}. Retorne o contato o mais breve possível.`,
+                userIdReceiver: owner.id,
+            })
+            setChat(response);
+        } catch (error) {
+            console.log(error);
+        }
         navigation.popToTop()
-        navigation.navigate("ChatConversation", { chat: item, name: owner.name })
+        navigation.navigate("ChatConversation", { chat: chat, name: owner.name })
     }
 
     useEffect(() => {
