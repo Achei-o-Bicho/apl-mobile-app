@@ -9,6 +9,7 @@ export default function ChatConversation({ navigation, route }) {
     const [messageText, setMessageText] = useState();
     const { userId, socket } = useUserContext();
     const scrollViewRef = useRef(null);
+    const [scrollContentHeight, setScrollContentHeight] = useState(0);
 
     function handleSendSocketMessage() {
         socket.emit("send_message", {
@@ -21,9 +22,9 @@ export default function ChatConversation({ navigation, route }) {
         setMessageText();
     }
 
-    const scrollToBottom = () => {
+    function scrollToBottom(animated = true) {
         if (scrollViewRef.current) {
-            scrollViewRef.current.scrollToEnd({ animated: true });
+            scrollViewRef.current.scrollToEnd({ animated: animated });
         }
     };
 
@@ -41,8 +42,10 @@ export default function ChatConversation({ navigation, route }) {
     }, [])
 
     useEffect(() => {
-        scrollToBottom();
-    }, [messages])
+        if (scrollViewRef.current) {
+            scrollViewRef.current.scrollTo({ x: 0, y: scrollContentHeight, animated: false });
+        }
+    }, [])
 
     return <MainView>
         <KeyboardAvoidingView
@@ -56,7 +59,10 @@ export default function ChatConversation({ navigation, route }) {
             >
                 <ScrollView
                     ref={scrollViewRef}
-                    onContentSizeChange={scrollToBottom}
+                    onContentSizeChange={(_, contentHeight) => {
+                        setScrollContentHeight(contentHeight);
+                        scrollToBottom(false);
+                    }}
                     contentContainerStyle={{
                         flexGrow: 1,
                         justifyContent: 'flex-end',
@@ -83,7 +89,7 @@ export default function ChatConversation({ navigation, route }) {
                         onChangeText={setMessageText}
                         placeholder="Digite aqui..."
                         placeholderTextColor="#adadad"
-                        onFocus={scrollToBottom}
+                        onFocus={() => setTimeout(() => scrollToBottom(), 150)}
                     />
                     <TouchableOpacity
                         onPress={handleSendSocketMessage}
