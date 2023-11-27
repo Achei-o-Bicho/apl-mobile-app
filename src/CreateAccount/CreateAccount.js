@@ -312,6 +312,7 @@ export default function CreateAccount({ navigation }) {
                                 editable={!isBotTyping}
                                 keyboardType={chat.steps[currentStep].keyboardType}
                                 secureTextEntry={chat.steps[currentStep].secureTextEntry}
+                                onFocus={() => setTimeout(() => scrollToBottom(), 150)}
                                 onChangeText={(text) => {
                                     setChat({
                                         ...chat, steps: chat.steps.map((step, index) => {

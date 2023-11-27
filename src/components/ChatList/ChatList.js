@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { MainView, Separator } from './Style';
 import { useUserContext } from '../../contexts/UserContext';
-import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Dimensions, View, Text } from 'react-native';
 import ChatSelection from '../ChatSelection/ChatSelection';
 
 export default function ChatList({ navigation }) {
+    const { width } = Dimensions.get('window');
     const [rooms, setRooms] = useState([]);
     const { userId, socket } = useUserContext();
     const [isLoading, setIsLoading] = useState(true);
@@ -29,8 +30,14 @@ export default function ChatList({ navigation }) {
             <FlatList
                 data={rooms}
                 ListEmptyComponent={() => (
-                    <View>
-                        {/* <Image source={} /> */}
+                    <View
+                        style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                    >
+                        <Image
+                            source={require('../../assets/undraw_dog_walking.png')}
+                            style={{ width: width * 0.8 }}
+                        />
+                        <Text>Nada por aqui ainda...</Text>
                     </View>
                 )}
                 ItemSeparatorComponent={() => <Separator />}

@@ -38,7 +38,11 @@ export default function ChatConversation({ navigation, route }) {
     useEffect(() => {
         navigation.setOptions({ title: name });
         socket.connect();
-        socket.on('get_all_messages', (rooms) => setMessages(rooms.filter((room) => room._id === chat._id)[0].messages));
+        socket.on('get_all_messages', (rooms) => {
+            if (rooms && rooms.filter((room) => room._id === chat._id)[0].messages) {
+                setMessages(rooms.filter((room) => room._id === chat._id)[0].messages);
+            }
+        });
     }, [])
 
     useEffect(() => {

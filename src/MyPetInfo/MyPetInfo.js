@@ -13,7 +13,6 @@ export default function MyPetInfo({ navigation, route }) {
     const [petImages, setPetImages] = useState([{ image: '' }]);
     const { accessToken, socket } = useUserContext();
     const [isLoading, setIsLoading] = useState(true);
-    const [chat, setChat] = useState([]);
 
     async function fetchAllImages(petId) {
         try {
@@ -37,13 +36,12 @@ export default function MyPetInfo({ navigation, route }) {
                 message: `Olá, encontrei o seu pet ${pet.name}. Retorne o contato o mais breve possível.`,
                 userIdReceiver: owner.id,
             })
-            console.log(response);
-            setChat(response);
+            navigation.pop(2);
+            navigation.navigate("Chat");
+            navigation.navigate("ChatConversation", { chat: response, name: owner.name })
         } catch (error) {
             console.log(error);
         }
-        navigation.pop(2);
-        navigation.navigate("ChatConversation", { chat: chat, name: owner.name })
     }
 
     useEffect(() => {
