@@ -11,7 +11,7 @@ export default function FindedPets({ navigation, route }) {
     return (
         <MainView>
             <FlatList
-                style={{ marginTop: 40 }}
+                style={{ paddingTop: 40 }}
                 data={results}
                 renderItem={({ item }) => {
                     if (item && item.pet.images && item.pet.images[0] && item.pet.images[0].base64) {
