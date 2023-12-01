@@ -11,10 +11,10 @@ export default function FindedPets({ navigation, route }) {
     return (
         <MainView>
             <FlatList
-                style={{ paddingTop: 40 }}
+                contentContainerStyle={{ paddingTop: 25, paddingBottom: 25 }}
                 data={results}
                 renderItem={({ item }) => {
-                    if (item && item.pet.images && item.pet.images[0] && item.pet.images[0].base64) {
+                    if (item && item.pet && item.pet.images && item.pet.images[0] && item.pet.images[0].base64) {
                         return (
                             <MyPetCard
                                 name={item.pet.name}

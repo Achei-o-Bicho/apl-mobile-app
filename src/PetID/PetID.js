@@ -61,7 +61,7 @@ export default function PetID({ navigation }) {
             const { endToEnd } = await apiPost(`/recognize`, formData, {
                 "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
                 "Authorization": `Bearer ${accessToken}`
-            });
+            }, 60000);
             setEndToEnd(endToEnd);
         } catch (error) {
             console.log(error);
@@ -73,7 +73,7 @@ export default function PetID({ navigation }) {
         try {
             const { results } = await apiGet(`/recognize/${endToEnd}`, {
                 "Authorization": `Bearer ${accessToken}`
-            });
+            }, 60000);
             if (!results) {
                 setTimeout(async () => {
                     await verifyRecognize(timeout);
